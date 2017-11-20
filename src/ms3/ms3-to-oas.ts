@@ -9,14 +9,14 @@ import * as YAML from 'yamljs';
 
 const writeFilePromise = promisify(writeFile);
 
-interface MS3toOASInterface {
-  oasAPI: OAS;
-  convert(): Promise<OAS>;
-}
-
 interface DataToWrite {
   path: string;
   content?: OAS;
+}
+
+interface MS3toOASInterface {
+  oasAPI: OAS;
+  convert(): Promise<OAS>;
 }
 
 export default class MS3toOAS implements MS3toOASInterface, ConvertorInterface {
