@@ -8,7 +8,6 @@ import { readFile, exists } from 'fs';
 import { promisify } from 'util';
 const readFilePromise = promisify(readFile);
 const fileExists = promisify(exists);
-// const drafterParse = promisify(Drafter.parse);
 
 export default class ApiBlueprintLoader implements LoaderInterface {
   constructor(private sourcePath: string) {}

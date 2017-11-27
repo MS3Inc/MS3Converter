@@ -1,4 +1,5 @@
 import * as ApiBlueprint from '../interfaces/blueprint-interface';
+import ApiBlueprintResourceGroupToString from './blueprint-resource-section-to-string';
 
 export default class ApiBlueprintToString {
   private result: string = '';
@@ -7,8 +8,9 @@ export default class ApiBlueprintToString {
 
   stringify() {
     this.result += this.stringifyMetaData(this.source.metadata);
-    this.result += this.stringifyNameSection(this.source);
-
+    this.result += ApiBlueprintToString.stringifyNameSection(this.source);
+    if (this.source.resourceGroup)
+      this.result += ApiBlueprintResourceGroupToString.create(this.source.resourceGroup, {}).stringify();
     return this.result;
   }
 
@@ -19,16 +21,16 @@ export default class ApiBlueprintToString {
     return result;
   }
 
-  private stringifyNameSection(api: ApiBlueprint.API) {
+  public static stringifyNameSection(api: ApiBlueprint.API) {
     let result = '';
 
-    if (api.name) result += this.createSectionHeading(api.name);
+    if (api.name) result += ApiBlueprintToString.createSectionHeading(api.name);
     if (api.description) result += `${api.description}\n`;
 
     return result;
   }
 
-  private createSectionHeading(content: string, level: 1|2 = 1) {
+  static createSectionHeading(content: string, level: 1|2 = 1) {
     return `\n${'#'.repeat(level)}${content}\n`;
   }
 

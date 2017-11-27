@@ -1,24 +1,49 @@
-
-
-
 export interface NamedSection {
   markdownEntity: 'header'|'list'| 'special';
   keyword: string | null;
-  identifier: string; // identifier is any non-empty combination of any character except [, ], (, ) and newline characters. its a name of section
-  nestedSections?: NamedSection; // can be NamedSection or FormattedContent(see descendants descriptions)
-}
-
-export interface ResourceSection extends NamedSection {
-
+  identifier?: string; // Identifier a name of section. It is any non-empty combination of any character except [, ], (, ) and newline characters.
+  nestedSections?: NamedSection[] | NamedSection; // can be NamedSection or FormattedContent(see descendants descriptions)
+  description?: string;
 }
 
 export interface Group extends NamedSection {
-  entity: 'header';
-  keyword: 'Group';
+  markdownEntity: 'header';
+  keyword: string | 'Group';
 }
 
 export interface ResourceGroup extends Group {
-  nestedSection: ResourceSection;
+  markdownEntity: 'header';
+  nestedSections?: ResourceSection[];
+}
+
+export interface ResourceSection extends NamedSection {
+  nestedSections?: Array<ResourceAction| ParameterSection>;
+}
+
+export interface ParameterSection extends NamedSection {
+  markdownEntity: 'list';
+  identifier?: 'parameters';
+  keyword: 'Parameters';
+  parameterList?: Parameter[];
+}
+
+export interface Parameter {
+  title: string;
+  type: string;
+  enum?: boolean;
+  required?: boolean;
+  description?: string;
+  exampleValue?: any;
+  defaultValue?: any;
+  optional?: boolean;
+  members?: any[]; // probably each member should have an interface too
+}
+
+/**
+ * Resource Methods
+ */
+export interface ResourceAction extends NamedSection {
+  keyword: 'GET'| 'POST'| 'PUT' | 'PATCH' | 'DELETE' | 'TRACE' | 'OPTIONS' | 'HEAD' | string;
 }
 
 export interface API {

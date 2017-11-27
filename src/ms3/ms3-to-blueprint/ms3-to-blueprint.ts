@@ -1,9 +1,10 @@
-import ConvertorInterface from '../common/convertor-interface';
-import * as Ms3 from './ms3-v1-api-interface';
-import * as APIBlueprint from '../blueprint/interfaces/blueprint-interface';
-import * as APIElementsBlueprint from '../blueprint/interfaces/api-elements-blueprint-interface';
-import ConvertorInterfaceOptions from '../common/convertor-options-interface';
-import ApiBlueprintToString from '../blueprint/stringify/bluepring-to-string';
+import ConvertorInterface from '../../common/convertor-interface';
+import * as Ms3 from '../ms3-v1-api-interface';
+import * as APIBlueprint from '../../blueprint/interfaces/blueprint-interface';
+import * as APIElementsBlueprint from '../../blueprint/interfaces/api-elements-blueprint-interface';
+import ConvertorInterfaceOptions from '../../common/convertor-options-interface';
+import ConvertResource from './convert-resource';
+import ApiBlueprintToString from '../../blueprint/stringify/bluepring-to-string';
 import * as path from 'path';
 import { writeFile } from 'fs';
 import { promisify } from 'util';
@@ -14,8 +15,6 @@ interface DataToWrite {
   path: string;
   content?: APIBlueprint.API;
 }
-
-
 
 interface APIBConvertorOptionsInterface extends ConvertorInterfaceOptions {
   fileFormat: 'apib';
@@ -36,6 +35,7 @@ export default class MS3ToBlueprint implements ConvertorInterface {
 
   convert() {
     Object.assign(this.resultApi, this.convertSettings(this.Ms3Api.settings));
+    this.resultApi.resourcesGroup = this.convertResources(this.Ms3Api.resources || []);
 
     if (this.options.destinationPath && this.options.destinationPath.length)
       return this.writeToDisc({
@@ -44,6 +44,15 @@ export default class MS3ToBlueprint implements ConvertorInterface {
       });
 
     return ApiBlueprintToString.create(this.resultApi, {}).stringify();
+  }
+
+  private convertResources(ms3Resources: Ms3.Resource[]): APIBlueprint.ResourceGroup {
+    return <APIBlueprint.ResourceGroup> {
+      keyword: 'Group',
+      markdownEntity: 'header',
+      identifier: 'Resource group',
+      nestedSections: ms3Resources.map((ms3Resource) => ConvertResource.create(ms3Resource).convert())
+    };
   }
 
   private convertSettings(settings: Ms3.Settings) {

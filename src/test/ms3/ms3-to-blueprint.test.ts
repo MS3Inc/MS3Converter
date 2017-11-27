@@ -1,4 +1,4 @@
-import MS3ToBlueprint from '../../ms3/ms3-to-blueprint';
+import MS3ToBlueprint from '../../ms3/ms3-to-blueprint/ms3-to-blueprint';
 import * as stubs from './source-files/ms3-settings-to-blueprint';
 
 test('Should convert ms3 settings to  metadata and name section in blueprint document', () => {
