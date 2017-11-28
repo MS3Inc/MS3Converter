@@ -7,9 +7,10 @@
       "request": "launch",
       "name": "Run tests",
       "program": "${workspaceFolder}/node_modules/.bin/jest",
-      "preLaunchTask": "tsc: build - tsconfig.json",
+      "preLaunchTask": "build",
       "cwd": "${workspaceFolder}",
-      "internalConsoleOptions": "openOnFirstSessionStart",
+      "internalConsoleOptions": "openOnSessionStart",
+      "console": "integratedTerminal",
       "args":[
         "-i"
       ],
