@@ -2,7 +2,7 @@ export interface NamedSection {
   markdownEntity: 'header'|'list'| 'special';
   keyword: string | null;
   identifier?: string; // Identifier a name of section. It is any non-empty combination of any character except [, ], (, ) and newline characters.
-  nestedSections?: NamedSection[] | NamedSection; // can be NamedSection or FormattedContent(see descendants descriptions)
+  nestedSections?: any; // can be NamedSection or FormattedContent(see descendants descriptions)
   description?: string;
 }
 
@@ -17,7 +17,16 @@ export interface ResourceGroup extends Group {
 }
 
 export interface ResourceSection extends NamedSection {
-  nestedSections?: Array<ResourceAction| ParameterSection>;
+  nestedSections: {
+    parameters?: ParameterSection;
+    models?: ModelSection;
+    response?: ResponseSection;
+    actions: ActionSection[];
+  };
+}
+
+export interface ModelSection {
+
 }
 
 export interface ParameterSection extends NamedSection {
@@ -38,12 +47,38 @@ export interface Parameter {
   optional?: boolean;
   members?: any[]; // probably each member should have an interface too
 }
-
 /**
  * Resource Methods
  */
-export interface ResourceAction extends NamedSection {
+export interface ActionSection extends NamedSection {
+  identifier?: '';
   keyword: 'GET'| 'POST'| 'PUT' | 'PATCH' | 'DELETE' | 'TRACE' | 'OPTIONS' | 'HEAD' | string;
+  description: string;
+  markdownEntity: 'header';
+  nestedSections: {
+    parameters?: ParameterSection;
+    attributes?: AttributesSection;
+    request?: RequestSection;
+    response?: ResponseSection;
+  };
+}
+
+/**
+ * data structure description node
+ */
+export interface AttributesSection {
+  keyword: '';
+  markdownEntity: 'list';
+}
+
+export interface RequestSection {
+  keyword: '';
+  markdownEntity: 'list';
+}
+
+export interface ResponseSection {
+  keyword: '';
+  markdownEntity: 'list';
 }
 
 export interface API {
