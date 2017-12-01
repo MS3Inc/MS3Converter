@@ -1,6 +1,6 @@
 import * as ApiBlueprint from '../../../../blueprint/interfaces/blueprint-interface';
 
-const sourceApiWithMetadataAndNameSectionFilled: ApiBlueprint.API = {
+const source: ApiBlueprint.API = {
   metadata: {
     markdownEntity: 'special',
     format: '1A',
@@ -11,11 +11,11 @@ const sourceApiWithMetadataAndNameSectionFilled: ApiBlueprint.API = {
   description: 'API Description goes here'
 };
 
-const expectedStringifiedApiBlueprint: string = `FORMAT: 1A
+const expected: string = `FORMAT: 1A
 HOST: http://Somehost
 
 #some_name
 API Description goes here
 `;
 
-export { sourceApiWithMetadataAndNameSectionFilled, expectedStringifiedApiBlueprint };
+export { source, expected };

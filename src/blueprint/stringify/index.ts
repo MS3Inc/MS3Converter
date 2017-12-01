@@ -1,5 +1,5 @@
 import * as ApiBlueprint from '../interfaces/blueprint-interface';
-import ApiBlueprintResourceGroupToString from './blueprint-resource-section-to-string';
+import ApiBlueprintResourceGroupToString from './resource-section-to-string';
 
 export default class ApiBlueprintToString {
   private result: string = '';

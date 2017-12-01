@@ -1,5 +1,7 @@
 import * as MS3 from '../ms3-v1-api-interface';
 import * as Blueprint from '../../blueprint/interfaces/blueprint-interface';
+import MS3MethodToActionSection from './convert-method';
+import MS3UriParametersToParametersSection from './convert-parameters';
 
 export default class Ms3ResourceToBlueprint {
   private resourceSection: Blueprint.ResourceSection;
@@ -8,39 +10,25 @@ export default class Ms3ResourceToBlueprint {
   convert(): Blueprint.ResourceSection {
     this.resourceSection.description = this.Ms3Resource.description;
     this.resourceSection.identifier = this.Ms3Resource.path;
-    this.resourceSection.nestedSections = [this.convertUriParameters(this.Ms3Resource.pathVariables)];
+    if (this.Ms3Resource.pathVariables && this.Ms3Resource.pathVariables.length)
+      this.resourceSection.nestedSections.parameters = MS3UriParametersToParametersSection.create(this.Ms3Resource.pathVariables, {}).convert();
 
-    // this.resourceSection.nestedSections = this.convertMethods(this.Ms3Resource.methods); 
+    if (this.Ms3Resource.methods) {
+      const actions = this.convertMethods(this.Ms3Resource.methods);
+      if (actions) this.resourceSection.nestedSections.actions = actions;
+    }
+
+    // this.resourceSection.nestedSections = this.convertMethods(this.Ms3Resource.methods);
     return this.resourceSection;
   }
-  convertUriParameters(uriParams: MS3.Parameter[]): Blueprint.ParameterSection {
-    return {
-      parameterList: uriParams.map((param) => this.convertUriParameter(param)),
-      keyword: 'Parameters',
-      markdownEntity: 'list'
-    };
-}
 
-  convertUriParameter(parameter: MS3.Parameter): Blueprint.Parameter {
+  convertMethods(methods: MS3.Method[]): Blueprint.ActionSection[] {
+    const activeMethods = methods.filter((method) => method.active);
+    if (activeMethods.length)
+      return methods.map((method) => MS3MethodToActionSection.create(method, {}).convert());
 
-    return {
-      title: parameter.displayName,
-      type: parameter.type, // probably types should be converted to acceptable types,
-      required: parameter.required,
-      exampleValue: parameter.example,
-      defaultValue: parameter.default,
-      enum: parameter.enum.length > 0,
-      members: parameter.enum
-    };
+    return null;
   }
-
-  // convertMethods(methods: MS3.Method[]): Blueprint.action[] {
-
-  // }
-
-  // convertMethod(method: MS3.Method): Blueprint.action {
-
-  // }
 
 
   static create(Ms3Resource: MS3.Resource) {

@@ -1,5 +1,5 @@
 import * as ApiBlueprint from '../interfaces/blueprint-interface';
-import ApiBlueprintToString from './bluepring-to-string';
+import ActionSectionToString from './action-section-to-string';
 import * as common from './common';
 import {find as _find } from 'lodash';
 
@@ -18,9 +18,10 @@ export default class ApiBlueprintResourceGroupToString {
     let result = '';
     result += common.createSectionHeading('', resource.keyword, 1);
     result += common.createSentence(resource.description, false);
-    const resourceParameters = _find(resource.nestedSections, {keyword: 'Parameters'});
-    if (resourceParameters)
-      result += this.stringifyParameters(<ApiBlueprint.ParameterSection> resourceParameters);
+    if (resource.nestedSections.parameters)
+      result += this.stringifyParameters(<ApiBlueprint.ParameterSection> resource.nestedSections.parameters);
+    if (resource.nestedSections.actions && resource.nestedSections.actions.length)
+      result += this.stringifyActions(<ApiBlueprint.ActionSection[]> resource.nestedSections.actions);
 
     return result;
   }
@@ -49,6 +50,10 @@ export default class ApiBlueprintResourceGroupToString {
     }
 
     return result;
+  }
+
+  private stringifyActions(actions: ApiBlueprint.ActionSection[], nestLevel: number = 0): string {
+    return actions.map((action) => ActionSectionToString.create(action, {}).stringify()).join('/n');
   }
 
   static create(source: ApiBlueprint.ResourceGroup, options: object) {

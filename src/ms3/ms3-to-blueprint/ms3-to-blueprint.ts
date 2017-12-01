@@ -4,7 +4,7 @@ import * as APIBlueprint from '../../blueprint/interfaces/blueprint-interface';
 import * as APIElementsBlueprint from '../../blueprint/interfaces/api-elements-blueprint-interface';
 import ConvertorInterfaceOptions from '../../common/convertor-options-interface';
 import ConvertResource from './convert-resource';
-import ApiBlueprintToString from '../../blueprint/stringify/bluepring-to-string';
+import ApiBlueprintToString from '../../blueprint/stringify/index';
 import * as path from 'path';
 import { writeFile } from 'fs';
 import { promisify } from 'util';

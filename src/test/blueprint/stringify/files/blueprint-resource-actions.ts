@@ -19,23 +19,16 @@ const source: ApiBlueprint.API = {
         identifier: 'resource',
         markdownEntity: 'header',
         description: 'Clients endpoint',
-        nestedSections: [
-          {
-            keyword: 'Parameters',
-            identifier: 'parameters',
-            markdownEntity: 'list',
-            parameterList: [
-              {
-                identifier: 'parameter',
-                title: 'id',
-                type: 'string',
-                description: 'Id of a Client',
-                enum: true,
-                members: ['A', 'B', 'C']
-              }
-            ]
-          }
-        ]
+        nestedSections: {
+          actions: [
+            {
+              keyword: 'POST',
+              description: 'action description',
+              markdownEntity: 'header',
+              nestedSections: {}
+            }
+          ]
+        }
       }
     ]
   }
@@ -50,14 +43,8 @@ API Description goes here
 # /clients/{id}
 Clients endpoint
 
-+ Parameters
-
-  + id (enum[string]) - Id of a Client
-
-    + Members
-      + \`A\`
-      + \`B\`
-      + \`C\`
+## [POST]
+action description
 `;
 
 export { source, expected };
