@@ -20,39 +20,20 @@ const source: ApiBlueprint.API = {
         markdownEntity: 'header',
         description: 'Clients endpoint',
         nestedSections: {
-          parameters: {
-            keyword: 'Parameters',
-            identifier: 'parameters',
-            markdownEntity: 'list',
-            parameterList: [
-              {
-                title: 'id',
-                type: 'string',
-                description: 'Id of a Client',
-                enum: true,
-                members: ['A', 'B', 'C']
-              }
-            ]
-          },
           actions: [
             {
               keyword: 'POST',
               description: 'action description',
               markdownEntity: 'header',
               nestedSections: {
-                parameters: {
-                  keyword: 'Parameters',
-                  identifier: 'parameters',
+                responses: {
+                  keyword: 'Response',
                   markdownEntity: 'list',
-                  parameterList: [
-                    {
-                      title: 'ID',
-                      type: 'string',
-                      description: 'new ID',
-                      enum: true,
-                      members: ['A', 'B', 'C']
-                    }
-                  ]
+                  responseList: [{
+                    identifier: '100',
+                    mediaType: 'application/json',
+                    value: '{value: 1}'
+                  }]
                 }
               }
             }
@@ -72,26 +53,12 @@ API Description goes here
 # /clients/{id}
 Clients endpoint
 
-+ Parameters
-
-  + id (enum[string]) - Id of a Client
-
-    + Members
-      + \`A\`
-      + \`B\`
-      + \`C\`
-
 ## [POST]
 action description
 
-+ Parameters
++ Response 100 (application/json)
 
-  + ID (enum[string]) - new ID
-
-    + Members
-      + \`A\`
-      + \`B\`
-      + \`C\`
+   {value: 1}
 `;
 
 export { source, expected };
