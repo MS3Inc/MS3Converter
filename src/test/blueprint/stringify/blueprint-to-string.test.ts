@@ -1,6 +1,6 @@
 import ApiBlueprintToString from '../../../blueprint/stringify/index';
 import * as ShouldStringMetadataAndNS from './files/blueprint-metadata-and-name-section-api';
-import * as ShouldStringResourceParameters from './files/blueprint-resource-parameters';
+import * as ShouldStringResourceParameters from './files/blueprint-parameters';
 import * as ShouldStringResourceActions from './files/blueprint-resource-actions';
 
 test('Should stringify metadata and name section of blueprint document', async () => {
@@ -9,7 +9,7 @@ test('Should stringify metadata and name section of blueprint document', async (
   await expect(convertedSource).toEqual(expected);
 });
 
-test('Should stringify resources parameters of blueprint document', async () => {
+test('Should stringify parameters of blueprint document', async () => {
   const convertedSource = ApiBlueprintToString.create(ShouldStringResourceParameters.source, {}).stringify();
   const expected = ShouldStringResourceParameters.expected;
   await expect(convertedSource).toEqual(expected);

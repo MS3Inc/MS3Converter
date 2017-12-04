@@ -39,7 +39,22 @@ const source: ApiBlueprint.API = {
               keyword: 'POST',
               description: 'action description',
               markdownEntity: 'header',
-              nestedSections: {}
+              nestedSections: {
+                parameters: {
+                  keyword: 'Parameters',
+                  identifier: 'parameters',
+                  markdownEntity: 'list',
+                  parameterList: [
+                    {
+                      title: 'ID',
+                      type: 'string',
+                      description: 'new ID',
+                      enum: true,
+                      members: ['A', 'B', 'C']
+                    }
+                  ]
+                },
+              }
             }
           ]
         }
@@ -68,6 +83,15 @@ Clients endpoint
 
 ## [POST]
 action description
+
++ Parameters
+
+  + ID (enum[string]) - new ID
+
+    + Members
+      + \`A\`
+      + \`B\`
+      + \`C\`
 `;
 
 export { source, expected };
