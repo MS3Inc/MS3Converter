@@ -1,6 +1,7 @@
 import * as ApiBlueprint from '../../blueprint/interfaces/blueprint-interface';
 import * as MS3 from '../ms3-v1-api-interface';
 import MS3UriParametersToParametersSection from './convert-parameters';
+import MS3ResponsesToResponseSection from './convert-responses';
 
 export default class MS3MethodToActionSection {
   private actionSection: ApiBlueprint.ActionSection;
@@ -20,6 +21,11 @@ export default class MS3MethodToActionSection {
           identifier: 'parameters',
           markdownEntity: 'list',
           parameterList: MS3UriParametersToParametersSection.create(this.method.queryParameters, {}).convert().parameterList
+        },
+        responses: {
+          keyword: 'Response',
+          markdownEntity: 'list',
+          responseList: MS3ResponsesToResponseSection.create(this.method.responses, {}).convert()
         }
       }
     };

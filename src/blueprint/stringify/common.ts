@@ -7,8 +7,8 @@ export function createListItem(content: string, nestLevel: number = 0, fromNewLi
   return `${fromNewLine ? '\n' : ''}${' '.repeat(nestLevel)}+ ${content}\n`;
 }
 
-export function createSentence(content: string, fromNewLine: boolean = true ) {
-  return `${fromNewLine ? '\n' : ''}${content}\n`;
+export function createSentence(content: string, fromNewLine: boolean = true, nestedLevel: number = 0) {
+  return `${' '.repeat(nestedLevel)}${fromNewLine ? '\n' : ''}${content}\n`;
 }
 
 export function stringTicks(string: string) {
