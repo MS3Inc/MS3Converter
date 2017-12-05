@@ -58,7 +58,7 @@ export interface ActionSection extends NamedSection {
   nestedSections: {
     parameters?: ParameterSection;
     attributes?: AttributesSection;
-    request?: RequestSection;
+    requests?: RequestSection;
     responses?: ResponseSection;
   };
 }
@@ -72,8 +72,9 @@ export interface AttributesSection {
 }
 
 export interface RequestSection {
-  keyword: '';
+  keyword: 'Request';
   markdownEntity: 'list';
+  requestList: Response[];
 }
 
 export interface Response {
