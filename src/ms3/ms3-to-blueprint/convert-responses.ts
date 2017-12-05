@@ -17,7 +17,8 @@ export default class MS3ResponsesToResponseSection {
           identifier: response.code,
           mediaType: response.body[0].contentType,
           body: response.body[0].selectedExamples[0],
-          schema: response.body[0].type
+          schema: response.body[0].type,
+          description: response.description
         });
       }
       return result;

@@ -33,7 +33,8 @@ const source: ApiBlueprint.API = {
                     identifier: '100',
                     mediaType: 'application/json',
                     body: '{value: 1}',
-                    schema: '{value: 2}'
+                    schema: '{value: 2}',
+                    description: 'Post description'
                   }]
                 }
               }
@@ -58,6 +59,7 @@ Clients endpoint
 action description
 
 + Response 100 (application/json)
+  Post description
 
   + Body
     {value: 1}

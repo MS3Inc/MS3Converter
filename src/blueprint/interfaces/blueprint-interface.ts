@@ -81,6 +81,7 @@ export interface Response {
   mediaType: 'application/json' | 'application/xml' | 'application/sql' | 'application/pdf' | 'text/plain' | 'text/html' | 'text/xml' | 'text/json' | 'application/octet-stream' | 'application/x-www-form-urlencoded';
   body?: string;
   schema?: string;
+  description?: string;
 }
 
 export interface ResponseSection {
