@@ -32,7 +32,8 @@ const source: ApiBlueprint.API = {
                   responseList: [{
                     identifier: '100',
                     mediaType: 'application/json',
-                    value: '{value: 1}'
+                    body: '{value: 1}',
+                    schema: '{value: 2}'
                   }]
                 }
               }
@@ -58,7 +59,11 @@ action description
 
 + Response 100 (application/json)
 
-   {value: 1}
+  + Body
+    {value: 1}
+
+  + Schema
+    {value: 2}
 `;
 
 export { source, expected };
