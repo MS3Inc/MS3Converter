@@ -15,6 +15,9 @@ export default class ResponseToString {
 
   private stringifyResponse(nestLevel: number = 0, response: ApiBlueprint.Response): string {
     let result = common.createListItem(`Response ${response.identifier} (${response.mediaType})`, nestLevel);
+    if (response.description) {
+      result += common.createSentence(response.description, false, nestLevel + 2);
+    }
     result += common.createListItem(`Body`, nestLevel + 2);
     result += common.createSentence(response.body, false, nestLevel + 4);
     if (response.schema) {

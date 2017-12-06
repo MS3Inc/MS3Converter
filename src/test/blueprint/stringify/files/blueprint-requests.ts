@@ -26,15 +26,14 @@ const source: ApiBlueprint.API = {
               description: 'action description',
               markdownEntity: 'header',
               nestedSections: {
-                responses: {
-                  keyword: 'Response',
+                requests: {
+                  keyword: 'Request',
                   markdownEntity: 'list',
-                  responseList: [{
+                  requestList: [{
                     identifier: '100',
                     mediaType: 'application/json',
                     body: '{value: 1}',
-                    schema: '{value: 2}',
-                    description: 'Post description'
+                    schema: '{value: 2}'
                   }]
                 }
               }
@@ -58,8 +57,7 @@ Clients endpoint
 ## [POST]
 action description
 
-+ Response 100 (application/json)
-  Post description
++ Request 100 (application/json)
 
   + Body
     {value: 1}

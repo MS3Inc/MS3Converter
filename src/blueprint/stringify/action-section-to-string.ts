@@ -2,6 +2,7 @@ import * as ApiBlueprint from '../interfaces/blueprint-interface';
 import * as common from './common';
 import ParametersToString from './parameters-to-string';
 import ResponseToString from './response-to-string';
+import RequestSection from './request-to-string';
 
 export default class ActionSectionToString {
   private result: string = '';
@@ -19,6 +20,10 @@ export default class ActionSectionToString {
 
     if (this.actionSection.nestedSections && this.actionSection.nestedSections.responses) {
       this.result += ResponseToString.create(this.actionSection.nestedSections.responses, {}).stringify(this.actionSection.nestedSections.responses, 0);
+    }
+
+    if (this.actionSection.nestedSections && this.actionSection.nestedSections.requests) {
+      this.result += RequestSection.create(this.actionSection.nestedSections.requests, {}).stringify(this.actionSection.nestedSections.requests, 0);
     }
 
     return this.result;
