@@ -51,11 +51,14 @@
     "fs": "0.0.1-security",
     "lodash": "^4.17.4",
     "mkdirp2": "^1.0.3",
+    "node-find-files2": "0.0.4",
     "path": "^0.12.7",
     "rmdir": "^1.2.0",
+    "unzip": "^0.1.11",
     "yamljs": "^0.3.0"
   },
   "devDependencies": {
+    "@types/unzip": "^0.1.0",
     "@types/yamljs": "^0.2.30",
     "@types/jest": "^21.1.5",
     "@types/lodash": "^4.14.63",
