@@ -2,6 +2,7 @@ import OasLoaderInterface from './oas-loader-interface';
 import { API } from './../ms3/ms3-v1-api-interface';
 import LoaderInterface from './../common/loader-interface';
 import * as fs from 'fs';
+import * as fsPath from 'path';
 import * as util from 'util';
 import * as unzip from 'unzip';
 import { oas30Interface, oas20Interface } from '../oas/index';
@@ -26,6 +27,7 @@ export default class OasLoader implements LoaderInterface {
       unzipExtractor.on('close', () => {
         this.findApiFile()
           .then((api) => {
+            rmdirPromise('./.temp');
             resolve(api);
           })
           .catch(function(error) {
@@ -36,87 +38,91 @@ export default class OasLoader implements LoaderInterface {
     });
   }
 
-  private async findApiFile (): Promise<OasLoaderInterface> {
-    function fileFind(search: string) {
-      return new Finder({
-        rootFolder : './.temp',
-        filterFunction : (path: string, stat: any) => {
-          const isMatch = (path.substring(path.length - 8) == search) ? true : false;
-          const isMacFile = path.split('/').filter((str: string): Boolean => {
-            return str == '__MACOSX';
-          }, this);
-          return (isMatch && !isMacFile.length) ? path : '';
-        }
-      });
-    }
+  private findFileBy(nameWithExtension: string, extension: string = null) {
+    return new Finder({
+      rootFolder : './.temp',
+      filterFunction : (path: string, stat: any) => {
+        let isMatch = false;
 
-    function findCustomName(search: string) {
-      return new Finder({
-        rootFolder : './.temp',
-        filterFunction : (path: string, stat: any) => {
-          const reg = new RegExp(search, 'g');
-          const isMatch = (path.search(reg) > 0) ? true : false;
-          const isMacFile = path.split('/').filter((str: string): Boolean => {
-            return str == '__MACOSX';
-          }, this);
-          return (isMatch && !isMacFile.length) ? path : '';
+        if (nameWithExtension) {
+          isMatch = (fsPath.basename(path) == nameWithExtension) ? true : false;
+        } else if (extension) {
+          isMatch = (fsPath.extname(path) == extension) ? true : false;
         }
+
+        const isMacFile = path.split('/').filter((str: string): Boolean => {
+          return str == '__MACOSX';
+        }, this);
+        return (isMatch && !isMacFile.length) ? path : '';
+      }
+    });
+  }
+
+  private loadYamlPromise(path: string) {
+    return new Promise((resolve, reject) => {
+      YAML.load(path, (data: string) => {
+        if (!data) return reject(`Cannot parse yaml at: ${path}`);
+        return resolve(data);
       });
-    }
-    const yamlFile = await fileFind('api.yaml').startSearch();
+    });
+  }
+
+  private isSwaggerApiFile(content: string) {
+    const reg = /(swagger\":|openapi\":|swagger:|openapi:)/g;
+    return content.search(reg) !== -1 ? true : false;
+  }
+
+  private async findApiFile (): Promise<OasLoaderInterface> {
+    const yamlFile = await this.findFileBy('api.yaml').startSearch();
     let jsonFile;
     if (yamlFile && yamlFile.length) {
       const path = yamlFile[0].path;
       const result: OasLoaderInterface = {};
-      result.api = YAML.load(path);
+      result.api = await this.loadYamlPromise(path);
       result.definitions = await this.getSwaggerDefinitions(result.api);
-      await rmdirPromise('./.temp');
       return result;
     } else {
-      jsonFile = await fileFind('api.json').startSearch();
+      jsonFile = await this.findFileBy('api.json').startSearch();
       if (jsonFile && jsonFile.length) {
         const path = jsonFile[0].path;
         const result: OasLoaderInterface = {};
         result.api = await readFilePromise(path, 'utf-8');
         result.definitions = await this.getSwaggerDefinitions(result.api);
-        await rmdirPromise('./.temp');
         return result;
       }
     }
 
-    function isSwaggerFile(content: String) {
-      const reg = /swagger":/g;
-      return content.search(reg) == 0 ? true : false;
+    return await this.guessApiFile();
+  }
+
+  private async guessApiFile(): Promise<OasLoaderInterface> {
+    const fileInYamlFormat = await this.findFileBy(null, '.yaml').startSearch();
+    const result: OasLoaderInterface = {};
+    if (fileInYamlFormat.length) {
+      for (const file of fileInYamlFormat) {
+        const isSwaggerApi = this.isSwaggerApiFile((await readFilePromise(file.path, 'utf-8')));
+        if (isSwaggerApi) {
+          result.api = await this.loadYamlPromise(file.path);
+          result.definitions = await this.getSwaggerDefinitions(result.api);
+        }
+      }
+      if (result.api) return result;
     }
 
-    if (!yamlFile.length && !jsonFile.length) {
-      const fileInYamlFormat = await findCustomName('.yaml').startSearch();
-      const result: OasLoaderInterface = {};
-      if (fileInYamlFormat.length) {
-        for (const file of fileInYamlFormat) {
-          const isSwagger = isSwaggerFile(JSON.stringify(YAML.load(file.path)));
-          if (isSwagger) {
-            result.api = YAML.load(file.path);
-            result.definitions = await this.getSwaggerDefinitions(result.api);
-          }
+    const fileInJsonFormat = await this.findFileBy(null, '.json').startSearch();
+    if (fileInJsonFormat.length) {
+      for (const file of fileInJsonFormat) {
+        const content = await readFilePromise(file.path, 'utf-8');
+        const isSwaggerApi = this.isSwaggerApiFile(content);
+        if (isSwaggerApi) {
+          result.api = content;
+          result.definitions = await this.getSwaggerDefinitions(result.api);
         }
-        if (result.api) return result;
       }
-
-      const fileInJsonFormat = await findCustomName('.json').startSearch();
-      if (fileInJsonFormat.length) {
-        for (const file of fileInJsonFormat) {
-          const content = await readFilePromise(file.path, 'utf-8');
-          const isSwagger = isSwaggerFile(content);
-          if (isSwagger) {
-            result.api = content;
-            result.definitions = await this.getSwaggerDefinitions(result.api);
-          }
-        }
-        if (result.api) return result;
-      }
+      if (result.api) return result;
     }
-    await rmdirPromise('./.temp');
+
+    throw new Error('Failed to find main api definition file.');
   }
 
   private async getSwaggerDefinitions(api: Object): Promise<Object[]> {
@@ -124,22 +130,20 @@ export default class OasLoader implements LoaderInterface {
     const reg = /\$ref\"\:\"[^#](.[^"}]+)\#/g;
     const externalPaths = stringApi.match(reg);
     if (externalPaths) {
-      const arr = externalPaths.map(async (path) => {
-        const parsedPath = path.slice(8, path.length - 1);
-        let name = parsedPath.split('/')[parsedPath.split('/').length - 1];
-        name = name.slice(0, findLastIndex(name, (item) => item == '.'));
-        let content;
-        try {
-          content = await readFilePromise(`./.temp${parsedPath}`, 'utf-8');
-        } catch (error) {
-          throw new Error(`Error reading file: ${error.message}`);
-        }
-        return { name, content };
-      });
-
-      return Promise.all(arr);
+      return Promise.all(externalPaths.map(this.loadSwaggerDefinition));
     }
     return Promise.resolve([]);
+  }
+
+  private async loadSwaggerDefinition(path: string) {
+    const parsedPath = path.slice(8, path.length - 1);
+    const name = fsPath.basename(parsedPath, fsPath.extname(parsedPath));
+    try {
+      const content = await readFilePromise(`./.temp${parsedPath}`, 'utf-8');
+      return { name, content };
+    } catch (error) {
+      throw new Error(`Error reading file: ${error.message}`);
+    }
   }
 
   private async parseJson(): Promise<oas30Interface.API | oas20Interface.API> {
@@ -159,7 +163,7 @@ export default class OasLoader implements LoaderInterface {
     const fileExtension = file.split('.')[file.split('.').length - 1];
     switch (fileExtension) {
       case 'yaml':
-        result.api = YAML.load(this.path);
+        result.api = await this.loadYamlPromise(this.path);
         break;
       case 'json':
         result.api = await this.parseJson();
