@@ -10,7 +10,7 @@ interface Contact {
   name?: string;
   url?: string;
   email?: string;
-} 
+}
 
 interface License {
   name: string;
@@ -68,7 +68,7 @@ interface Encoding {
   [propName: string]: EncodingObject;
 }
 
-interface MediaTypeObject {
+export interface MediaTypeObject {
   schema?: SchemaObject | ReferenceObject;
   example?: any;
   examples?: Example;
@@ -106,7 +106,7 @@ export interface Example {
   [propName: string]: ExampleObject | ReferenceObject;
 }
 
-interface RequestBodyObject {
+export interface RequestBodyObject {
   description?: string;
   content: MediaType;
   required?: boolean;
@@ -204,7 +204,7 @@ interface Tag {}
 
 interface ExternalDocs {}
 
-interface PathItemObject {
+export interface PathItemObject {
   '$ref'?: string;
   summary?: string;
   description?: string;
