@@ -125,6 +125,7 @@ export const ms3ResourcesWithParameters: MS3Interface.API = {
           name: 'GET',
           active: true,
           description: 'desc',
+          responses: [],
           headers: [
             {
               default: 'default',
@@ -166,17 +167,22 @@ export const ms3ResourcesWithParameters: MS3Interface.API = {
         },
         {
           name: 'POST',
-          active: true
+          active: true,
+          responses: [],
         },
         {
           name: 'PUT',
-          active: true
+          active: true,
+          responses: [],
         },
         {
           name: 'DELETE',
-          active: true
+          active: true,
+          responses: [],
         }
       ]
     }
-  ]
+  ],
+  examples: [],
+  dataTypes: []
 };

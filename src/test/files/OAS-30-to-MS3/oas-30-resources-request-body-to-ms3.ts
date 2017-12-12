@@ -8,7 +8,34 @@ export const oasPathsWithRequestBody: OASInterface.API = {
     description: 'API description',
     version: '3.0',
   },
-  components: {},
+  components: {
+    schemas: {
+      'mySchema': {
+        'type': 'string',
+        'description': '123',
+        'example': '2',
+        'default': '3',
+        'pattern': '2',
+        'minLength': 1,
+        'maxLength': 4,
+        'enum': [
+          '123'
+        ]
+      },
+    },
+    examples: {
+      cat : {
+        'summary': 'An example of a cat',
+        'value': {
+          'name': 'Fluffy',
+          'petType': 'Cat',
+          'color': 'White',
+          'gender': 'male',
+          'breed': 'Persian'
+        }
+      },
+    }
+  },
   paths: {
     '/res': {
       get: {
@@ -19,24 +46,11 @@ export const oasPathsWithRequestBody: OASInterface.API = {
           content: {
             'application/json': {
               schema: {
-                '$ref': '#/components/schemas/schema'
+                '$ref': '#/components/schemas/mySchema'
               },
               examples: {
                 'ex': {
-                  '$ref': '#/components/examples/ex'
-                },
-                'ex2': {
-                  '$ref': '#/components/examples/ex2'
-                }
-              }
-            },
-            'application/xml': {
-              schema: {
-                '$ref': '#/components/schemas/schemaXML'
-              },
-              examples: {
-                'ex': {
-                  '$ref': '#/components/examples/ex'
+                  '$ref': '#/components/examples/cat'
                 }
               }
             }
@@ -77,30 +91,55 @@ export const ms3ResourcesWithRequestBody: MS3Interface.API = {
           name: 'GET',
           active: true,
           description: 'desc',
+          responses: [],
           body: [
             {
               contentType: 'application/json',
-              type: 'schema'
-            },
-            {
-              contentType: 'application/xml',
-              type: 'schemaXML'
+              type: 'uuid',
+              selectedExamples: ['uuid']
             }
           ]
         },
         {
           name: 'POST',
-          active: true
+          active: true,
+          responses: [],
         },
         {
           name: 'PUT',
-          active: true
+          active: true,
+          responses: [],
         },
         {
           name: 'DELETE',
-          active: true
+          active: true,
+          responses: [],
         }
       ]
+    }
+  ],
+  examples: [
+    {
+      '__id': 'uuid',
+      'title': 'cat',
+      'format': 'json',
+      'content': '{\"name\":\"Fluffy\",\"petType\":\"Cat\",\"color\":\"White\",\"gender\":\"male\",\"breed\":\"Persian\"}',
+    },
+  ],
+  dataTypes: [
+    {
+      'type': 'string',
+      'description': '123',
+      'name': 'mySchema',
+      'example': '2',
+      'default': '3',
+      'pattern': '2',
+      'minLength': 1,
+      'maxLength': 4,
+      'enum': [
+        '123'
+      ],
+      '__id': 'uuid'
     }
   ]
 };
