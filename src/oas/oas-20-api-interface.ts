@@ -8,6 +8,7 @@ export type securitySchemeType = 'apiKey' | 'basic' | 'oauth2';
 export type mediaType = 'any/*' | 'application/json' | 'application/xml' | 'application/sql' | 'application/pdf' | 'text/plain' | 'text/html' | 'text/xml' | 'text/json' | 'application/octet-stream' | 'application/x-www-form-urlencoded';
 type methodType = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'OPTIONS' | 'HEAD' | 'TRACE';
 export type flow = 'implicit' | 'password' | 'application' | 'accessCode';
+type protocol = 'HTTP' | 'HTTPS' | 'http' | 'https';
 
 interface Contact {
   name?: string;
@@ -192,7 +193,7 @@ export interface API {
   info: Info;
   host?: string;
   basePath?: string;
-  schemes?: ('http' | 'https')[];
+  schemes?: protocol[];
   consumes?: mediaType[];
   produces?: mediaType[];
   paths: Paths;
