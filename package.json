@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "Converts between MS3, OAS(Swagger), Blueprint",
   "main": "dist/index.js",
+  "types": "src/index.d.ts",
   "scripts": {
     "start": "npm run build && npm run watch-ts",
     "test": "npm run build && node ./node_modules/.bin/jest --forceExit",

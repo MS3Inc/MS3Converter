@@ -24,7 +24,7 @@ function getConverterByFormat(format: format, source: any, options: ConvertorOpt
   throw new Error(`Convertor to format ${format} does not exist.`);
 }
 
-export async function convertData(source: Ms3.apiInterfaces.API, from: format, to: format, options?: ConvertorOptions) {
+export async function convertData(source: any, from: format, to: format, options?: ConvertorOptions) {
   validateConvertFormats(from, to);
   if (!source) throw new Error('Source cannot be empty');
   const convertor = getConverterByFormat(to, source, options);
