@@ -1,11 +1,21 @@
 import * as MS3Interface from '../../../ms3/ms3-v1-api-interface';
 import * as OAS30Interface from '../../../oas/oas-30-api-interface';
 
-import { reduce, filter } from 'lodash';
+import { reduce, filter, find as _find } from 'lodash';
 import { v4 } from 'uuid';
 
 class MS3toOAS30toMS3 {
-  ms3API: MS3Interface.API;
+  ms3API: MS3Interface.API = {
+    entityTypeName: 'api',
+    ms3_version: '1.0',
+    settings: {
+      title: '',
+      version: '',
+      baseUri: ''
+    },
+    examples: [],
+    dataTypes: []
+  };
 
   constructor(private oasAPI: OAS30Interface.API) {}
 
@@ -14,12 +24,8 @@ class MS3toOAS30toMS3 {
   }
 
   convert() {
-    this.ms3API = {
-      entityTypeName: 'api',
-      ms3_version: '1.0',
-      settings: this.convertSettings(),
-      resources: this.convertPaths()
-    };
+    this.ms3API.settings = this.convertSettings();
+    this.ms3API.resources = this.convertPaths();
 
     return this.ms3API;
   }
@@ -45,14 +51,14 @@ class MS3toOAS30toMS3 {
       const operation: OAS30Interface.Operation = operations[methodKey];
       if (!operation) return methodsArray;
 
-      const method: MS3Interface.Method = this.convertOpertation(operation, methodKey);
+      const method: MS3Interface.Method = this.convertOperation(operation, methodKey);
       methodsArray.push(method);
 
       return methodsArray;
     }, []);
   }
 
-  convertOpertation(operation: OAS30Interface.Operation, name: string): MS3Interface.Method {
+  convertOperation(operation: OAS30Interface.Operation, name: string): MS3Interface.Method {
     const method: MS3Interface.Method = {
       name: name.toUpperCase(),
       active: true
@@ -64,6 +70,7 @@ class MS3toOAS30toMS3 {
     if (parameters.queryParameters) method.queryParameters = parameters.queryParameters;
     if (parameters.headers) method.headers = parameters.headers;
     if (operation.requestBody) method.body = this.convertRequestBody(<OAS30Interface.RequestBodyObject>operation.requestBody);
+    if (operation.responses) method.responses = this.convertResponses(<OAS30Interface.ResponsesObject>operation.responses);
 
     return method;
   }
@@ -74,18 +81,109 @@ class MS3toOAS30toMS3 {
          contentType: <MS3Interface.contentType>key
       };
 
-      if (value.schema.$ref) {
+      if (value.schema && value.schema.$ref) {
         const splitArr: string[] = value.schema.$ref.split('/');
         const name: string = splitArr.pop();
-        convertedBody.type = name;
+        convertedBody.type = this.getRefId(name, 'schemas');
+      } else if (value.schema) {
+        convertedBody.type = v4();
+        value.schema.__id = convertedBody.type;
+        this.ms3API.dataTypes.push(value.schema);
       }
-      else {
-        // push schemas to datatypes
-        convertedBody.type = value.schema.name;
+
+      if (value.examples && value.examples.$ref) {
+        const splitArr: string[] = value.examples.$ref.split('/');
+        const name: string = splitArr.pop();
+        convertedBody.selectedExamples.push(this.getRefId(name, 'examples'));
+      } else if (value.examples) {
+        convertedBody.selectedExamples = this.convertExamples(<OAS30Interface.Example>value.examples);
       }
 
       resultArray.push(convertedBody);
+      return resultArray;
+    }, []);
+  }
 
+/**
+ * Get by $ref new or existing id of the included entity in resulting Ms3 API
+ */
+  getRefId(name: string, entity: 'schemas' | 'examples') {
+    let ID = '';
+
+    if (!this.oasAPI.components || !this.oasAPI.components[entity])
+      throw new Error(`Missing ${name} in ${entity} components`);
+
+    this.oasAPI.components[entity] = reduce(this.oasAPI.components[entity], (result: any, value: any, key: string) => {
+      if (key == name) {
+        if (!value.__id) {
+          value.__id = v4();
+        }
+        ID = value.__id;
+        this.convertEntity(value, key, entity);
+      }
+      result[key] = value;
+    }, {});
+    return ID;
+  }
+
+  /**
+   * Modify given entity and push it to respective collection of resources(dataTypes, examples) on resulting Ms3 API
+   */
+  convertEntity(data: any, name: string, entity: 'schemas' | 'examples') {
+    if (entity == 'schemas') {
+      if (!_find(this.ms3API.dataTypes, {__id: data.__id})) {
+        data.name = name;
+        this.ms3API.dataTypes.push(data);
+      }
+    } else if (!_find(this.ms3API.examples, {__id: data.__id})) {
+      const example: MS3Interface.Example = {
+        __id: data.__id,
+        title: name,
+        format: 'json',
+        content: JSON.stringify(data.value)
+      };
+      this.ms3API.examples.push(example);
+    }
+  }
+
+  convertResponses(responses: OAS30Interface.ResponsesObject): MS3Interface.Response[] {
+    return reduce(responses, (resultArray: any, value: any, key: string) => {
+      const convertedResponse: MS3Interface.Response = {
+         code: key,
+         description: value.description,
+      };
+
+      if (value.content) {
+        convertedResponse.body = this.convertRequestBody(<OAS30Interface.RequestBodyObject>value);
+      }
+
+      if (value.headers) {
+        convertedResponse.headers = this.convertParameters(value.headers);
+      }
+
+      resultArray.push(convertedResponse);
+      return resultArray;
+    }, []);
+  }
+
+  convertExamples(examples: OAS30Interface.Example): string[] {
+    return reduce(examples, (resultArray: any, value: any, key: string) => {
+      let ID;
+      if (!value.$ref) {
+        ID = v4();
+        this.ms3API.examples.push({
+          __id: ID,
+          title: key,
+          format: 'json',
+          content: JSON.stringify(value.value)
+        });
+      } else if (value.$ref) {
+        const splitArr: string[] = value.$ref.split('/');
+        const name: string = splitArr.pop();
+        ID = this.getRefId(name, 'examples');
+      }
+
+      resultArray.push(ID);
       return resultArray;
     }, []);
   }
