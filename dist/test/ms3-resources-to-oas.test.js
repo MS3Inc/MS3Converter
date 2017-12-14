@@ -15,18 +15,23 @@ const resource_with_request_body_1 = require("./files/MS3-resources-to-OAS/resou
 const resource_with_responses_1 = require("./files/MS3-resources-to-OAS/resource-with-responses");
 const resource_with_securedBy_1 = require("./files/MS3-resources-to-OAS/resource-with-securedBy");
 test('One MS3 resource with headers and query parameters should be converted to OAS successfully', () => __awaiter(this, void 0, void 0, function* () {
-    yield expect(index_1.default.create(resource_with_parameters_1.originalResourceWithParameters).convert()).resolves.toEqual(resource_with_parameters_1.resultResourceWithParameters);
+    const result = yield index_1.default.create(resource_with_parameters_1.originalResourceWithParameters).convert();
+    expect(JSON.parse(result)).toEqual(resource_with_parameters_1.resultResourceWithParameters);
 }));
 test('Nested MS3 resources should be converted to OAS successfully', () => __awaiter(this, void 0, void 0, function* () {
-    yield expect(index_1.default.create(nested_resources_1.originalNestedResources).convert()).resolves.toEqual(nested_resources_1.resultNestedResources);
+    const result = yield index_1.default.create(nested_resources_1.originalNestedResources).convert();
+    expect(JSON.parse(result)).toEqual(nested_resources_1.resultNestedResources);
 }));
 test('MS3 resources with bodies should be converted to OAS successfully', () => __awaiter(this, void 0, void 0, function* () {
-    yield expect(index_1.default.create(resource_with_request_body_1.originalResourceWithRequestBody).convert()).resolves.toEqual(resource_with_request_body_1.resultResourceWithRequestBody);
+    const result = yield index_1.default.create(resource_with_request_body_1.originalResourceWithRequestBody).convert();
+    expect(JSON.parse(result)).toEqual(resource_with_request_body_1.resultResourceWithRequestBody);
 }));
-test('MS3 resources with responses should be converted to OAS successfully', () => __awaiter(this, void 0, void 0, function* () {
-    yield expect(index_1.default.create(resource_with_responses_1.originalResourceWithResponses).convert()).resolves.toEqual(resource_with_responses_1.resultResourceWithResponses);
+test('MS3 resources with responses should be converted to OAS successfully 1', () => __awaiter(this, void 0, void 0, function* () {
+    const result = yield index_1.default.create(resource_with_responses_1.originalResourceWithResponses).convert();
+    expect(JSON.parse(result)).toEqual(resource_with_responses_1.resultResourceWithResponses);
 }));
-test('MS3 resources with responses should be converted to OAS successfully', () => __awaiter(this, void 0, void 0, function* () {
-    yield expect(index_1.default.create(resource_with_securedBy_1.originalResourceWithSecuredBy).convert()).resolves.toEqual(resource_with_securedBy_1.resultResourceWithSecuredBy);
+test('MS3 resources with responses should be converted to OAS successfully 2', () => __awaiter(this, void 0, void 0, function* () {
+    const result = yield index_1.default.create(resource_with_securedBy_1.originalResourceWithSecuredBy).convert();
+    expect(JSON.parse(result)).toEqual(resource_with_securedBy_1.resultResourceWithSecuredBy);
 }));
 //# sourceMappingURL=ms3-resources-to-oas.test.js.map

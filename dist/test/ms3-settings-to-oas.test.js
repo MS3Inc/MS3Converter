@@ -34,7 +34,7 @@ test('MS3 settings should be converted to OAS successfully', () => __awaiter(thi
         components: {},
         paths: {}
     };
-    yield expect(index_1.default.create(project).convert()).resolves.toEqual(expectedResult);
+    expect(JSON.parse(yield index_1.default.create(project).convert())).toEqual(expectedResult);
 }));
 test('MS3 settings to OAS conversion should fail with "library" entity type', () => __awaiter(this, void 0, void 0, function* () {
     const library = {
@@ -46,7 +46,12 @@ test('MS3 settings to OAS conversion should fail with "library" entity type', ()
         ms3_version: '1.0.1',
         entityTypeName: 'library'
     };
-    yield expect(index_1.default.create(library).convert()).rejects.toEqual(new Error('Library can not be converted to swagger.'));
+    try {
+        yield index_1.default.create(library).convert();
+    }
+    catch (err) {
+        expect(err).toEqual(new Error('Library can not be converted to swagger.'));
+    }
 }));
 test('Should create api.yaml file', () => __awaiter(this, void 0, void 0, function* () {
     const options = {

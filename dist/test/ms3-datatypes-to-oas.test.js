@@ -219,7 +219,7 @@ test('MS3 schemas should be converted to OAS successfully', () => __awaiter(this
             },
         }
     };
-    yield expect(index_1.default.create(project).convert()).resolves.toEqual(expectedResult);
+    expect(JSON.parse(yield index_1.default.create(project).convert())).toEqual(expectedResult);
 }));
 test('MS3 schemas should be converted to OAS with references && external files should be created in "/schemas" folder', () => __awaiter(this, void 0, void 0, function* () {
     const expectedResult = {
@@ -257,7 +257,7 @@ test('MS3 schemas should be converted to OAS with references && external files s
         destinationPath: destinationForTestResults
     };
     yield mkdirPromise(destinationForTestResults);
-    yield expect(index_1.default.create(project, config).convert()).resolves.toEqual(expectedResult);
+    expect(JSON.parse(yield index_1.default.create(project, config).convert())).toEqual(expectedResult);
     const mainFileExist = yield fileExistsPromise(path.join(destinationForTestResults, 'api.json'));
     const schemasFolderExist = yield fileExistsPromise(path.join(destinationForTestResults, 'schemas', 'ArrayInclude.json'));
     yield rmdirPromise(path.join(__dirname, '..', '..', '.tmp', 'ms3-datatypes-to-oas'));

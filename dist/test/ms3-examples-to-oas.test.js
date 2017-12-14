@@ -16,7 +16,7 @@ const rmdir = require("rmdir");
 const fileExistsPromise = util_1.promisify(fs_1.exists);
 const rmdirPromise = util_1.promisify(rmdir);
 test('MS3 examples should be converted to OAS and included inline successfully', () => __awaiter(this, void 0, void 0, function* () {
-    yield expect(index_1.default.create(Project_with_examples_1.originalExamples).convert()).resolves.toEqual(Project_with_examples_1.resultExamples);
+    expect(JSON.parse(yield index_1.default.create(Project_with_examples_1.originalExamples).convert())).toEqual(Project_with_examples_1.resultExamples);
 }));
 test('MS3 examples should be converted to OAS with references && external files should be created in "/examples" folder', () => __awaiter(this, void 0, void 0, function* () {
     const config = {
@@ -24,7 +24,7 @@ test('MS3 examples should be converted to OAS with references && external files 
         asSingleFile: false,
         destinationPath: './'
     };
-    yield expect(index_1.default.create(Project_with_examples_1.originalExamples, config).convert()).resolves.toEqual(Project_with_examples_1.resultExamplesWithReferences);
+    expect(JSON.parse(yield index_1.default.create(Project_with_examples_1.originalExamples, config).convert())).toEqual(Project_with_examples_1.resultExamplesWithReferences);
     const mainFileExist = yield fileExistsPromise('./api.json');
     const examplesFolderExist = yield fileExistsPromise('./examples/exampleJSON.json');
     yield rmdirPromise('./api.json');

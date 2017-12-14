@@ -18,7 +18,7 @@ const writeFilePromise = promisify(writeFile);
 
 interface DataToWrite {
   path: string;
-  content?: OAS20Interface | OAS30Interface;
+  content?: OAS20Interface | OAS30Interface | string;
 }
 
 export default class MS3toOAS {
@@ -59,35 +59,41 @@ export default class MS3toOAS {
     this.result.content = result.API;
     this.externalFiles = result.externalFiles;
 
-    await this.write();
+    await this.finalize();
 
     return this.result.content;
   }
 
+  protected async finalize() {
+    if (this.options.destinationPath)
+      await this.write();
+    this.result.content = this.stringifyContent(<OAS20Interface | OAS30Interface> this.result.content, this.options.fileFormat);
+  }
+
   protected async write() {
-    if (this.options.destinationPath) {
-      this.result.path = path.join(this.options.destinationPath, `api.${this.options.fileFormat == 'json' ? 'json' : 'yaml'}`);
-      await this.writeApiToDisc(this.result);
+    this.result.path = path.join(this.options.destinationPath, `api.${this.options.fileFormat == 'json' ? 'json' : 'yaml'}`);
+    await this.writeApiToDisc(this.result);
 
-      if (this.externalFiles.examples.length) {
-        await MkdirpPromise(path.join(this.options.destinationPath, 'examples'));
-        await this.writeExamplesToDisk();
-      }
+    if (this.externalFiles.examples.length) {
+      await MkdirpPromise(path.join(this.options.destinationPath, 'examples'));
+      await this.writeExamplesToDisk();
+    }
 
-      if (this.externalFiles.schemas.length) {
-        await MkdirpPromise(path.join(this.options.destinationPath,  'schemas'));
-        await this.writeSchemasToDisk();
-      }
+    if (this.externalFiles.schemas.length) {
+      await MkdirpPromise(path.join(this.options.destinationPath,  'schemas'));
+      await this.writeSchemasToDisk();
     }
   }
 
-  protected async writeApiToDisc(data: any) {
-    let resultContent;
+  protected stringifyContent(content: object, format: 'yaml' | 'json') {
     if (this.options.fileFormat == 'yaml') {
-      resultContent = YAML.stringify(data.content, 2);
-    } else {
-      resultContent = JSON.stringify(data.content, undefined, 2);
+      return YAML.stringify(content, 2);
     }
+    return JSON.stringify(content, undefined, 2);
+  }
+
+  protected async writeApiToDisc(data: any) {
+    const resultContent = this.stringifyContent(data.content, this.options.fileFormat);
     await writeFilePromise(data.path, resultContent);
   }
 

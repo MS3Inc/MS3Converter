@@ -56,35 +56,40 @@ class MS3toOAS {
                 result = ms3_to_oas_30_1.default(this.ms3API, this.options);
             this.result.content = result.API;
             this.externalFiles = result.externalFiles;
-            yield this.write();
+            yield this.finalize();
             return this.result.content;
+        });
+    }
+    finalize() {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (this.options.destinationPath)
+                yield this.write();
+            this.result.content = this.stringifyContent(this.result.content, this.options.fileFormat);
         });
     }
     write() {
         return __awaiter(this, void 0, void 0, function* () {
-            if (this.options.destinationPath) {
-                this.result.path = path.join(this.options.destinationPath, `api.${this.options.fileFormat == 'json' ? 'json' : 'yaml'}`);
-                yield this.writeApiToDisc(this.result);
-                if (this.externalFiles.examples.length) {
-                    yield mkdirp2_1.promise(path.join(this.options.destinationPath, 'examples'));
-                    yield this.writeExamplesToDisk();
-                }
-                if (this.externalFiles.schemas.length) {
-                    yield mkdirp2_1.promise(path.join(this.options.destinationPath, 'schemas'));
-                    yield this.writeSchemasToDisk();
-                }
+            this.result.path = path.join(this.options.destinationPath, `api.${this.options.fileFormat == 'json' ? 'json' : 'yaml'}`);
+            yield this.writeApiToDisc(this.result);
+            if (this.externalFiles.examples.length) {
+                yield mkdirp2_1.promise(path.join(this.options.destinationPath, 'examples'));
+                yield this.writeExamplesToDisk();
+            }
+            if (this.externalFiles.schemas.length) {
+                yield mkdirp2_1.promise(path.join(this.options.destinationPath, 'schemas'));
+                yield this.writeSchemasToDisk();
             }
         });
     }
+    stringifyContent(content, format) {
+        if (this.options.fileFormat == 'yaml') {
+            return YAML.stringify(content, 2);
+        }
+        return JSON.stringify(content, undefined, 2);
+    }
     writeApiToDisc(data) {
         return __awaiter(this, void 0, void 0, function* () {
-            let resultContent;
-            if (this.options.fileFormat == 'yaml') {
-                resultContent = YAML.stringify(data.content, 2);
-            }
-            else {
-                resultContent = JSON.stringify(data.content, undefined, 2);
-            }
+            const resultContent = this.stringifyContent(data.content, this.options.fileFormat);
             yield writeFilePromise(data.path, resultContent);
         });
     }

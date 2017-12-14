@@ -42,7 +42,7 @@ describe('ms3 to oas 20 tests', () => {
       oasVersion: '2.0'
     };
 
-    await expect(MS3toOAS.create(ms3Settings, options).convert()).resolves.toEqual(oasSettings);
+    expect(JSON.parse( <string> await MS3toOAS.create(ms3Settings, options).convert() )).toEqual(oasSettings);
   });
 
   test('MS3 datatypes should be converted to OAS 2.0 definitions successfully', async () => {
@@ -52,10 +52,10 @@ describe('ms3 to oas 20 tests', () => {
       oasVersion: '2.0'
     };
 
-    await expect(MS3toOAS.create(ms3DataTypes, options).convert()).resolves.toEqual(oasDataTypes);
+    expect(JSON.parse( <string> await MS3toOAS.create(ms3DataTypes, options).convert() )).toEqual(oasDataTypes);
   });
 
-  test('MS3 datatypes should be converted to OAS 2.0 definitions with references && external files should be created in "/schemas" folder', async() => {
+  test('MS3 datatypes should be converted to OAS 2.0 definitions with references && external files should be created in "/schemas" folder', async () => {
     const destPath = getUniqueFolder(destinationForTestResults);
     await mkdirPromise(destPath);
 
@@ -66,12 +66,10 @@ describe('ms3 to oas 20 tests', () => {
       oasVersion: '2.0'
     };
 
-    await expect(MS3toOAS.create(ms3DataTypes, options).convert()).resolves.toEqual(oasDataTypesExternal);
-
+    const result = await MS3toOAS.create(ms3DataTypes, options).convert();
+    expect(JSON.parse(<string> result)).toEqual(oasDataTypesExternal);
     const mainFileExist = await fileExistsPromise(path.join(destPath, 'api.json'));
     const schemasFolderExist = await fileExistsPromise(path.join(destPath, 'schemas', 'ArrayInclude.json'));
-    // await rmdirPromise(path.join(destinationForTestResults, 'api.json'));
-    // await rmdirPromise(path.join(destinationForTestResults, 'schemas'));
 
     expect(mainFileExist && schemasFolderExist).toEqual(true);
   });
@@ -87,12 +85,10 @@ describe('ms3 to oas 20 tests', () => {
       oasVersion: '2.0'
     };
 
-    await expect(MS3toOAS.create(ms3Examples, config).convert()).resolves.toEqual(oasExamples);
+    expect(JSON.parse( <string> await MS3toOAS.create(ms3Examples, config).convert() )).toEqual(oasExamples);
 
     const mainFileExist = await fileExistsPromise(path.join(destPath, 'api.json'));
     const examplesFolderExist = await fileExistsPromise(path.join(destPath, 'examples', 'exampleJSON.json'));
-    // await rmdirPromise(path.join(destinationForTestResults, 'api.json'));
-    // await rmdirPromise(path.join(destinationForTestResults, 'examples'));
 
     expect(mainFileExist && examplesFolderExist).toEqual(true);
   });
@@ -108,7 +104,7 @@ describe('ms3 to oas 20 tests', () => {
       oasVersion: '2.0'
     };
 
-    await expect(MS3toOAS.create(ms3DataTypes, options).convert()).resolves.toEqual(oasDataTypesExternal);
+    expect(JSON.parse( <string> await MS3toOAS.create(ms3DataTypes, options).convert() )).toEqual(oasDataTypesExternal);
   });
 
   test('MS3 nested resources should be converted to OAS 2.0 successfully', async() => {
@@ -122,7 +118,7 @@ describe('ms3 to oas 20 tests', () => {
       oasVersion: '2.0'
     };
 
-    await expect(MS3toOAS.create(ms3NestedResources, options).convert()).resolves.toEqual(oasNestedResources);
+    expect(JSON.parse( <string> await MS3toOAS.create(ms3NestedResources, options).convert() )).toEqual(oasNestedResources);
   });
 
   test('MS3 resource with parameters should be converted to OAS 2.0 successfully', async() => {
@@ -136,7 +132,7 @@ describe('ms3 to oas 20 tests', () => {
       oasVersion: '2.0'
     };
 
-    await expect(MS3toOAS.create(ms3ResourceWithParameters, options).convert()).resolves.toEqual(oasResourceWithParameters);
+    expect(JSON.parse( <string> await MS3toOAS.create(ms3ResourceWithParameters, options).convert() )).toEqual(oasResourceWithParameters);
   });
 
   test('MS3 resource with request body should be converted to OAS 2.0 successfully', async() => {
@@ -150,7 +146,7 @@ describe('ms3 to oas 20 tests', () => {
       oasVersion: '2.0'
     };
 
-    await expect(MS3toOAS.create(ms3ResourceWithRequestBody, options).convert()).resolves.toEqual(oasResourceWithRequestBody);
+    expect(JSON.parse( <string> await MS3toOAS.create(ms3ResourceWithRequestBody, options).convert() )).toEqual(oasResourceWithRequestBody);
   });
 
   test('MS3 resource with responses should be converted to OAS 2.0 successfully', async() => {
@@ -164,7 +160,7 @@ describe('ms3 to oas 20 tests', () => {
       oasVersion: '2.0'
     };
 
-    await expect(MS3toOAS.create(ms3ResourceWithResponses, options).convert()).resolves.toEqual(oasResourceWithResponses);
+    expect(JSON.parse( <string> await MS3toOAS.create(ms3ResourceWithResponses, options).convert() )).toEqual(oasResourceWithResponses);
   });
 
   test('MS3 resource with responses should be converted to OAS 2.0 with inline examples successfully', async() => {
@@ -178,7 +174,7 @@ describe('ms3 to oas 20 tests', () => {
       oasVersion: '2.0'
     };
 
-    await expect(MS3toOAS.create(ms3ResourceWithResponses, options).convert()).resolves.toEqual(oasResourceWithResponsesAndInlineExamples);
+    expect(JSON.parse( <string> await MS3toOAS.create(ms3ResourceWithResponses, options).convert() )).toEqual(oasResourceWithResponsesAndInlineExamples);
   });
 
   test('MS3 resource with responses should be converted to OAS 2.0 with inline examples successfully', async() => {
@@ -192,7 +188,7 @@ describe('ms3 to oas 20 tests', () => {
       oasVersion: '2.0'
     };
 
-    await expect(MS3toOAS.create(ms3ResourceWithPathParameters, options).convert()).resolves.toEqual(oasResourceWithPathParameters);
+    expect(JSON.parse( <string> await MS3toOAS.create(ms3ResourceWithPathParameters, options).convert() )).toEqual(oasResourceWithPathParameters);
   });
 
 });

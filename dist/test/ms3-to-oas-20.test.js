@@ -43,7 +43,7 @@ describe('ms3 to oas 20 tests', () => {
             asSingleFile: true,
             oasVersion: '2.0'
         };
-        yield expect(index_1.default.create(ms3_settings_to_oas_1.ms3Settings, options).convert()).resolves.toEqual(ms3_settings_to_oas_1.oasSettings);
+        expect(JSON.parse(yield index_1.default.create(ms3_settings_to_oas_1.ms3Settings, options).convert())).toEqual(ms3_settings_to_oas_1.oasSettings);
     }));
     test('MS3 datatypes should be converted to OAS 2.0 definitions successfully', () => __awaiter(this, void 0, void 0, function* () {
         const options = {
@@ -51,7 +51,7 @@ describe('ms3 to oas 20 tests', () => {
             asSingleFile: true,
             oasVersion: '2.0'
         };
-        yield expect(index_1.default.create(ms3_datatypes_to_oas_1.ms3DataTypes, options).convert()).resolves.toEqual(ms3_datatypes_to_oas_1.oasDataTypes);
+        expect(JSON.parse(yield index_1.default.create(ms3_datatypes_to_oas_1.ms3DataTypes, options).convert())).toEqual(ms3_datatypes_to_oas_1.oasDataTypes);
     }));
     test('MS3 datatypes should be converted to OAS 2.0 definitions with references && external files should be created in "/schemas" folder', () => __awaiter(this, void 0, void 0, function* () {
         const destPath = getUniqueFolder(destinationForTestResults);
@@ -62,11 +62,10 @@ describe('ms3 to oas 20 tests', () => {
             destinationPath: destPath,
             oasVersion: '2.0'
         };
-        yield expect(index_1.default.create(ms3_datatypes_to_oas_1.ms3DataTypes, options).convert()).resolves.toEqual(ms3_datatypes_to_oas_1.oasDataTypesExternal);
+        const result = yield index_1.default.create(ms3_datatypes_to_oas_1.ms3DataTypes, options).convert();
+        expect(JSON.parse(result)).toEqual(ms3_datatypes_to_oas_1.oasDataTypesExternal);
         const mainFileExist = yield fileExistsPromise(path.join(destPath, 'api.json'));
         const schemasFolderExist = yield fileExistsPromise(path.join(destPath, 'schemas', 'ArrayInclude.json'));
-        // await rmdirPromise(path.join(destinationForTestResults, 'api.json'));
-        // await rmdirPromise(path.join(destinationForTestResults, 'schemas'));
         expect(mainFileExist && schemasFolderExist).toEqual(true);
     }));
     test('MS3 examples should be converted to OAS with references && external files should be created in "/examples" folder', () => __awaiter(this, void 0, void 0, function* () {
@@ -78,11 +77,9 @@ describe('ms3 to oas 20 tests', () => {
             destinationPath: destPath,
             oasVersion: '2.0'
         };
-        yield expect(index_1.default.create(ms3_examples_to_oas_1.ms3Examples, config).convert()).resolves.toEqual(ms3_examples_to_oas_1.oasExamples);
+        expect(JSON.parse(yield index_1.default.create(ms3_examples_to_oas_1.ms3Examples, config).convert())).toEqual(ms3_examples_to_oas_1.oasExamples);
         const mainFileExist = yield fileExistsPromise(path.join(destPath, 'api.json'));
         const examplesFolderExist = yield fileExistsPromise(path.join(destPath, 'examples', 'exampleJSON.json'));
-        // await rmdirPromise(path.join(destinationForTestResults, 'api.json'));
-        // await rmdirPromise(path.join(destinationForTestResults, 'examples'));
         expect(mainFileExist && examplesFolderExist).toEqual(true);
     }));
     test('MS3 security schemes should be converted to OAS 2.0 successfully', () => __awaiter(this, void 0, void 0, function* () {
@@ -94,7 +91,7 @@ describe('ms3 to oas 20 tests', () => {
             destinationPath: destPath,
             oasVersion: '2.0'
         };
-        yield expect(index_1.default.create(ms3_datatypes_to_oas_1.ms3DataTypes, options).convert()).resolves.toEqual(ms3_datatypes_to_oas_1.oasDataTypesExternal);
+        expect(JSON.parse(yield index_1.default.create(ms3_datatypes_to_oas_1.ms3DataTypes, options).convert())).toEqual(ms3_datatypes_to_oas_1.oasDataTypesExternal);
     }));
     test('MS3 nested resources should be converted to OAS 2.0 successfully', () => __awaiter(this, void 0, void 0, function* () {
         const destPath = getUniqueFolder(destinationForTestResults);
@@ -105,7 +102,7 @@ describe('ms3 to oas 20 tests', () => {
             destinationPath: destPath,
             oasVersion: '2.0'
         };
-        yield expect(index_1.default.create(ms3_nested_resources_to_oas_1.ms3NestedResources, options).convert()).resolves.toEqual(ms3_nested_resources_to_oas_1.oasNestedResources);
+        expect(JSON.parse(yield index_1.default.create(ms3_nested_resources_to_oas_1.ms3NestedResources, options).convert())).toEqual(ms3_nested_resources_to_oas_1.oasNestedResources);
     }));
     test('MS3 resource with parameters should be converted to OAS 2.0 successfully', () => __awaiter(this, void 0, void 0, function* () {
         const destPath = getUniqueFolder(destinationForTestResults);
@@ -116,7 +113,7 @@ describe('ms3 to oas 20 tests', () => {
             destinationPath: destPath,
             oasVersion: '2.0'
         };
-        yield expect(index_1.default.create(ms3_resource_with_parameters_to_oas_1.ms3ResourceWithParameters, options).convert()).resolves.toEqual(ms3_resource_with_parameters_to_oas_1.oasResourceWithParameters);
+        expect(JSON.parse(yield index_1.default.create(ms3_resource_with_parameters_to_oas_1.ms3ResourceWithParameters, options).convert())).toEqual(ms3_resource_with_parameters_to_oas_1.oasResourceWithParameters);
     }));
     test('MS3 resource with request body should be converted to OAS 2.0 successfully', () => __awaiter(this, void 0, void 0, function* () {
         const destPath = getUniqueFolder(destinationForTestResults);
@@ -127,7 +124,7 @@ describe('ms3 to oas 20 tests', () => {
             destinationPath: destPath,
             oasVersion: '2.0'
         };
-        yield expect(index_1.default.create(ms3_resource_with_request_body_to_oas_1.ms3ResourceWithRequestBody, options).convert()).resolves.toEqual(ms3_resource_with_request_body_to_oas_1.oasResourceWithRequestBody);
+        expect(JSON.parse(yield index_1.default.create(ms3_resource_with_request_body_to_oas_1.ms3ResourceWithRequestBody, options).convert())).toEqual(ms3_resource_with_request_body_to_oas_1.oasResourceWithRequestBody);
     }));
     test('MS3 resource with responses should be converted to OAS 2.0 successfully', () => __awaiter(this, void 0, void 0, function* () {
         const destPath = getUniqueFolder(destinationForTestResults);
@@ -138,7 +135,7 @@ describe('ms3 to oas 20 tests', () => {
             destinationPath: destPath,
             oasVersion: '2.0'
         };
-        yield expect(index_1.default.create(ms3_resource_with_responses_to_oas_1.ms3ResourceWithResponses, options).convert()).resolves.toEqual(ms3_resource_with_responses_to_oas_1.oasResourceWithResponses);
+        expect(JSON.parse(yield index_1.default.create(ms3_resource_with_responses_to_oas_1.ms3ResourceWithResponses, options).convert())).toEqual(ms3_resource_with_responses_to_oas_1.oasResourceWithResponses);
     }));
     test('MS3 resource with responses should be converted to OAS 2.0 with inline examples successfully', () => __awaiter(this, void 0, void 0, function* () {
         const destPath = getUniqueFolder(destinationForTestResults);
@@ -149,7 +146,7 @@ describe('ms3 to oas 20 tests', () => {
             destinationPath: destPath,
             oasVersion: '2.0'
         };
-        yield expect(index_1.default.create(ms3_resource_with_responses_to_oas_1.ms3ResourceWithResponses, options).convert()).resolves.toEqual(ms3_resource_with_responses_to_oas_1.oasResourceWithResponsesAndInlineExamples);
+        expect(JSON.parse(yield index_1.default.create(ms3_resource_with_responses_to_oas_1.ms3ResourceWithResponses, options).convert())).toEqual(ms3_resource_with_responses_to_oas_1.oasResourceWithResponsesAndInlineExamples);
     }));
     test('MS3 resource with responses should be converted to OAS 2.0 with inline examples successfully', () => __awaiter(this, void 0, void 0, function* () {
         const destPath = getUniqueFolder(destinationForTestResults);
@@ -160,7 +157,7 @@ describe('ms3 to oas 20 tests', () => {
             destinationPath: destPath,
             oasVersion: '2.0'
         };
-        yield expect(index_1.default.create(ms3_resource_with_path_parameters_to_oas_1.ms3ResourceWithPathParameters, options).convert()).resolves.toEqual(ms3_resource_with_path_parameters_to_oas_1.oasResourceWithPathParameters);
+        expect(JSON.parse(yield index_1.default.create(ms3_resource_with_path_parameters_to_oas_1.ms3ResourceWithPathParameters, options).convert())).toEqual(ms3_resource_with_path_parameters_to_oas_1.oasResourceWithPathParameters);
     }));
 });
 //# sourceMappingURL=ms3-to-oas-20.test.js.map

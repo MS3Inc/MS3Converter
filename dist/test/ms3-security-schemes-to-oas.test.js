@@ -13,12 +13,15 @@ const OAuth20_1 = require("./files/MS3-security-schemes-to-OAS.ts/OAuth20");
 const BasicAuthentication_1 = require("./files/MS3-security-schemes-to-OAS.ts/BasicAuthentication");
 const Basic_and_Digest_auth_1 = require("./files/MS3-security-schemes-to-OAS.ts/Basic-and-Digest-auth");
 test('One MS3 resource with headers and query parameters should be converted to OAS successfully', () => __awaiter(this, void 0, void 0, function* () {
-    yield expect(index_1.default.create(OAuth20_1.originalOAuth20).convert()).resolves.toEqual(OAuth20_1.resultOAuth20);
+    const result = yield index_1.default.create(OAuth20_1.originalOAuth20).convert();
+    expect(JSON.parse(result)).toEqual(OAuth20_1.resultOAuth20);
 }));
 test('One MS3 resource with headers and query parameters should be converted to OAS successfully', () => __awaiter(this, void 0, void 0, function* () {
-    yield expect(index_1.default.create(BasicAuthentication_1.originalBasicAuth).convert()).resolves.toEqual(BasicAuthentication_1.resultBasicAuth);
+    const result = yield index_1.default.create(BasicAuthentication_1.originalBasicAuth).convert();
+    expect(JSON.parse(result)).toEqual(BasicAuthentication_1.resultBasicAuth);
 }));
 test('One MS3 resource with headers and query parameters should be converted to OAS successfully', () => __awaiter(this, void 0, void 0, function* () {
-    yield expect(index_1.default.create(Basic_and_Digest_auth_1.originalBasicAndDigestAuth).convert()).resolves.toEqual(Basic_and_Digest_auth_1.resultBasicAndDigestAuth);
+    const result = yield index_1.default.create(Basic_and_Digest_auth_1.originalBasicAndDigestAuth).convert();
+    expect(JSON.parse(result)).toEqual(Basic_and_Digest_auth_1.resultBasicAndDigestAuth);
 }));
 //# sourceMappingURL=ms3-security-schemes-to-oas.test.js.map

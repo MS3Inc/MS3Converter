@@ -215,7 +215,7 @@ test('MS3 schemas should be converted to OAS successfully', async() => {
       },
     }
   };
-  await expect(MS3toOAS.create(project).convert()).resolves.toEqual(expectedResult);
+  expect(JSON.parse( <string> await MS3toOAS.create(project).convert() )).toEqual(expectedResult);
 });
 
 test('MS3 schemas should be converted to OAS with references && external files should be created in "/schemas" folder', async() => {
@@ -256,7 +256,7 @@ test('MS3 schemas should be converted to OAS with references && external files s
   };
 
   await mkdirPromise(destinationForTestResults);
-  await expect(MS3toOAS.create(project, config).convert()).resolves.toEqual(expectedResult);
+  expect(JSON.parse( <string> await MS3toOAS.create(project, config).convert() )).toEqual(expectedResult);
 
   const mainFileExist = await fileExistsPromise(path.join(destinationForTestResults, 'api.json'));
   const schemasFolderExist = await fileExistsPromise(path.join(destinationForTestResults, 'schemas', 'ArrayInclude.json'));

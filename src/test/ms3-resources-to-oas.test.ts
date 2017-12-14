@@ -6,21 +6,26 @@ import { originalResourceWithResponses, resultResourceWithResponses } from './fi
 import { originalResourceWithSecuredBy, resultResourceWithSecuredBy } from './files/MS3-resources-to-OAS/resource-with-securedBy';
 
 test('One MS3 resource with headers and query parameters should be converted to OAS successfully', async () => {
-  await expect(MS3toOAS.create(originalResourceWithParameters).convert()).resolves.toEqual(resultResourceWithParameters);
+  const result = await MS3toOAS.create(originalResourceWithParameters).convert();
+  expect(JSON.parse(<string> result)).toEqual(resultResourceWithParameters);
 });
 
 test('Nested MS3 resources should be converted to OAS successfully', async () => {
-  await expect(MS3toOAS.create(originalNestedResources).convert()).resolves.toEqual(resultNestedResources);
+  const result = await MS3toOAS.create(originalNestedResources).convert();
+  expect(JSON.parse(<string> result)).toEqual(resultNestedResources);
 });
 
 test('MS3 resources with bodies should be converted to OAS successfully', async () => {
-  await expect(MS3toOAS.create(originalResourceWithRequestBody).convert()).resolves.toEqual(resultResourceWithRequestBody);
+  const result = await MS3toOAS.create(originalResourceWithRequestBody).convert();
+  expect(JSON.parse(<string> result)).toEqual(resultResourceWithRequestBody);
 });
 
-test('MS3 resources with responses should be converted to OAS successfully', async () => {
-  await expect(MS3toOAS.create(originalResourceWithResponses).convert()).resolves.toEqual(resultResourceWithResponses);
+test('MS3 resources with responses should be converted to OAS successfully 1', async () => {
+  const result = await MS3toOAS.create(originalResourceWithResponses).convert();
+  expect(JSON.parse(<string> result)).toEqual(resultResourceWithResponses);
 });
 
-test('MS3 resources with responses should be converted to OAS successfully', async () => {
-  await expect(MS3toOAS.create(originalResourceWithSecuredBy).convert()).resolves.toEqual(resultResourceWithSecuredBy);
+test('MS3 resources with responses should be converted to OAS successfully 2', async () => {
+  const result = await MS3toOAS.create(originalResourceWithSecuredBy).convert();
+  expect(JSON.parse(<string> result)).toEqual(resultResourceWithSecuredBy);
 });

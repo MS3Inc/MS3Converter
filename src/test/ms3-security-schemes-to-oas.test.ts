@@ -4,13 +4,16 @@ import { originalBasicAuth, resultBasicAuth } from './files/MS3-security-schemes
 import { originalBasicAndDigestAuth, resultBasicAndDigestAuth } from './files/MS3-security-schemes-to-OAS.ts/Basic-and-Digest-auth';
 
 test('One MS3 resource with headers and query parameters should be converted to OAS successfully', async () => {
-  await expect(MS3toOAS.create(originalOAuth20).convert()).resolves.toEqual(resultOAuth20);
+  const result = await MS3toOAS.create(originalOAuth20).convert();
+  expect(JSON.parse(<string> result)).toEqual(resultOAuth20);
 });
 
 test('One MS3 resource with headers and query parameters should be converted to OAS successfully', async () => {
-  await expect(MS3toOAS.create(originalBasicAuth).convert()).resolves.toEqual(resultBasicAuth);
+  const result = await MS3toOAS.create(originalBasicAuth).convert();
+  expect(JSON.parse(<string> result)).toEqual(resultBasicAuth);
 });
 
 test('One MS3 resource with headers and query parameters should be converted to OAS successfully', async () => {
-  await expect(MS3toOAS.create(originalBasicAndDigestAuth).convert()).resolves.toEqual(resultBasicAndDigestAuth);
+  const result = await MS3toOAS.create(originalBasicAndDigestAuth).convert();
+  expect(JSON.parse(<string> result)).toEqual(resultBasicAndDigestAuth);
 });
