@@ -12,8 +12,12 @@ const index_1 = require("./../ms3/ms3-to-oas/index");
 const fs_1 = require("fs");
 const util_1 = require("util");
 const rmdir = require("rmdir");
+const path = require("path");
+const uuid_1 = require("uuid");
+const mkdirp = require("mkdirp2");
 const fileExistsPromise = util_1.promisify(fs_1.exists);
 const rmdirPromise = util_1.promisify(rmdir);
+const mkdirPromise = util_1.promisify(mkdirp);
 const project = {
     settings: {
         title: 'params',
@@ -246,16 +250,17 @@ test('MS3 schemas should be converted to OAS with references && external files s
             },
         }
     };
+    const destinationForTestResults = path.join(__dirname, '..', '..', '.tmp', 'ms3-datatypes-to-oas', uuid_1.v4());
     const config = {
         fileFormat: 'json',
         asSingleFile: false,
-        destinationPath: './'
+        destinationPath: destinationForTestResults
     };
+    yield mkdirPromise(destinationForTestResults);
     yield expect(index_1.default.create(project, config).convert()).resolves.toEqual(expectedResult);
-    const mainFileExist = yield fileExistsPromise('./api.json');
-    const schemasFolderExist = yield fileExistsPromise('./schemas/ArrayInclude.json');
-    yield rmdirPromise('./api.json');
-    yield rmdirPromise('./schemas');
+    const mainFileExist = yield fileExistsPromise(path.join(destinationForTestResults, 'api.json'));
+    const schemasFolderExist = yield fileExistsPromise(path.join(destinationForTestResults, 'schemas', 'ArrayInclude.json'));
+    yield rmdirPromise(path.join(__dirname, '..', '..', '.tmp', 'ms3-datatypes-to-oas'));
     expect(mainFileExist && schemasFolderExist).toEqual(true);
 }));
 //# sourceMappingURL=ms3-datatypes-to-oas.test.js.map

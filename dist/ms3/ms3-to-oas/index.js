@@ -8,6 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const path = require("path");
 const YAML = require("yamljs");
 const fs_1 = require("fs");
 const util_1 = require("util");
@@ -62,14 +63,14 @@ class MS3toOAS {
     write() {
         return __awaiter(this, void 0, void 0, function* () {
             if (this.options.destinationPath) {
-                this.result.path = `${this.options.destinationPath}api.${this.options.fileFormat == 'json' ? 'json' : 'yaml'}`;
+                this.result.path = path.join(this.options.destinationPath, `api.${this.options.fileFormat == 'json' ? 'json' : 'yaml'}`);
                 yield this.writeApiToDisc(this.result);
                 if (this.externalFiles.examples.length) {
-                    yield mkdirp2_1.promise(this.options.destinationPath + 'examples/');
+                    yield mkdirp2_1.promise(path.join(this.options.destinationPath, 'examples'));
                     yield this.writeExamplesToDisk();
                 }
                 if (this.externalFiles.schemas.length) {
-                    yield mkdirp2_1.promise(this.options.destinationPath + 'schemas/');
+                    yield mkdirp2_1.promise(path.join(this.options.destinationPath, 'schemas'));
                     yield this.writeSchemasToDisk();
                 }
             }

@@ -1,5 +1,6 @@
 import * as OAS from './../../oas/oas-30-api-interface';
 import * as MS3 from './../ms3-v1-api-interface';
+import * as path from 'path';
 
 export function convertInlineExamples(examples: MS3.Example[]): OAS.Example {
   return examples.reduce( (resultObject: any, example: MS3.Example) => {
@@ -23,7 +24,7 @@ export function convertExternalExamples(examples: MS3.Example[], destinationPath
           value: example.content
         }
       },
-      path: `${destinationPath}examples/${example.title}.${example.format}`
+      path: path.join(destinationPath, 'examples', `${example.title}.${example.format}`)
     };
   });
 }

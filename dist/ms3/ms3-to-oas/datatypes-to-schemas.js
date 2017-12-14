@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const lodash_1 = require("lodash");
+const path = require("path");
 class ConvertDataTypesToSchemas {
     constructor(API) {
         this.API = API;
@@ -14,11 +15,11 @@ class ConvertDataTypesToSchemas {
             return result;
         }, {});
     }
-    convertExternal(path) {
+    convertExternal(destinationPath) {
         return this.API.dataTypes.map((item) => {
             const convertedSchema = this.convertSchema(item);
             return {
-                path: `${path}schemas/${item.name}.json`,
+                path: path.join(destinationPath, 'schemas', `${item.name}.json`),
                 content: {
                     [item.name]: convertedSchema
                 }
@@ -118,8 +119,8 @@ function convertDataTypesToSchemas(API) {
     return ConvertDataTypesToSchemas.create(API).convert();
 }
 exports.convertDataTypesToSchemas = convertDataTypesToSchemas;
-function convertExternalSchemas(API, path) {
-    return ConvertDataTypesToSchemas.create(API).convertExternal(path);
+function convertExternalSchemas(API, schemasPath) {
+    return ConvertDataTypesToSchemas.create(API).convertExternal(schemasPath);
 }
 exports.convertExternalSchemas = convertExternalSchemas;
 function convertExternalSchemasReferences(API) {

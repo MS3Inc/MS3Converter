@@ -66,16 +66,16 @@ export default class MS3toOAS {
 
   protected async write() {
     if (this.options.destinationPath) {
-      this.result.path = `${this.options.destinationPath}api.${this.options.fileFormat == 'json' ? 'json' : 'yaml'}`;
+      this.result.path = path.join(this.options.destinationPath, `api.${this.options.fileFormat == 'json' ? 'json' : 'yaml'}`);
       await this.writeApiToDisc(this.result);
 
       if (this.externalFiles.examples.length) {
-        await MkdirpPromise(this.options.destinationPath + 'examples/');
+        await MkdirpPromise(path.join(this.options.destinationPath, 'examples'));
         await this.writeExamplesToDisk();
       }
 
       if (this.externalFiles.schemas.length) {
-        await MkdirpPromise(this.options.destinationPath + 'schemas/');
+        await MkdirpPromise(path.join(this.options.destinationPath,  'schemas'));
         await this.writeSchemasToDisk();
       }
     }

@@ -5,11 +5,11 @@ class MergeTypesAndTraits {
     constructor(API) {
         this.API = API;
     }
-    getTrait(name) {
-        return lodash_1.find(this.API.traits, ['name', name]);
+    getTrait(id) {
+        return lodash_1.find(this.API.traits, ['__id', id]);
     }
-    getResourceType(name) {
-        return lodash_1.find(this.API.resourcesTypes, ['name', name]);
+    getResourceType(id) {
+        return lodash_1.find(this.API.resourcesTypes, ['__id', id]);
     }
     mergeParameters(originalParameters, parametersFromType) {
         return parametersFromType.reduce((resultArray, resourceTypeParameter) => {

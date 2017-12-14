@@ -97,7 +97,7 @@ exports.originalProjectWithResourcesTypes = {
         {
             'path': '\/res',
             'name': 'res',
-            'type': 'resourceType1',
+            'type': '2ee4ccc1-089e-40ee-8499-308da9553b5d',
             'methods': [
                 {
                     'active': true,
@@ -116,7 +116,7 @@ exports.originalProjectWithResourcesTypes = {
                         }
                     ],
                     'selectedTraits': [
-                        'trait2'
+                        '23005ee4-d8ed-48a1-a579-c02e7fc28e46'
                     ],
                     'body': [
                         {
@@ -158,7 +158,7 @@ exports.originalProjectWithResourcesTypes = {
             ],
             '__id': '541098a8-76d5-4947-81b7-b5b17e09dded',
             'selectedTraits': [
-                'trait1'
+                '1702b615-6587-42f4-bba0-06c07e85966a'
             ]
         }
     ],

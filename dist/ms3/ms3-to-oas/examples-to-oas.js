@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const path = require("path");
 function convertInlineExamples(examples) {
     return examples.reduce((resultObject, example) => {
         resultObject[example.title] = { value: example.content };
@@ -22,7 +23,7 @@ function convertExternalExamples(examples, destinationPath) {
                     value: example.content
                 }
             },
-            path: `${destinationPath}examples/${example.title}.${example.format}`
+            path: path.join(destinationPath, 'examples', `${example.title}.${example.format}`)
         };
     });
 }
