@@ -5,9 +5,13 @@ import ConvertorOptions from './../common/convertor-options-interface';
 import { exists } from 'fs';
 import { promisify } from 'util';
 import * as rmdir from 'rmdir';
+import * as path from 'path';
+import { v4 } from 'uuid';
+import * as mkdirp from 'mkdirp2';
 
 const fileExistsPromise = promisify(exists);
 const rmdirPromise = promisify(rmdir);
+const mkdirPromise = promisify(mkdirp);
 
 const project: ApiInterfaces.API = {
   settings: {
@@ -211,7 +215,7 @@ test('MS3 schemas should be converted to OAS successfully', async() => {
       },
     }
   };
-  await expect(MS3toOAS.create(project).convert()).resolves.toEqual(expectedResult);
+  expect(JSON.parse( <string> await MS3toOAS.create(project).convert() )).toEqual(expectedResult);
 });
 
 test('MS3 schemas should be converted to OAS with references && external files should be created in "/schemas" folder', async() => {
@@ -244,18 +248,19 @@ test('MS3 schemas should be converted to OAS with references && external files s
     }
   };
 
+  const destinationForTestResults = path.join(__dirname, '..', '..', '.tmp', 'ms3-datatypes-to-oas', v4());
   const config: ConvertorOptions = {
     fileFormat: 'json',
     asSingleFile: false,
-    destinationPath: './'
+    destinationPath: destinationForTestResults
   };
 
-  await expect(MS3toOAS.create(project, config).convert()).resolves.toEqual(expectedResult);
+  await mkdirPromise(destinationForTestResults);
+  expect(JSON.parse( <string> await MS3toOAS.create(project, config).convert() )).toEqual(expectedResult);
 
-  const mainFileExist = await fileExistsPromise('./api.json');
-  const schemasFolderExist = await fileExistsPromise('./schemas/ArrayInclude.json');
-  await rmdirPromise('./api.json');
-  await rmdirPromise('./schemas');
+  const mainFileExist = await fileExistsPromise(path.join(destinationForTestResults, 'api.json'));
+  const schemasFolderExist = await fileExistsPromise(path.join(destinationForTestResults, 'schemas', 'ArrayInclude.json'));
+  await rmdirPromise(path.join(__dirname, '..', '..', '.tmp', 'ms3-datatypes-to-oas'));
 
   expect(mainFileExist && schemasFolderExist).toEqual(true);
 });

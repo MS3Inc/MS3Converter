@@ -13,139 +13,182 @@ import { ms3ResourceWithPathParameters, oasResourceWithPathParameters } from './
 import { exists } from 'fs';
 import { promisify } from 'util';
 import * as rmdir from 'rmdir';
+import * as path from 'path';
+import { v4 } from 'uuid';
+import * as mkdirp from 'mkdirp2';
 
+const mkdirPromise = promisify(mkdirp);
 const fileExistsPromise = promisify(exists);
 const rmdirPromise = promisify(rmdir);
+const destinationForTestResults = path.join(__dirname, '..', '..', '.tmp', 'oas-tests');
+const getUniqueFolder = (stringPath: string) => path.join(stringPath, v4());
 
-test('MS3 settings should be converted to OAS 2.0 successfully', async () => {
-  const options: ConvertorOptions = {
-    fileFormat: 'json',
-    asSingleFile: true,
-    oasVersion: '2.0'
-  };
+describe('ms3 to oas 20 tests', () => {
 
-  await expect(MS3toOAS.create(ms3Settings, options).convert()).resolves.toEqual(oasSettings);
-});
+  beforeAll(async (done) => {
+    await mkdirPromise(destinationForTestResults);
+    done();
+  });
 
-test('MS3 datatypes should be converted to OAS 2.0 definitions successfully', async () => {
-  const options: ConvertorOptions = {
-    fileFormat: 'json',
-    asSingleFile: true,
-    oasVersion: '2.0'
-  };
+  afterAll(async (done) => {
+    await rmdirPromise(destinationForTestResults);
+    done();
+  });
 
-  await expect(MS3toOAS.create(ms3DataTypes, options).convert()).resolves.toEqual(oasDataTypes);
-});
+  test('MS3 settings should be converted to OAS 2.0 successfully', async () => {
+    const options: ConvertorOptions = {
+      fileFormat: 'json',
+      asSingleFile: true,
+      oasVersion: '2.0'
+    };
 
-test('MS3 datatypes should be converted to OAS 2.0 definitions with references && external files should be created in "/schemas" folder', async() => {
-  const options: ConvertorOptions = {
-    fileFormat: 'json',
-    asSingleFile: false,
-    destinationPath: './',
-    oasVersion: '2.0'
-  };
+    expect(JSON.parse( <string> await MS3toOAS.create(ms3Settings, options).convert() )).toEqual(oasSettings);
+  });
 
-  await expect(MS3toOAS.create(ms3DataTypes, options).convert()).resolves.toEqual(oasDataTypesExternal);
+  test('MS3 datatypes should be converted to OAS 2.0 definitions successfully', async () => {
+    const options: ConvertorOptions = {
+      fileFormat: 'json',
+      asSingleFile: true,
+      oasVersion: '2.0'
+    };
 
-  const mainFileExist = await fileExistsPromise('./api.json');
-  const schemasFolderExist = await fileExistsPromise('./schemas/ArrayInclude.json');
-  await rmdirPromise('./api.json');
-  await rmdirPromise('./schemas');
+    expect(JSON.parse( <string> await MS3toOAS.create(ms3DataTypes, options).convert() )).toEqual(oasDataTypes);
+  });
 
-  expect(mainFileExist && schemasFolderExist).toEqual(true);
-});
+  test('MS3 datatypes should be converted to OAS 2.0 definitions with references && external files should be created in "/schemas" folder', async () => {
+    const destPath = getUniqueFolder(destinationForTestResults);
+    await mkdirPromise(destPath);
 
-test('MS3 examples should be converted to OAS with references && external files should be created in "/examples" folder', async () => {
-  const config: ConvertorOptions = {
-    fileFormat: 'json',
-    asSingleFile: false,
-    destinationPath: './',
-    oasVersion: '2.0'
-  };
+    const options: ConvertorOptions = {
+      fileFormat: 'json',
+      asSingleFile: false,
+      destinationPath: destPath,
+      oasVersion: '2.0'
+    };
 
-  await expect(MS3toOAS.create(ms3Examples, config).convert()).resolves.toEqual(oasExamples);
+    const result = await MS3toOAS.create(ms3DataTypes, options).convert();
+    expect(JSON.parse(<string> result)).toEqual(oasDataTypesExternal);
+    const mainFileExist = await fileExistsPromise(path.join(destPath, 'api.json'));
+    const schemasFolderExist = await fileExistsPromise(path.join(destPath, 'schemas', 'ArrayInclude.json'));
 
-  const mainFileExist = await fileExistsPromise('./api.json');
-  const examplesFolderExist = await fileExistsPromise('./examples/exampleJSON.json');
-  await rmdirPromise('./api.json');
-  await rmdirPromise('./examples');
+    expect(mainFileExist && schemasFolderExist).toEqual(true);
+  });
 
-  expect(mainFileExist && examplesFolderExist).toEqual(true);
-});
+  test('MS3 examples should be converted to OAS with references && external files should be created in "/examples" folder', async () => {
+    const destPath = getUniqueFolder(destinationForTestResults);
+    await mkdirPromise(destPath);
 
-test('MS3 security schemes should be converted to OAS 2.0 successfully', async() => {
-  const options: ConvertorOptions = {
-    fileFormat: 'json',
-    asSingleFile: false,
-    destinationPath: './',
-    oasVersion: '2.0'
-  };
+    const config: ConvertorOptions = {
+      fileFormat: 'json',
+      asSingleFile: false,
+      destinationPath: destPath,
+      oasVersion: '2.0'
+    };
 
-  await expect(MS3toOAS.create(ms3DataTypes, options).convert()).resolves.toEqual(oasDataTypesExternal);
-});
+    expect(JSON.parse( <string> await MS3toOAS.create(ms3Examples, config).convert() )).toEqual(oasExamples);
 
-test('MS3 nested resources should be converted to OAS 2.0 successfully', async() => {
-  const options: ConvertorOptions = {
-    fileFormat: 'json',
-    asSingleFile: false,
-    destinationPath: './',
-    oasVersion: '2.0'
-  };
+    const mainFileExist = await fileExistsPromise(path.join(destPath, 'api.json'));
+    const examplesFolderExist = await fileExistsPromise(path.join(destPath, 'examples', 'exampleJSON.json'));
 
-  await expect(MS3toOAS.create(ms3NestedResources, options).convert()).resolves.toEqual(oasNestedResources);
-});
+    expect(mainFileExist && examplesFolderExist).toEqual(true);
+  });
 
-test('MS3 resource with parameters should be converted to OAS 2.0 successfully', async() => {
-  const options: ConvertorOptions = {
-    fileFormat: 'json',
-    asSingleFile: false,
-    destinationPath: './',
-    oasVersion: '2.0'
-  };
+  test('MS3 security schemes should be converted to OAS 2.0 successfully', async() => {
+    const destPath = getUniqueFolder(destinationForTestResults);
+    await mkdirPromise(destPath);
 
-  await expect(MS3toOAS.create(ms3ResourceWithParameters, options).convert()).resolves.toEqual(oasResourceWithParameters);
-});
+    const options: ConvertorOptions = {
+      fileFormat: 'json',
+      asSingleFile: false,
+      destinationPath: destPath,
+      oasVersion: '2.0'
+    };
 
-test('MS3 resource with request body should be converted to OAS 2.0 successfully', async() => {
-  const options: ConvertorOptions = {
-    fileFormat: 'json',
-    asSingleFile: false,
-    destinationPath: './',
-    oasVersion: '2.0'
-  };
+    expect(JSON.parse( <string> await MS3toOAS.create(ms3DataTypes, options).convert() )).toEqual(oasDataTypesExternal);
+  });
 
-  await expect(MS3toOAS.create(ms3ResourceWithRequestBody, options).convert()).resolves.toEqual(oasResourceWithRequestBody);
-});
+  test('MS3 nested resources should be converted to OAS 2.0 successfully', async() => {
+    const destPath = getUniqueFolder(destinationForTestResults);
+    await mkdirPromise(destPath);
 
-test('MS3 resource with responses should be converted to OAS 2.0 successfully', async() => {
-  const options: ConvertorOptions = {
-    fileFormat: 'json',
-    asSingleFile: false,
-    destinationPath: './',
-    oasVersion: '2.0'
-  };
+    const options: ConvertorOptions = {
+      fileFormat: 'json',
+      asSingleFile: false,
+      destinationPath: destPath,
+      oasVersion: '2.0'
+    };
 
-  await expect(MS3toOAS.create(ms3ResourceWithResponses, options).convert()).resolves.toEqual(oasResourceWithResponses);
-});
+    expect(JSON.parse( <string> await MS3toOAS.create(ms3NestedResources, options).convert() )).toEqual(oasNestedResources);
+  });
 
-test('MS3 resource with responses should be converted to OAS 2.0 with inline examples successfully', async() => {
-  const options: ConvertorOptions = {
-    fileFormat: 'json',
-    asSingleFile: true,
-    destinationPath: './',
-    oasVersion: '2.0'
-  };
+  test('MS3 resource with parameters should be converted to OAS 2.0 successfully', async() => {
+    const destPath = getUniqueFolder(destinationForTestResults);
+    await mkdirPromise(destPath);
 
-  await expect(MS3toOAS.create(ms3ResourceWithResponses, options).convert()).resolves.toEqual(oasResourceWithResponsesAndInlineExamples);
-});
+    const options: ConvertorOptions = {
+      fileFormat: 'json',
+      asSingleFile: false,
+      destinationPath: destPath,
+      oasVersion: '2.0'
+    };
 
-test('MS3 resource with responses should be converted to OAS 2.0 with inline examples successfully', async() => {
-  const options: ConvertorOptions = {
-    fileFormat: 'json',
-    asSingleFile: false,
-    destinationPath: './',
-    oasVersion: '2.0'
-  };
+    expect(JSON.parse( <string> await MS3toOAS.create(ms3ResourceWithParameters, options).convert() )).toEqual(oasResourceWithParameters);
+  });
 
-  await expect(MS3toOAS.create(ms3ResourceWithPathParameters, options).convert()).resolves.toEqual(oasResourceWithPathParameters);
+  test('MS3 resource with request body should be converted to OAS 2.0 successfully', async() => {
+    const destPath = getUniqueFolder(destinationForTestResults);
+    await mkdirPromise(destPath);
+
+    const options: ConvertorOptions = {
+      fileFormat: 'json',
+      asSingleFile: false,
+      destinationPath: destPath,
+      oasVersion: '2.0'
+    };
+
+    expect(JSON.parse( <string> await MS3toOAS.create(ms3ResourceWithRequestBody, options).convert() )).toEqual(oasResourceWithRequestBody);
+  });
+
+  test('MS3 resource with responses should be converted to OAS 2.0 successfully', async() => {
+    const destPath = getUniqueFolder(destinationForTestResults);
+    await mkdirPromise(destPath);
+
+    const options: ConvertorOptions = {
+      fileFormat: 'json',
+      asSingleFile: false,
+      destinationPath: destPath,
+      oasVersion: '2.0'
+    };
+
+    expect(JSON.parse( <string> await MS3toOAS.create(ms3ResourceWithResponses, options).convert() )).toEqual(oasResourceWithResponses);
+  });
+
+  test('MS3 resource with responses should be converted to OAS 2.0 with inline examples successfully', async() => {
+    const destPath = getUniqueFolder(destinationForTestResults);
+    await mkdirPromise(destPath);
+
+    const options: ConvertorOptions = {
+      fileFormat: 'json',
+      asSingleFile: true,
+      destinationPath: destPath,
+      oasVersion: '2.0'
+    };
+
+    expect(JSON.parse( <string> await MS3toOAS.create(ms3ResourceWithResponses, options).convert() )).toEqual(oasResourceWithResponsesAndInlineExamples);
+  });
+
+  test('MS3 resource with responses should be converted to OAS 2.0 with inline examples successfully', async() => {
+    const destPath = getUniqueFolder(destinationForTestResults);
+    await mkdirPromise(destPath);
+
+    const options: ConvertorOptions = {
+      fileFormat: 'json',
+      asSingleFile: false,
+      destinationPath: destPath,
+      oasVersion: '2.0'
+    };
+
+    expect(JSON.parse( <string> await MS3toOAS.create(ms3ResourceWithPathParameters, options).convert() )).toEqual(oasResourceWithPathParameters);
+  });
+
 });

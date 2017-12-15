@@ -6,12 +6,12 @@ import { Method } from '../ms3-v1-api-interface';
 class MergeTypesAndTraits {
   constructor(private API: MS3.API) {}
 
-  getTrait(name: string): MS3.Trait {
-    return find(this.API.traits, ['name', name]);
+  getTrait(id: string): MS3.Trait {
+    return find(this.API.traits, ['__id', id]);
   }
 
-  getResourceType(name: string): MS3.ResourcesType {
-    return find(this.API.resourcesTypes, ['name', name]);
+  getResourceType(id: string): MS3.ResourcesType {
+    return find(this.API.resourcesTypes, ['__id', id]);
   }
 
   mergeParameters(originalParameters: MS3.Parameter[], parametersFromType: MS3.Parameter[]): MS3.Parameter[] {

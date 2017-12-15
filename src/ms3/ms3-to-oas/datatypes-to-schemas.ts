@@ -2,6 +2,7 @@ import * as MS3 from './../ms3-v1-api-interface';
 import { Schema, SchemaObject } from './../../oas/oas-30-api-interface';
 import { DataType, DataTypeObject, DataTypeArray, DataTypePrimitive } from './../ms3-v1-api-interface';
 import { find, cloneDeep } from 'lodash';
+import * as path from 'path';
 
 class ConvertDataTypesToSchemas {
   constructor(private API: MS3.API) {}
@@ -15,11 +16,11 @@ class ConvertDataTypesToSchemas {
     }, {});
   }
 
-  convertExternal(path: string): object[] {
+  convertExternal(destinationPath: string): object[] {
     return this.API.dataTypes.map((item: DataType) => {
       const convertedSchema = this.convertSchema(item);
       return {
-        path: `${path}schemas/${item.name}.json`,
+        path: path.join(destinationPath, 'schemas', `${item.name}.json`),
         content: {
           [item.name]: convertedSchema
         }
@@ -132,8 +133,8 @@ export function convertDataTypesToSchemas(API: MS3.API): Schema {
   return ConvertDataTypesToSchemas.create(API).convert();
 }
 
-export function convertExternalSchemas(API: MS3.API, path: string): object[] {
-  return ConvertDataTypesToSchemas.create(API).convertExternal(path);
+export function convertExternalSchemas(API: MS3.API, schemasPath: string): object[] {
+  return ConvertDataTypesToSchemas.create(API).convertExternal(schemasPath);
 }
 
 export function convertExternalSchemasReferences(API: MS3.API): Schema {
