@@ -19,6 +19,7 @@ interface License {
 
 export interface ReferenceObject {
   '$ref': string;
+  [index: string]: string;
 }
 
 export interface SchemaObject {
@@ -37,7 +38,7 @@ export interface SchemaObject {
   uniqueItems?: boolean;
   maxProperties?: number;
   minProperties?: number;
-  required?: boolean;
+  required?: boolean; // TODO: Refactor string[]
   enum?: string[];
   items?: SchemaObject | ReferenceObject;
   properties?: Schema | ReferenceObject;
@@ -50,6 +51,7 @@ export interface SchemaObject {
   additionalProperties?: object;
   default?: number | string | boolean;
   example?: any;
+  [index: string]: any;
 }
 
 export interface Schema {
