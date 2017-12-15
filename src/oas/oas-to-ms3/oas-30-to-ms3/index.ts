@@ -1,5 +1,6 @@
 import * as MS3Interface from '../../../ms3/ms3-v1-api-interface';
 import * as OAS30Interface from '../../../oas/oas-30-api-interface';
+import schemaToDataType from '../../schemas-to-dataTypes';
 
 import { reduce, filter, find as _find } from 'lodash';
 import { v4 } from 'uuid';
@@ -133,7 +134,9 @@ class MS3toOAS30toMS3 {
     if (entity == 'schemas') {
       if (!_find(this.ms3API.dataTypes, {__id: data.__id})) {
         data.name = name;
-        this.ms3API.dataTypes.push(data);
+        const schema = <any> {};
+        schema[name] = data;
+        this.ms3API.dataTypes.push(schemaToDataType(schema));
       }
     } else if (!_find(this.ms3API.examples, {__id: data.__id})) {
       const example: MS3Interface.Example = {
