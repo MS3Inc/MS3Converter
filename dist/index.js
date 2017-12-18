@@ -8,7 +8,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const Blueprint = require("./blueprint");
+exports.Blueprint = Blueprint;
 const Ms3 = require("./ms3/index");
+exports.Ms3 = Ms3;
+const OAS = require("./oas/index");
+exports.OAS = OAS;
 function validateConvertFormats(from, to) {
     if (from === to)
         throw new Error(`Cannot convert from ${from} to ${to}`);
