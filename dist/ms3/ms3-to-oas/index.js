@@ -83,7 +83,7 @@ class MS3toOAS {
     }
     stringifyContent(content, format) {
         if (this.options.fileFormat == 'yaml') {
-            return YAML.stringify(content, 2);
+            return YAML.stringify(content, 8, 2);
         }
         return JSON.stringify(content, undefined, 2);
     }
