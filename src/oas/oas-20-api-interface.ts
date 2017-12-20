@@ -168,7 +168,8 @@ export interface Operation {
   options?: OperationObject;
   head?: OperationObject;
   patch?: OperationObject;
-  parameters?: (ParameterObject | ReferenceObject)[];
+  parameters?: ParameterObject[];
+  description?: string;
 }
 
 export interface PathItemObject {
