@@ -1,5 +1,9 @@
+import { datatypeType } from './../../../ms3/ms3-v1-api-interface';
 import * as MS3Interface from '../../../ms3/ms3-v1-api-interface';
 import * as OAS20Interface from '../../../oas/oas-20-api-interface';
+import schemaToDataType from '../../schemas-to-dataTypes';
+import { reduce } from 'lodash';
+import { v4 } from 'uuid';
 
 class MS3toOAS20toMS3 {
   ms3API: MS3Interface.API;
@@ -14,7 +18,9 @@ class MS3toOAS20toMS3 {
     this.ms3API = {
       entityTypeName: 'api',
       ms3_version: '1.0',
-      settings: this.convertSettings()
+      settings: this.convertSettings(),
+      dataTypes: this.convertDefinitions(),
+      resources: this.convertPaths()
     };
     return this.ms3API;
   }
@@ -36,6 +42,24 @@ class MS3toOAS20toMS3 {
     };
     if (info.description) settings.description = info.description;
     return settings;
+  }
+
+  private convertPaths(): MS3Interface.Resource[] {
+    return [];
+  }
+
+  private convertDefinitions(): MS3Interface.DataType[] {
+    if (!this.oasAPI.definitions) return [];
+    const dataTypes: MS3Interface.DataType[] = [];
+
+    for (const name in this.oasAPI.definitions) {
+      if (this.oasAPI.definitions.hasOwnProperty(name)) {
+        const schema = <any> {};
+        schema[name] = this.oasAPI.definitions[name];
+        dataTypes.push(schemaToDataType(schema));
+      }
+    }
+    return dataTypes;
   }
 }
 
