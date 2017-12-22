@@ -112,7 +112,7 @@ export const oasResourceWithResponsesAndInlineExamples: OASInterface.API = {
             },
             examples: {
               'application/json': {
-                'content': '{}'
+                'content': {}
               }
             },
             headers: {
