@@ -47,8 +47,13 @@ class ConvertResourcesToPaths {
     if (this.asSingleFile) {
       return selectedExamples.reduce((resultExamples: any, selectedExample: string) => {
         const example = this.getExample(selectedExample);
+        let isJson;
+        try {
+          isJson = JSON.parse(example.content);
+        } catch (err) {}
+
         resultExamples[mediaType] = {
-          content: example.content
+          content: isJson ? isJson : example.content
         };
         return resultExamples;
       }, {});
