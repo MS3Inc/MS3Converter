@@ -5,6 +5,7 @@ import { oasPathsWithRequestBody, ms3ResourcesWithRequestBody } from './files/OA
 import { oasPathsWithResponses, ms3ResourcesWithResponses } from './files/OAS-30-to-MS3/oas-30-resource-responses-to-ms3';
 import SchemasToDataTypes from '../oas/schemas-to-dataTypes';
 import { oasPrimitive, ms3Primitive, oasArray, ms3Array, oasObject, ms3Object } from './files/OAS-30-to-MS3/oas-schemas-to-dataTypes';
+import { oas_security_schemas, ms3SecuritySchemasResult } from './files/OAS-30-to-MS3/oas-30-security-schemas-to-ms3'
 
 test('OAS settings should be converted to MS3 successfully', async() => {
   expect(convertOAS30toMS3(oasSettings)).toEqual(ms3Settings);
@@ -32,4 +33,8 @@ test('OAS array schema should be converted successfully', async() => {
 
 test('OAS object schema should be converted successfully', async() => {
   expect(SchemasToDataTypes(oasObject)).toEqual(ms3Object);
+});
+
+test('OAS security Schemas should should be converted successfully', async() => {
+  expect(convertOAS30toMS3(oas_security_schemas)).toEqual(ms3SecuritySchemasResult);
 });

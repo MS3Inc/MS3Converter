@@ -146,6 +146,7 @@ interface OAuthFlows {
   password?: OAuthFlow;
   clientCredentials?: OAuthFlow;
   authorizationCode?: OAuthFlow;
+  [propName: string]: any;
 }
 
 export interface SecuritySchemeObject {
@@ -157,6 +158,7 @@ export interface SecuritySchemeObject {
   bearerFormat?: string;
   flows?: OAuthFlows;
   openIdConnectUrl?: string;
+  [propName: string]: any;
 }
 
 export interface SecurityScheme {
