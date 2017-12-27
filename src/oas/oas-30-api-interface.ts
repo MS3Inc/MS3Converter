@@ -196,7 +196,7 @@ export interface Operation {
   responses: ResponsesObject;
   tags?: string[];
   deprecated?: boolean;
-  security?: SecurityRequirement;
+  security?: SecurityRequirement[];
   servers?: Server[];
   callbacks?: object; // TODO: create Callback Object interface
   externalDocs?: object; // TODO: create External Documentation Object interface

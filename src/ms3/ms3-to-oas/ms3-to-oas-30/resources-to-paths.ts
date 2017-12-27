@@ -1,7 +1,7 @@
 import { securitySchemeType } from '../../../oas/oas-30-api-interface';
 import * as OAS from '../../../oas/oas-30-api-interface';
 import * as MS3 from '../../ms3-v1-api-interface';
-import { filter, find, cloneDeep } from 'lodash';
+import { filter, find, cloneDeep, reduce } from 'lodash';
 
 class ConvertResourcesToPaths {
   constructor(private API: MS3.API) {}
@@ -128,14 +128,17 @@ class ConvertResourcesToPaths {
     return convertedParameters;
   }
 
-  getSecurityRequirement(securedBy: string[]): OAS.SecurityRequirement {
-    return securedBy.reduce( (resultObject: any, secureByName: string) => {
+  getSecurityRequirement(securedBy: string[]): OAS.SecurityRequirement[] {
+    return reduce(securedBy, (result: any, secureByName: string): OAS.SecurityRequirement[] => {
+      const newObj: OAS.SecurityRequirement = {
+        [secureByName]: []
+      };
       const securitySchema: MS3.SecurityScheme = this.getSecuritySchemaByName(secureByName);
-      if (securitySchema.type != 'OAuth 2.0' && securitySchema.type != 'Basic Authentication') return resultObject;
+      if (securitySchema.type != 'OAuth 2.0' && securitySchema.type != 'Basic Authentication') return result;
 
-      resultObject[secureByName] = [];
-      return resultObject;
-    }, {});
+      result.push(newObj);
+      return result;
+    }, []);
   }
 
   getMethodObject(method: MS3.Method, methodType: string, pathName: string): OAS.Operation {
