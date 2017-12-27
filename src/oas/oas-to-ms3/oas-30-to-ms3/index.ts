@@ -1,6 +1,7 @@
 import * as MS3Interface from '../../../ms3/ms3-v1-api-interface';
 import * as OAS30Interface from '../../../oas/oas-30-api-interface';
 import schemaToDataType from '../../schemas-to-dataTypes';
+import securitySchemasToMS3 from './security-schemas-to-ms3';
 
 import { reduce, filter, find as _find } from 'lodash';
 import { v4 } from 'uuid';
@@ -27,6 +28,9 @@ class MS3toOAS30toMS3 {
   convert() {
     this.ms3API.settings = this.convertSettings();
     this.ms3API.resources = this.convertPaths();
+    if (this.oasAPI.components && this.oasAPI.components.securitySchemes) {
+      this.ms3API.securitySchemes = securitySchemasToMS3(this.oasAPI.components.securitySchemes);
+    }
 
     return this.ms3API;
   }
