@@ -3,7 +3,7 @@ import * as OAS30Interface from '../../../oas/oas-30-api-interface';
 import schemaToDataType from '../../schemas-to-dataTypes';
 import securitySchemasToMS3 from './security-schemas-to-ms3';
 
-import { reduce, filter, find as _find } from 'lodash';
+import { reduce, filter, find as _find, each, map } from 'lodash';
 import { v4 } from 'uuid';
 
 class MS3toOAS30toMS3 {
@@ -32,7 +32,18 @@ class MS3toOAS30toMS3 {
       this.ms3API.securitySchemes = securitySchemasToMS3(this.oasAPI.components.securitySchemes);
     }
 
+    if (this.oasAPI.security) {
+      this.ms3API.settings.securedBy = this.getSecuredBy(this.oasAPI.security);
+    }
+
     return this.ms3API;
+  }
+
+  getSecuredBy(securitySchemas: OAS30Interface.SecurityRequirement[]): string[] {
+    return map(securitySchemas, (schema) => {
+      const foundSchema = _find(this.ms3API.securitySchemes, {name: Object.keys(schema)[0]});
+      return foundSchema.__id;
+    });
   }
 
   convertSettings() {
