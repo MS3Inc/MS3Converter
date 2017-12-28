@@ -2,11 +2,21 @@ import { datatypeType } from './../../../ms3/ms3-v1-api-interface';
 import * as MS3Interface from '../../../ms3/ms3-v1-api-interface';
 import * as OAS20Interface from '../../../oas/oas-20-api-interface';
 import schemaToDataType from '../../schemas-to-dataTypes';
-import { reduce, filter } from 'lodash';
+import { reduce, filter, map, find } from 'lodash';
 import { v4 } from 'uuid';
+import convertSecuritySchemes from './security-definitions-to-ms3';
 
 class MS3toOAS20toMS3 {
-  ms3API: MS3Interface.API;
+  ms3API: MS3Interface.API = {
+    entityTypeName: 'api',
+    ms3_version: '1.0',
+    settings: {
+      title: '',
+      version: '',
+      baseUri: ''
+    },
+    dataTypes: []
+  };
 
   constructor(private oasAPI: OAS20Interface.API) {}
 
@@ -15,14 +25,22 @@ class MS3toOAS20toMS3 {
   }
 
   convert() {
-    this.ms3API = {
-      entityTypeName: 'api',
-      ms3_version: '1.0',
-      settings: this.convertSettings(),
-      dataTypes: this.convertDefinitions(),
-      resources: this.convertPaths()
-    };
+    this.ms3API.settings = this.convertSettings();
+    this.ms3API.securitySchemes = convertSecuritySchemes(this.oasAPI.securityDefinitions);
+    this.ms3API.dataTypes = this.convertDefinitions();
+    this.ms3API.resources = this.convertPaths();
+    if (this.oasAPI.security) {
+      this.ms3API.settings.securedBy = this.getSecuredBy(this.oasAPI.security);
+    }
+
     return this.ms3API;
+  }
+
+  private getSecuredBy(securitySchemas: OAS20Interface.SecurityRequirementObject[]): string[] {
+    return map(securitySchemas, (schema) => {
+      const foundSchema = find(this.ms3API.securitySchemes, {name: Object.keys(schema)[0]});
+      return foundSchema.__id;
+    });
   }
 
   private getBaseUri() {
@@ -78,7 +96,7 @@ class MS3toOAS20toMS3 {
     // TODO: Check for other methods default template is needed
 
     return methodsKeys.reduce((methodsArray: any[], methodKey: string) => {
-      const operation: OAS20Interface.Operation = operations[methodKey];
+      const operation: OAS20Interface.OperationObject = operations[methodKey];
       if (!operation) return methodsArray;
 
       const method: MS3Interface.Method = this.convertOperation(operation, methodKey);
@@ -88,14 +106,15 @@ class MS3toOAS20toMS3 {
     }, []);
   }
 
-  private convertOperation(operation: OAS20Interface.Operation, name: string): MS3Interface.Method {
+  private convertOperation(operation: OAS20Interface.OperationObject, name: string): MS3Interface.Method {
     const method: MS3Interface.Method = {
       name: name.toUpperCase(),
       active: true
     };
 
+    if (operation.security) method.securedBy = this.getSecuredBy(operation.security);
     if (operation.description) method.description = operation.description;
-    const parameters: any = this.getParameters(operation.parameters);
+    const parameters: any = this.getParameters(<OAS20Interface.ParameterObject[]> operation.parameters);
 
     if (parameters.queryParameters) method.queryParameters = parameters.queryParameters;
     if (parameters.headers) method.headers = parameters.headers;

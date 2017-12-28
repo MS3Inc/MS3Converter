@@ -153,7 +153,7 @@ export interface OperationObject {
   operationId?: string;
   consumes?: mediaType[];
   produces?: mediaType[];
-  parameters?: (ParameterObject | ReferenceObject)[];
+  parameters?: Array<ParameterObject|ReferenceObject>;
   responses: ResponsesObject;
   schemes?: ('http' | 'https')[];
   deprecated?: boolean;

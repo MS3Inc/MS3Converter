@@ -68,6 +68,7 @@ export const ms3HeaderQuery: MS3Interface.API = {
   ms3_version: '1.0',
   entityTypeName: 'api',
   dataTypes: [],
+  securitySchemes: [],
   resources: [
     {
       'path': '/pet',
