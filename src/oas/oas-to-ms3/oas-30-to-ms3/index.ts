@@ -27,10 +27,10 @@ class MS3toOAS30toMS3 {
 
   convert() {
     this.ms3API.settings = this.convertSettings();
-    this.ms3API.resources = this.convertPaths();
     if (this.oasAPI.components && this.oasAPI.components.securitySchemes) {
       this.ms3API.securitySchemes = securitySchemasToMS3(this.oasAPI.components.securitySchemes);
     }
+    this.ms3API.resources = this.convertPaths();
 
     if (this.oasAPI.security) {
       this.ms3API.settings.securedBy = this.getSecuredBy(this.oasAPI.security);
@@ -80,6 +80,7 @@ class MS3toOAS30toMS3 {
       active: true
     };
 
+    if (operation.security) method.securedBy = this.getSecuredBy(operation.security);
     if (operation.description) method.description = operation.description;
     const parameters: any = this.getParameters(operation.parameters);
 

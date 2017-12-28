@@ -21,6 +21,7 @@ export const ms3SecuredBy: MS3 = {
         name: 'GET',
         active: true,
         description: 'desc',
+        securedBy: ['uuid'],
         responses: [
           {
             code: '200',
