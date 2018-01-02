@@ -114,7 +114,7 @@ exports.resultResourceWithRequestBody = {
         },
         examples: {
             'ex': {
-                value: '{}'
+                value: {}
             },
             'ex2': {
                 value: '<xml></xml>'

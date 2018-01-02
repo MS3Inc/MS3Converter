@@ -3,7 +3,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const path = require("path");
 function convertInlineExamples(examples) {
     return examples.reduce((resultObject, example) => {
-        resultObject[example.title] = { value: example.content };
+        let isJson;
+        try {
+            isJson = JSON.parse(example.content);
+        }
+        catch (err) { }
+        resultObject[example.title] = { value: isJson ? isJson : example.content };
         return resultObject;
     }, {});
 }

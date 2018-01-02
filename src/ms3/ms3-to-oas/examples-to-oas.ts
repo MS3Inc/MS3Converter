@@ -4,7 +4,12 @@ import * as path from 'path';
 
 export function convertInlineExamples(examples: MS3.Example[]): OAS.Example {
   return examples.reduce( (resultObject: any, example: MS3.Example) => {
-    resultObject[example.title] = { value: example.content };
+    let isJson;
+    try {
+      isJson = JSON.parse(example.content);
+    } catch (err) {}
+
+    resultObject[example.title] = { value: isJson ? isJson : example.content };
     return resultObject;
   }, {});
 }

@@ -41,7 +41,7 @@ export const resultExamples: OAS = {
   components: {
     examples: {
       'exampleJSON': {
-        value: '{"some": "example","name": "value"}'
+        value: {'some': 'example', 'name': 'value'}
       },
       'exampleTXT': {
         value: 'example in txt'
