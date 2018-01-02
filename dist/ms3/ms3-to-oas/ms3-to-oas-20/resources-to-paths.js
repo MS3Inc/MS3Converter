@@ -47,7 +47,7 @@ class ConvertResourcesToPaths {
                 const example = this.getExample(selectedExample);
                 let isJson;
                 try {
-                    isJson = JSON.stringify(JSON.parse(example.content), null, 2);
+                    isJson = JSON.parse(example.content);
                 }
                 catch (err) { }
                 resultExamples[mediaType] = {
