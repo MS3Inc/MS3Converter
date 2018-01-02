@@ -18,10 +18,15 @@ export function convertExternalExampleReferences(examples: MS3.Example[]): OAS.E
 
 export function convertExternalExamples(examples: MS3.Example[], destinationPath: string): object[] {
   return examples.map( (example: MS3.Example) => {
+    let isJson;
+    try {
+      isJson = JSON.parse(example.content);
+    } catch (err) {}
+
     return {
       content: {
         [example.title]: {
-          value: example.content
+          value: isJson ? isJson : example.content
         }
       },
       path: path.join(destinationPath, 'examples', `${example.title}.${example.format}`)
