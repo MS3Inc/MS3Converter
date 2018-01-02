@@ -165,7 +165,7 @@ exports.resultResourceWithResponses = {
         },
         examples: {
             'ex': {
-                value: '{}'
+                value: {}
             },
             'ex2': {
                 value: '<xml></xml>'

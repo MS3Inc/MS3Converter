@@ -167,7 +167,7 @@ export const resultResourceWithResponses: OAS = {
     },
     examples: {
       'ex': {
-        value: '{}'
+        value: {}
       },
       'ex2': {
         value: '<xml></xml>'
