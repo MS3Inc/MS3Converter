@@ -37,3 +37,5 @@ export async function convertDataFromFile(sourcePath: string, from: format, to: 
   const data = await getLoaderByFormat(from, sourcePath).load();
   return convertData(data, from, to, options);
 }
+
+export { Ms3, OAS, Blueprint };

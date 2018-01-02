@@ -87,7 +87,7 @@ export default class MS3toOAS {
 
   protected stringifyContent(content: object, format: 'yaml' | 'json') {
     if (this.options.fileFormat == 'yaml') {
-      return YAML.stringify(content, 2);
+      return YAML.stringify(content, 8, 2);
     }
     return JSON.stringify(content, undefined, 2);
   }
