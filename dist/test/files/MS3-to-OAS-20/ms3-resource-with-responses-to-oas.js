@@ -110,7 +110,7 @@ exports.oasResourceWithResponsesAndInlineExamples = {
                         },
                         examples: {
                             'application/json': {
-                                'content': '{}'
+                                'content': {}
                             }
                         },
                         headers: {
