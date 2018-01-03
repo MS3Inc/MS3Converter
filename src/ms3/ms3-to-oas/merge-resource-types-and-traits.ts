@@ -62,7 +62,7 @@ class MergeTypesAndTraits {
   mergeResourceType(resource: MS3.Resource): MS3.Resource {
     const mergedResource = cloneDeep(resource);
     const resourceType = this.getResourceType(resource.type);
-
+    if (!resourceType) throw new Error(`Cannot find resource type with id: ${resource.type} in resource with path ${resource.path}`);
     if (resourceType.description && !resource.description) mergedResource.description = resourceType.description;
     if (resourceType.methods) mergedResource.methods = this.mergeMethods(resource.methods, resourceType.methods);
 
