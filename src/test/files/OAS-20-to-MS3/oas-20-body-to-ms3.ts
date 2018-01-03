@@ -104,6 +104,7 @@ export const ms3Body: MS3Interface.API = {
   ms3_version: '1.0',
   entityTypeName: 'api',
   securitySchemes: [],
+  examples: [],
   resources: [
     {
       'path': '/pet',
@@ -121,7 +122,8 @@ export const ms3Body: MS3Interface.API = {
               'contentType': 'application/json',
               'type': 'uuid',
             }
-          ]
+          ],
+          responses: []
         }
       ],
       '__id': 'uuid'

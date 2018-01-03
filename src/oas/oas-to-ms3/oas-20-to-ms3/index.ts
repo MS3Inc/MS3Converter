@@ -14,7 +14,8 @@ class MS3toOAS20toMS3 {
       version: '',
       baseUri: ''
     },
-    dataTypes: []
+    dataTypes: [],
+    examples: []
   };
 
   constructor(private oasAPI: OAS20Interface.API) {}
@@ -118,9 +119,58 @@ class MS3toOAS20toMS3 {
     if (parameters.queryParameters) method.queryParameters = parameters.queryParameters;
     if (parameters.headers) method.headers = parameters.headers;
     if (parameters.body) method.body = parameters.body;
-    // if (operation.responses) method.responses = this.convertResponses(<OAS20Interface.ResponsesObject>operation.responses);
+    if (operation.responses) method.responses = this.convertResponses(<OAS20Interface.ResponsesObject>operation.responses);
 
     return method;
+  }
+
+  convertResponses(responses: OAS20Interface.ResponsesObject): MS3Interface.Response[] {
+    return reduce(responses, (resultArray: any, response: any, code: string) => {
+      const convertedResponse: MS3Interface.Response = {
+         code,
+         description: response.description,
+         body: []
+      };
+
+      if (response.schema || response.examples) convertedResponse.body.push({contentType: 'application/json'});
+
+      if (response.schema) {
+        convertedResponse.body[0].type = this.createNewDataType(response.schema);
+      }
+
+      if (response.examples) {
+        convertedResponse.body[0].selectedExamples = this.convertExamples(<OAS20Interface.ExampleObject>response.examples);
+      }
+
+      if (response.headers) {
+        convertedResponse.headers = this.convertParameters(
+          reduce(response.headers, (result: OAS20Interface.ParameterObject[], header: any, name: string): OAS20Interface.ParameterObject[] => {
+            header.name = name;
+            result.push(header);
+            return result;
+          }, [])
+        );
+      }
+
+      resultArray.push(convertedResponse);
+      return resultArray;
+    }, []);
+  }
+
+  private convertExamples(examples: OAS20Interface.ExampleObject): string[] {
+    return reduce(examples, (resultArray: any, value: any, key: string) => {
+      const ID = v4();
+      const title = this.generateExampleUniqName('default_name', 1);
+      this.ms3API.examples.push({
+        __id: ID,
+        title,
+        format: 'json',
+        content: value
+      });
+
+      resultArray.push(ID);
+      return resultArray;
+    }, []);
   }
 
   private getParameters(parameters: OAS20Interface.ParameterObject[]): any {
@@ -153,25 +203,36 @@ class MS3toOAS20toMS3 {
             throw new Error(`Missing referenced schema ${schemaRef.$ref}`);
           }
         } else {
-          const schemaObj = <OAS20Interface.DefinitionsObject> body.schema;
-          const name = this.generateUniqName('default_name', 1);
-          const schema = {
-            [name]: schemaObj
-          };
-          const newDataType = schemaToDataType(schema);
-          parsedBody.type = newDataType.__id;
-          this.ms3API.dataTypes.push(newDataType);
+          parsedBody.type = this.createNewDataType(<OAS20Interface.DefinitionsObject> body.schema);
         }
       }
       return parsedBody;
     });
   }
 
-  generateUniqName(name: string, counter: number) {
+  createNewDataType(schema: OAS20Interface.DefinitionsObject): string {
+    const schemaObj = <OAS20Interface.DefinitionsObject> schema;
+    const name = this.generateDataTypeUniqName('default_name', 1);
+    const newSchema = {
+      [name]: schemaObj
+    };
+    const newDataType = schemaToDataType(newSchema);
+    this.ms3API.dataTypes.push(newDataType);
+    return newDataType.__id;
+  }
+
+  generateExampleUniqName(name: string, counter: number) {
+    const uniqName = `${name}_${counter}`;
+    const foundExample = find(this.ms3API.examples, {title: uniqName});
+    if (!foundExample) return uniqName;
+    this.generateExampleUniqName(name, counter++);
+  }
+
+  generateDataTypeUniqName(name: string, counter: number) {
     const uniqName = `${name}_${counter}`;
     const foundDataType = find(this.ms3API.dataTypes, {name: uniqName});
     if (!foundDataType) return uniqName;
-    this.generateUniqName(name, counter++);
+    this.generateDataTypeUniqName(name, counter++);
   }
 
   convertParameters(parameters: OAS20Interface.ParameterObject[]) {

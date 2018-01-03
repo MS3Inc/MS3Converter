@@ -196,7 +196,7 @@ export interface Example {
   __id: string;
   title: string; // CHANGE TO NAME
   format: exampleFormat;
-  content: string;
+  content: Object;
   annotations?: Annotation[];
 }
 

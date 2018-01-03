@@ -26,5 +26,6 @@ export const ms3Settings: MS3Interface.API = {
   ms3_version: '1.0',
   entityTypeName: 'api',
   dataTypes: [],
+  examples: [],
   resources: []
 };

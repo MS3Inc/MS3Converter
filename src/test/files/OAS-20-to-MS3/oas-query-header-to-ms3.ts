@@ -67,6 +67,7 @@ export const ms3HeaderQuery: MS3Interface.API = {
   entityTypeName: 'api',
   dataTypes: [],
   securitySchemes: [],
+  examples: [],
   resources: [
     {
       'path': '/pet',
@@ -75,6 +76,7 @@ export const ms3HeaderQuery: MS3Interface.API = {
           'active': true,
           'name': 'POST',
           'description': 'MyDescription',
+          responses: [],
           'headers': [
             {
               default: 'default',

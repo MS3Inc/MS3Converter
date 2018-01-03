@@ -11,6 +11,7 @@ export const ms3SecuritySchemes: MS3Interface.API = {
   ms3_version: '1.0',
   entityTypeName: 'api',
   dataTypes: [],
+  examples: [],
   resources: [
     {
       __id: 'uuid',
@@ -19,7 +20,8 @@ export const ms3SecuritySchemes: MS3Interface.API = {
         name: 'POST',
         active: true,
         description: 'MyDescription',
-        securedBy: ['uuid']
+        securedBy: ['uuid'],
+        responses: []
       }]
     }
   ],

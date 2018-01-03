@@ -61,6 +61,7 @@ export const ms3DataTypes: MS3Interface.API = {
   ms3_version: '1.0',
   entityTypeName: 'api',
   securitySchemes: [],
+  examples: [],
   dataTypes: [
     {
       'type': 'object',
