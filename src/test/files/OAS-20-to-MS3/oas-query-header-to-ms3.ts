@@ -32,17 +32,15 @@ export const oasHeaderQuery: OASInterface.API = {
             in: 'header',
             description: 'description',
             required: true,
-            schema: {
-              type: 'string',
-              default: 'default',
-              pattern: '.*',
-              enum: [
-                'enum1',
-                'enum2'
-              ],
-              minLength: 2,
-              maxLength: 10
-            }
+            type: 'string',
+            default: 'default',
+            pattern: '.*',
+            enum: [
+              'enum1',
+              'enum2'
+            ],
+            minLength: 2,
+            maxLength: 10
           },
           {
             name: 'randomName',
