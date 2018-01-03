@@ -89,7 +89,7 @@ interface BasicParameterFields {
   maxItems?: number;
   minItems?: number;
   uniqueItems?: boolean;
-  enum?: (number | string | boolean)[];
+  enum?: string[] | number[];
   multipleOf?: number;
 }
 

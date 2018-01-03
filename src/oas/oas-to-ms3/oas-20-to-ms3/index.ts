@@ -1,4 +1,3 @@
-import { datatypeType } from './../../../ms3/ms3-v1-api-interface';
 import * as MS3Interface from '../../../ms3/ms3-v1-api-interface';
 import * as OAS20Interface from '../../../oas/oas-20-api-interface';
 import schemaToDataType from '../../schemas-to-dataTypes';
@@ -118,7 +117,7 @@ class MS3toOAS20toMS3 {
 
     if (parameters.queryParameters) method.queryParameters = parameters.queryParameters;
     if (parameters.headers) method.headers = parameters.headers;
-    // if (operation.requestBody) method.body = this.convertRequestBody(<OAS20Interface.RequestBodyObject>operation.requestBody);
+    if (parameters.body) method.body = parameters.body;
     // if (operation.responses) method.responses = this.convertResponses(<OAS20Interface.ResponsesObject>operation.responses);
 
     return method;
@@ -127,13 +126,52 @@ class MS3toOAS20toMS3 {
   private getParameters(parameters: OAS20Interface.ParameterObject[]): any {
     const query: OAS20Interface.ParameterObject[] = filter(parameters, ['in', 'query']);
     const header: OAS20Interface.ParameterObject[] = filter(parameters, ['in', 'header']);
+    const body: OAS20Interface.ParameterObject[] = filter(parameters, ['in', 'body']);
 
     const convertedParameters: any = {};
 
     if (query && query.length) convertedParameters.queryParameters = this.convertParameters(query);
     if (header && header.length) convertedParameters.headers = this.convertParameters(header);
+    if (body && body.length) convertedParameters.body = this.convertBody(body);
 
     return convertedParameters;
+  }
+
+  convertBody(bodyParameters: OAS20Interface.ParameterObject[]): MS3Interface.Body[] {
+    return bodyParameters.map((body) => {
+      const parsedBody: MS3Interface.Body = {
+        contentType: 'application/json', // default
+      };
+      if (body.schema) {
+        const schemaRef = <OAS20Interface.ReferenceObject> body.schema;
+        if (schemaRef.$ref) {
+          const name = schemaRef.$ref.split('/').pop();
+          const foundSchema = find(this.ms3API.dataTypes, {name});
+          if (foundSchema) {
+            parsedBody.type = foundSchema.__id;
+          } else {
+            throw new Error(`Missing referenced schema ${schemaRef.$ref}`);
+          }
+        } else {
+          const schemaObj = <OAS20Interface.DefinitionsObject> body.schema;
+          const name = this.generateUniqName('default_name', 1);
+          const schema = {
+            [name]: schemaObj
+          };
+          const newDataType = schemaToDataType(schema);
+          parsedBody.type = newDataType.__id;
+          this.ms3API.dataTypes.push(newDataType);
+        }
+      }
+      return parsedBody;
+    });
+  }
+
+  generateUniqName(name: string, counter: number) {
+    const uniqName = `${name}_${counter}`;
+    const foundDataType = find(this.ms3API.dataTypes, {name: uniqName});
+    if (!foundDataType) return uniqName;
+    this.generateUniqName(name, counter++);
   }
 
   convertParameters(parameters: OAS20Interface.ParameterObject[]) {
@@ -146,22 +184,19 @@ class MS3toOAS20toMS3 {
       if (parameter.description) convertedParameter.description = parameter.description;
       if (parameter.required) convertedParameter.required = parameter.required;
 
-      if (parameter.schema) {
-        const schema: any = parameter.schema;
-        if (schema.pattern) convertedParameter.pattern = schema.pattern;
-        if (schema.default) convertedParameter.default = schema.default;
-        if (schema.maxLength) convertedParameter.maxLength = schema.maxLength;
-        if (schema.minLength) convertedParameter.minLength = schema.minLength;
-        if (schema.minimum) convertedParameter.minimum = schema.minimum;
-        if (schema.maximum) convertedParameter.maximum = schema.maximum;
-        if (schema.enum) convertedParameter.enum = schema.enum;
-        if (schema.type) {
-          if (schema.type == 'array' && schema.items && schema.items.type) {
-            convertedParameter.type = schema.items.type;
-            convertedParameter.repeat = true;
-          } else {
-            convertedParameter.type = schema.type;
-          }
+      if (parameter.pattern) convertedParameter.pattern = parameter.pattern;
+      if (parameter.default) convertedParameter.default = parameter.default;
+      if (parameter.maxLength) convertedParameter.maxLength = parameter.maxLength;
+      if (parameter.minLength) convertedParameter.minLength = parameter.minLength;
+      if (parameter.minimum) convertedParameter.minimum = parameter.minimum;
+      if (parameter.maximum) convertedParameter.maximum = parameter.maximum;
+      if (parameter.enum) convertedParameter.enum = parameter.enum;
+      if (parameter.type) {
+        if (parameter.type == 'array' && parameter.items && parameter.items.type) {
+          convertedParameter.type = <MS3Interface.parameterType> parameter.items.type;
+          convertedParameter.repeat = true;
+        } else {
+          convertedParameter.type = <MS3Interface.parameterType> parameter.type;
         }
       }
       return convertedParameter;
