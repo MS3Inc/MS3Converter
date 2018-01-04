@@ -8,7 +8,7 @@ import convertSecuritySchemes from './security-definitions-to-ms3';
 class MS3toOAS20toMS3 {
   ms3API: MS3Interface.API = {
     entityTypeName: 'api',
-    ms3_version: '1.0',
+    apro_version: '1.0',
     settings: {
       title: '',
       version: '',

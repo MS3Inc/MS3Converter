@@ -6,7 +6,7 @@ export const ms3ResourceWithResponses: MS3Interface.API = {
     title: 'params',
     baseUri: 'http://params',
   },
-  ms3_version: '1.0.1',
+  apro_version: '1.0.1',
   entityTypeName: 'api',
   'dataTypes': [
     {

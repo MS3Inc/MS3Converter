@@ -8,7 +8,7 @@ export const ms3SecuritySchemasResult: MS3 = {
     'description': 'API description',
     'version': '3.0'
   },
-  'ms3_version': '1.0',
+  'apro_version': '1.0',
   'entityTypeName': 'api',
   'dataTypes': [],
   'examples': [],

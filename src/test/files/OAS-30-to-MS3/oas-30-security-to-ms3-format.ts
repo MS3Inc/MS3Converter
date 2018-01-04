@@ -9,7 +9,7 @@ export const ms3SecuredBy: MS3 = {
     'version': '3.0',
     'securedBy': ['uuid']
   },
-  'ms3_version': '1.0',
+  'apro_version': '1.0',
   'entityTypeName': 'api',
   'dataTypes': [],
   'examples': [],

@@ -23,7 +23,7 @@ export const ms3Settings: MS3Interface.API = {
     protocols: ['http']
   },
   securitySchemes: [],
-  ms3_version: '1.0',
+  apro_version: '1.0',
   entityTypeName: 'api',
   dataTypes: [],
   examples: [],

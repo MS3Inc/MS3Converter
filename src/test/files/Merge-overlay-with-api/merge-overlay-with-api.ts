@@ -384,7 +384,7 @@ const api: API.API = {
   'resources': apiResources,
   'dataTypes': apiDataTypes,
   'settings': apiSettings,
-  'ms3_version': '1.0.0'
+  'apro_version': '1.0.0'
 };
 
 const overlaySettings = {
@@ -486,12 +486,12 @@ export const originalProject: any = {
   'resources': overlayResources,
   'dataTypes': overlayDataTypes,
   'settings': overlaySettings,
-  'ms3_version': '1.0.0'
+  'apro_version': '1.0.0'
 };
 
 export const resultProject: API.API = {
   'entityTypeName': 'api',
-  'ms3_version': '1.0.0',
+  'apro_version': '1.0.0',
   'examples': [
     {
       'title': 'exampleJSON',

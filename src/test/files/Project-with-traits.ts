@@ -5,7 +5,7 @@ const originalProject: object = {
     'title': 'params',
     'baseUri': 'http://params'
   },
-  'ms3_version': '1.0.1',
+  'apro_version': '1.0.1',
   'entityTypeName': 'api',
   'traits': [
     {
@@ -34,7 +34,7 @@ const resultProject: ApiInterfaces.API = {
     'title': 'params',
     'baseUri': 'http://params'
   },
-  'ms3_version': '1.0.1',
+  'apro_version': '1.0.1',
   'entityTypeName': 'api',
   'traits': [
     {

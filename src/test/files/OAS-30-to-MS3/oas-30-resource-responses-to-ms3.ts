@@ -75,7 +75,7 @@ export const ms3ResourcesWithResponses: MS3Interface.API = {
     description: 'API description',
     version: '3.0'
   },
-  ms3_version: '1.0',
+  apro_version: '1.0',
   entityTypeName: 'api',
   resources: [
     {

@@ -17,7 +17,7 @@ const project: ApiInterfaces.API = {
     title: 'params',
     baseUri: 'http://params',
   },
-  ms3_version: '1.0.1',
+  apro_version: '1.0.1',
   entityTypeName: 'api'
 };
 
@@ -42,7 +42,7 @@ test('MS3 settings to OAS conversion should fail with "library" entity type', as
       usage: 'dsdsd',
       baseUri: 'http://params',
     },
-    ms3_version: '1.0.1',
+    apro_version: '1.0.1',
     entityTypeName: 'library'
   };
 

@@ -9,7 +9,7 @@ import { v4 } from 'uuid';
 class MS3toOAS30toMS3 {
   ms3API: MS3Interface.API = {
     entityTypeName: 'api',
-    ms3_version: '1.0',
+    apro_version: '1.0',
     settings: {
       title: '',
       version: '',

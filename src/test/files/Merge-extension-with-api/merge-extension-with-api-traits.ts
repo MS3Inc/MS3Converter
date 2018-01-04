@@ -2,11 +2,11 @@ import { API } from './../../../ms3/ms3-v1-api-interface';
 import Extension from './../../../ms3/ms3-v1-extension-interface';
 
 export const originalProjectWithTraits: Extension = {
-  'ms3_version': '1.0.1',
+  'apro_version': '1.0.1',
   'settings': {
     'extends': {
       'entityTypeName': 'api',
-      'ms3_version': '1.0.1',
+      'apro_version': '1.0.1',
       'settings': {
         'baseUri': 'http://mergeAPI',
         'title': 'Merge API',
@@ -97,7 +97,7 @@ export const originalProjectWithTraits: Extension = {
 };
 
 export const resultProjectWithTraits: API = {
-  'ms3_version': '1.0.1',
+  'apro_version': '1.0.1',
   'settings': {
     'baseUri': 'http://mergeEXT',
     'title': 'Merge EXT',

@@ -71,7 +71,7 @@ export const ms3Response: MS3Interface.API = {
     version: '2.0',
     protocols: ['http']
   },
-  ms3_version: '1.0',
+  apro_version: '1.0',
   entityTypeName: 'api',
   securitySchemes: [],
   resources: [

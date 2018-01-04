@@ -7,7 +7,7 @@ test('Should fail with incorrect JSON format', async () => {
 });
 
 test('Should fail with incorrect file extension', async () => {
-  const filePath = path.join(__dirname, '..', '..', 'src', 'test', 'files', 'wrong-json.ms3');
+  const filePath = path.join(__dirname, '..', '..', 'src', 'test', 'files', 'wrong-json.apro');
   return expect(OasLoader.create(filePath).load()).rejects.toBeDefined();
 });
 

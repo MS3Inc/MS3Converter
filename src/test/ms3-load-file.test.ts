@@ -2,7 +2,7 @@ import Ms3Loader from './../ms3/loader';
 import * as path from 'path';
 
 test('File should load without errors', async() => {
-  const filePath = path.join(__dirname, '..', '..', 'src', 'test', 'files', 'Project_title.ms3');
+  const filePath = path.join(__dirname, '..', '..', 'src', 'test', 'files', 'Project_title.apro');
   let error;
   try {
     await Ms3Loader.create(filePath).load();
@@ -31,6 +31,6 @@ test('Should fail with incorrect path', async () => {
 });
 
 test('Should fail with incorrect JSON format', async () => {
-  const filePath = path.join(__dirname, '..', '..', 'src', 'test', 'files', 'wrong-json.ms3');
+  const filePath = path.join(__dirname, '..', '..', 'src', 'test', 'files', 'wrong-json.apro');
   return expect(Ms3Loader.create(filePath).load()).rejects.toBeDefined();
 });

@@ -1,7 +1,7 @@
 import * as ApiInterfaces from './../../ms3/ms3-v1-api-interface';
 
 const originalProject: ApiInterfaces.API = {
-  'ms3_version': '1.0.1',
+  'apro_version': '1.0.1',
   'securitySchemes': [
     {
       'name': 'auth 1.0',
@@ -134,7 +134,7 @@ const originalProject: ApiInterfaces.API = {
 };
 
 const resultProject: ApiInterfaces.API = {
-  'ms3_version': '1.0.1',
+  'apro_version': '1.0.1',
   'securitySchemes': [
     {
       'name': 'auth 1.0',

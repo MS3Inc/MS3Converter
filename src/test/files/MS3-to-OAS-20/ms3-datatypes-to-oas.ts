@@ -112,7 +112,7 @@ export const ms3DataTypes: MS3Interface.API = {
       '__id': 'c6710947-1eed-472d-a4f3-c4807c24fe6b'
     }
   ],
-  ms3_version: '1.0.1',
+  apro_version: '1.0.1',
   entityTypeName: 'api'
 };
 

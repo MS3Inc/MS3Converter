@@ -8,7 +8,7 @@ export const ms3SecuritySchemes: MS3Interface.API = {
     version: '2.0',
     securedBy: ['uuid']
   },
-  ms3_version: '1.0',
+  apro_version: '1.0',
   entityTypeName: 'api',
   dataTypes: [],
   examples: [],

@@ -47,7 +47,7 @@ export default class MS3toOAS {
 
   protected async write() {
     if (this.options.destinationPath) {
-      this.result.path = `${this.options.destinationPath}api.ms3`;
+      this.result.path = `${this.options.destinationPath}api.apro`;
       await writeFilePromise(this.result.path, this.result.content);
     }
   }

@@ -2,7 +2,7 @@ import { API as MS3 } from './../../../ms3/ms3-v1-api-interface';
 import { API as OAS } from './../../../oas/oas-30-api-interface';
 
 export const originalProjectWithResourcesTypes: MS3 = {
-  'ms3_version': '1.0.1',
+  'apro_version': '1.0.1',
   'traits': [
     {
       'name': 'trait1',
@@ -171,7 +171,7 @@ export const originalProjectWithResourcesTypes: MS3 = {
 };
 
 export const resultProjectWithResourcesTypes: MS3 = {
-  'ms3_version': '1.0.1',
+  'apro_version': '1.0.1',
   'resources': [
     {
       'path': '\/res',
