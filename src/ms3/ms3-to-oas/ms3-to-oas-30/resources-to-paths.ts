@@ -6,8 +6,8 @@ import { filter, find, cloneDeep } from 'lodash';
 class ConvertResourcesToPaths {
   constructor(private API: MS3.API) {}
 
-  getSecuritySchemaByName(securitySchemeName: string): MS3.SecurityScheme {
-    return find(this.API.securitySchemes, ['name', securitySchemeName]);
+  getSecuritySchemaByName(id: string): MS3.SecurityScheme {
+    return find(this.API.securitySchemes, ['__id', id]);
   }
 
   getParentResourcePath(id: string): string {
@@ -129,11 +129,11 @@ class ConvertResourcesToPaths {
   }
 
   getSecurityRequirement(securedBy: string[]): OAS.SecurityRequirement {
-    return securedBy.reduce( (resultObject: any, secureByName: string) => {
-      const securitySchema: MS3.SecurityScheme = this.getSecuritySchemaByName(secureByName);
+    return securedBy.reduce( (resultObject: any, id: string) => {
+      const securitySchema: MS3.SecurityScheme = this.getSecuritySchemaByName(id);
       if (securitySchema.type != 'OAuth 2.0' && securitySchema.type != 'Basic Authentication') return resultObject;
 
-      resultObject[secureByName] = [];
+      resultObject[securitySchema.name] = [];
       return resultObject;
     }, {});
   }
