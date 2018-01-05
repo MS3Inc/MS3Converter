@@ -6,8 +6,8 @@ class ConvertResourcesToPaths {
         this.API = API;
         this.asSingleFile = asSingleFile;
     }
-    getSecuritySchemaByName(securitySchemeName) {
-        return lodash_1.find(this.API.securitySchemes, ['name', securitySchemeName]);
+    getSecuritySchemaById(id) {
+        return lodash_1.find(this.API.securitySchemes, ['__id', id]);
     }
     getParentResourcePath(id) {
         const path = lodash_1.find(this.API.resources, ['__id', id]).path;
@@ -135,16 +135,16 @@ class ConvertResourcesToPaths {
         return convertedParameters;
     }
     getSecurityRequirement(securedBy) {
-        return securedBy.reduce((resultArray, securedByName) => {
-            const securitySchema = this.getSecuritySchemaByName(securedByName);
+        return securedBy.reduce((resultArray, id) => {
+            const securitySchema = this.getSecuritySchemaById(id);
             if (securitySchema.type == 'OAuth 2.0') {
                 resultArray.push({
-                    [securedByName]: securitySchema.settings.scopes
+                    [securitySchema.name]: securitySchema.settings.scopes
                 });
             }
             if (securitySchema.type == 'Basic Authentication') {
                 resultArray.push({
-                    [securedByName]: []
+                    [securitySchema.name]: []
                 });
             }
             return resultArray;
