@@ -134,7 +134,7 @@ export const oasDataTypes: OASInterface.API = {
       'minItems': 1,
       'uniqueItems': true,
       'items': {
-        '$ref': '#/definitions/schemas/ArraySchema'
+        '$ref': '#/definitions/ArraySchema'
       },
     },
     'arrayRefNil': {
@@ -191,7 +191,7 @@ export const oasDataTypes: OASInterface.API = {
           'type': 'date'
         },
         'ArraySchema': {
-          '$ref': '#/definitions/schemas/ArraySchema'
+          '$ref': '#/definitions/ArraySchema'
         }
       }
     },

@@ -6,7 +6,7 @@ import { find, cloneDeep } from 'lodash';
 import * as path from 'path';
 
 class ConvertDataTypesToSchemas extends ConvertDataTypesToSchemasOAS2 {
-  protected baseDefinitionsPath: string = '#/components';
+  protected baseDefinitionsPath: string = '#/components/schemas';
 
   static create(api: MS3.API) {
     return new ConvertDataTypesToSchemas(api);
