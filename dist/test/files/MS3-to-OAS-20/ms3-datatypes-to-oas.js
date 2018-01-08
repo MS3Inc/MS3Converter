@@ -132,7 +132,7 @@ exports.oasDataTypes = {
             'minItems': 1,
             'uniqueItems': true,
             'items': {
-                '$ref': '#/components/schemas/ArraySchema'
+                '$ref': '#/definitions/schemas/ArraySchema'
             },
         },
         'arrayRefNil': {
@@ -189,7 +189,7 @@ exports.oasDataTypes = {
                     'type': 'date'
                 },
                 'ArraySchema': {
-                    '$ref': '#/components/schemas/ArraySchema'
+                    '$ref': '#/definitions/schemas/ArraySchema'
                 }
             }
         },

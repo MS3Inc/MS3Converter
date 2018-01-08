@@ -1,11 +1,12 @@
-import * as MS3 from './../ms3-v1-api-interface';
-import { Schema, SchemaObject } from './../../oas/oas-30-api-interface';
-import { DataType, DataTypeObject, DataTypeArray, DataTypePrimitive } from './../ms3-v1-api-interface';
+import * as MS3 from './../../ms3-v1-api-interface';
+import { Schema, SchemaObject } from './../../../oas/oas-30-api-interface';
+import { DataType, DataTypeObject, DataTypeArray, DataTypePrimitive } from './../../ms3-v1-api-interface';
 import { find, cloneDeep } from 'lodash';
 import * as path from 'path';
 
-class ConvertDataTypesToSchemas {
-  constructor(private API: MS3.API) {}
+export class ConvertDataTypesToSchemasOAS2 {
+  protected baseDefinitionsPath: string = '#/definitions';
+  constructor(protected API: MS3.API) {}
 
   convert(): Schema {
     return this.API.dataTypes.reduce((result: Schema, item: DataType) => {
@@ -87,7 +88,7 @@ class ConvertDataTypesToSchemas {
       const name = this.getSchemaName(data.includes);
       if (!name) return null;
 
-      return {'$ref': `#/components/schemas/${name}` };
+      return {'$ref': `${this.baseDefinitionsPath}/schemas/${name}` };
     }
     return this.convertType(data);
 
@@ -102,7 +103,7 @@ class ConvertDataTypesToSchemas {
           return resultObject;
         }
         resultObject[dataTypeName] = {
-          '$ref': `#/components/schemas/${dataTypeName}`
+          '$ref': `${this.baseDefinitionsPath}/schemas/${dataTypeName}`
         };
       } else {
         resultObject[prop.name] = cloneDeep(this.convertType(prop));
@@ -125,18 +126,18 @@ class ConvertDataTypesToSchemas {
   }
 
   static create(api: MS3.API) {
-    return new ConvertDataTypesToSchemas(api);
+    return new ConvertDataTypesToSchemasOAS2(api);
   }
 }
 
 export function convertDataTypesToSchemas(API: MS3.API): Schema {
-  return ConvertDataTypesToSchemas.create(API).convert();
+  return ConvertDataTypesToSchemasOAS2.create(API).convert();
 }
 
 export function convertExternalSchemas(API: MS3.API, schemasPath: string): object[] {
-  return ConvertDataTypesToSchemas.create(API).convertExternal(schemasPath);
+  return ConvertDataTypesToSchemasOAS2.create(API).convertExternal(schemasPath);
 }
 
 export function convertExternalSchemasReferences(API: MS3.API): Schema {
-  return ConvertDataTypesToSchemas.create(API).convertWithReferences();
+  return ConvertDataTypesToSchemasOAS2.create(API).convertWithReferences();
 }
