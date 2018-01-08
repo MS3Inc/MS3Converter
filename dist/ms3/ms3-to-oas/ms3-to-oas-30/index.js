@@ -4,7 +4,7 @@ const merge_library_to_ms3_1 = require("../../merge-library-to-ms3");
 const merge_resource_types_and_traits_1 = require("../merge-resource-types-and-traits");
 const security_schemes_to_oas_1 = require("./security-schemes-to-oas");
 const resources_to_paths_1 = require("./resources-to-paths");
-const datatypes_to_schemas_1 = require("../datatypes-to-schemas");
+const datatypes_to_schemas_1 = require("./datatypes-to-schemas");
 const examples_to_oas_1 = require("../examples-to-oas");
 const lodash_1 = require("lodash");
 class MS3toOAS30 {

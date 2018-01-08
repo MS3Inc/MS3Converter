@@ -7,7 +7,7 @@ import mergeTypesAndTraits from '../merge-resource-types-and-traits';
 import convertSecuritySchemes from './security-schemes-to-oas';
 import convertResourcesToPaths from './resources-to-paths';
 
-import { convertDataTypesToSchemas, convertExternalSchemas, convertExternalSchemasReferences } from '../datatypes-to-schemas';
+import { convertDataTypesToSchemas, convertExternalSchemas, convertExternalSchemasReferences } from './datatypes-to-schemas';
 import { convertInlineExamples, convertExternalExamples, convertExternalExampleReferences } from '../examples-to-oas';
 
 import { cloneDeep } from 'lodash';
