@@ -4,7 +4,7 @@ const datatypes_to_schemas_1 = require("../ms3-to-oas-20/datatypes-to-schemas");
 class ConvertDataTypesToSchemas extends datatypes_to_schemas_1.ConvertDataTypesToSchemasOAS2 {
     constructor() {
         super(...arguments);
-        this.baseDefinitionsPath = '#/components';
+        this.baseDefinitionsPath = '#/components/schemas';
     }
     static create(api) {
         return new ConvertDataTypesToSchemas(api);

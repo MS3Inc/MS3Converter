@@ -88,7 +88,7 @@ export class ConvertDataTypesToSchemasOAS2 {
       const name = this.getSchemaName(data.includes);
       if (!name) return null;
 
-      return {'$ref': `${this.baseDefinitionsPath}/schemas/${name}` };
+      return {'$ref': `${this.baseDefinitionsPath}/${name}` };
     }
     return this.convertType(data);
 
@@ -103,7 +103,7 @@ export class ConvertDataTypesToSchemasOAS2 {
           return resultObject;
         }
         resultObject[dataTypeName] = {
-          '$ref': `${this.baseDefinitionsPath}/schemas/${dataTypeName}`
+          '$ref': `${this.baseDefinitionsPath}/${dataTypeName}`
         };
       } else {
         resultObject[prop.name] = cloneDeep(this.convertType(prop));
