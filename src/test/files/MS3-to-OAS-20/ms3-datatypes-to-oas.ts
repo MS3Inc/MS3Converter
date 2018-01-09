@@ -213,19 +213,77 @@ export const oasDataTypesExternal: OASInterface.API = {
   paths: {},
   definitions: {
     'ArrayInclude': {
-      '$ref': './schemas/ArrayInclude.json#ArrayInclude'
+      'example': 'ExampleArray',
+      'items': {
+        '$ref': '#/definitions/ArraySchema',
+      },
+      'maxItems': 3,
+      'minItems': 1,
+      'title': 'ArrayInclude',
+      'type': 'array',
+      'uniqueItems': true,
     },
     'arrayRefNil': {
-      '$ref': './schemas/arrayRefNil.json#arrayRefNil'
+      'title': 'arrayRefNil',
+      'type': 'array',
     },
     'ArraySchema': {
-      '$ref': './schemas/ArraySchema.json#ArraySchema'
+      'example': '13',
+      'items': {
+        'default': 2,
+        'description': '1',
+        'example': 3,
+        'format': 'int32',
+        'maximum': 3,
+        'minimum': 1,
+        'multipleOf': 12,
+        'type': 'integer',
+      },
+      'maxItems': 1,
+      'minItems': 1,
+      'title': 'ArraySchema',
+      'type': 'array',
+      'uniqueItems': true,
     },
     'ObjectSchema' : {
-      '$ref': './schemas/ObjectSchema.json#ObjectSchema'
+      'properties': {
+        'ArraySchema': {
+          '$ref': '#/definitions/ArraySchema',
+          },
+        'BooleanProperty': {
+          'default': true,
+          'description': 'Description here',
+          'example': false,
+          'required': true,
+          'type': 'boolean',
+        },
+        'StringProperty': {
+          'default': 'Ted',
+          'description': 'Description here',
+          'enum': [
+            'Ted',
+            'Bob',
+          ],
+          'example': 'Terry',
+          'maxLength': 10,
+          'minLength': 3,
+          'pattern': 'Pattern Here',
+          'required': true,
+          'type': 'string',
+        },
+        'isDateOnly': {
+          'type': 'date',
+        },
+        'isNumber': {
+          'type': 'long',
+        },
+      },
+      'title': 'ObjectSchema',
+      'type': 'object',
     },
     'arrayOfNil': {
-      '$ref': './schemas/arrayOfNil.json#arrayOfNil'
+      'title': 'arrayOfNil',
+      'type': 'array',
     }
   }
 };

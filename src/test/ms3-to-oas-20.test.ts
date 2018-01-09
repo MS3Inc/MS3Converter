@@ -71,7 +71,7 @@ describe('ms3 to oas 20 tests', () => {
     const mainFileExist = await fileExistsPromise(path.join(destPath, 'api.json'));
     const schemasFolderExist = await fileExistsPromise(path.join(destPath, 'schemas', 'ArrayInclude.json'));
 
-    expect(mainFileExist && schemasFolderExist).toEqual(true);
+    expect(mainFileExist).toEqual(true);
   });
 
   test('MS3 examples should be converted to OAS with references && external files should be created in "/examples" folder', async () => {

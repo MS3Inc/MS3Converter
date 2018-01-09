@@ -76,7 +76,10 @@ export const oasResourceWithRequestBody: OASInterface.API = {
   },
   definitions: {
     'schemaName': {
-      '$ref': './schemas/schemaName.json#schemaName'
+      'default': 'default',
+      'description': 'desc',
+      'title': 'schemaName',
+      'type': 'string',
     }
   }
 };
