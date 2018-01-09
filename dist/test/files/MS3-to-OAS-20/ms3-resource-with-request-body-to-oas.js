@@ -74,7 +74,10 @@ exports.oasResourceWithRequestBody = {
     },
     definitions: {
         'schemaName': {
-            '$ref': './schemas/schemaName.json#schemaName'
+            'default': 'default',
+            'description': 'desc',
+            'title': 'schemaName',
+            'type': 'string',
         }
     }
 };

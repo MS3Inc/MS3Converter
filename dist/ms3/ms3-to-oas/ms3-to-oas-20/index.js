@@ -36,12 +36,12 @@ class MS3toOAS20 {
             });
         }
         if (this.ms3API.dataTypes) {
-            if (this.options.destinationPath) {
-                this.externalFiles.schemas = this.externalFiles.schemas.concat(datatypes_to_schemas_1.convertExternalSchemas(this.ms3API, this.options.destinationPath));
-                this.oasAPI.definitions = datatypes_to_schemas_1.convertExternalSchemasReferences(this.ms3API);
-            }
-            else
-                this.oasAPI.definitions = datatypes_to_schemas_1.convertDataTypesToSchemas(this.ms3API);
+            // if (this.options.destinationPath) {
+            //   this.externalFiles.schemas = this.externalFiles.schemas.concat(convertExternalSchemas(this.ms3API, this.options.destinationPath));
+            //   this.oasAPI.definitions = convertExternalSchemasReferences(this.ms3API);
+            // }
+            // else
+            this.oasAPI.definitions = datatypes_to_schemas_1.convertDataTypesToSchemas(this.ms3API);
         }
         if (this.ms3API.examples && this.options.destinationPath) {
             this.externalFiles.examples = this.externalFiles.examples.concat(examples_to_oas_1.convertExternalExamples(this.ms3API.examples, this.options.destinationPath));
