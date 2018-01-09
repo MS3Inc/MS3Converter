@@ -17,7 +17,7 @@ exports.ms3ResourceWithPathParameters = {
                     'type': 'string',
                     'description': 'description',
                     'pattern': '.*',
-                    'default': 'default',
+                    'default': '',
                     'example': 'example string',
                     'repeat': false,
                     'required': true,
@@ -50,7 +50,6 @@ exports.oasResourceWithPathParameters = {
                     in: 'path',
                     description: 'description',
                     type: 'string',
-                    default: 'default',
                     pattern: '.*',
                     enum: [
                         'enum1',

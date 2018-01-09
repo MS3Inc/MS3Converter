@@ -1,7 +1,7 @@
 import * as OAS from '../../../oas/oas-20-api-interface';
 import * as MS3 from '../../ms3-v1-api-interface';
 import { securitySchemeType } from '../../../oas/oas-30-api-interface';
-import { filter, find, cloneDeep } from 'lodash';
+import { filter, find, cloneDeep, pickBy } from 'lodash';
 
 class ConvertResourcesToPaths {
   constructor(private API: MS3.API, private asSingleFile: boolean) {}
@@ -97,8 +97,7 @@ class ConvertResourcesToPaths {
     delete clonedParameter.repeat;
     delete clonedParameter.example;
     delete clonedParameter.required;
-
-    return clonedParameter;
+    return pickBy(clonedParameter);
   }
 
   getParametersByType(parameters: MS3.Parameter[], type: string): OAS.ParameterObject[] {
