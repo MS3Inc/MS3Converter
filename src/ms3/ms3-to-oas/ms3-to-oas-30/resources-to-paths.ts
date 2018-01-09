@@ -1,7 +1,7 @@
 import { securitySchemeType } from '../../../oas/oas-30-api-interface';
 import * as OAS from '../../../oas/oas-30-api-interface';
 import * as MS3 from '../../ms3-v1-api-interface';
-import { filter, find, cloneDeep } from 'lodash';
+import { filter, find, cloneDeep, pickBy } from 'lodash';
 
 class ConvertResourcesToPaths {
   constructor(private API: MS3.API) {}
@@ -89,7 +89,7 @@ class ConvertResourcesToPaths {
     delete clonedParameter.required;
     delete clonedParameter.example;
     if (clonedParameter.type == 'number') clonedParameter.type = 'long';
-    return clonedParameter;
+    return pickBy(clonedParameter);
   }
 
   getArrayTypeSchema(parameter: MS3.Parameter): OAS.SchemaObject {

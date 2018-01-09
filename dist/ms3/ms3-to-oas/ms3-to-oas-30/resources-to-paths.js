@@ -78,7 +78,7 @@ class ConvertResourcesToPaths {
         delete clonedParameter.example;
         if (clonedParameter.type == 'number')
             clonedParameter.type = 'long';
-        return clonedParameter;
+        return lodash_1.pickBy(clonedParameter);
     }
     getArrayTypeSchema(parameter) {
         const convertedItems = this.transformParameterObject(parameter);

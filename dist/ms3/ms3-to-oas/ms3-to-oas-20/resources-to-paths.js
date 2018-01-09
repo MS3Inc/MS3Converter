@@ -92,7 +92,7 @@ class ConvertResourcesToPaths {
         delete clonedParameter.repeat;
         delete clonedParameter.example;
         delete clonedParameter.required;
-        return clonedParameter;
+        return lodash_1.pickBy(clonedParameter);
     }
     getParametersByType(parameters, type) {
         return parameters.map((parameter) => {
