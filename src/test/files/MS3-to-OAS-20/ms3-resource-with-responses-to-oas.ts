@@ -145,7 +145,10 @@ export const oasResourceWithResponsesAndInlineExamples: OASInterface.API = {
   },
   definitions: {
     'schema': {
-      '$ref': './schemas/schema.json#schema'
+      'default': 'default',
+      'description': 'desc',
+      'title': 'schema',
+      'type': 'string',
     }
   }
 };
