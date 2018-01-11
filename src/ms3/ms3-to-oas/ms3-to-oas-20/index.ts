@@ -12,7 +12,6 @@ import { convertInlineExamples, convertExternalExamples, convertExternalExampleR
 
 import { cloneDeep, map } from 'lodash';
 import * as url from 'url';
-import { Url } from 'url';
 
 class MS3toOAS20 {
   oasAPI: OAS20Interface.API;
@@ -29,7 +28,7 @@ class MS3toOAS20 {
   }
 
   convert() {
-    const parsedBaseUri: Url = url.parse(this.ms3API.settings.baseUri || '/');
+    const parsedBaseUri: url.Url = url.parse(this.ms3API.settings.baseUri || '/');
     this.oasAPI = {
       swagger: '2.0',
       info: this.convertSettings(),
