@@ -29,6 +29,9 @@ test('MS3 settings should be converted to OAS successfully', async() => {
       description: 'API description',
       version: '3.0',
     },
+    servers: [{
+      url: 'http://params'
+    }],
     components: {},
     paths: {}
   };

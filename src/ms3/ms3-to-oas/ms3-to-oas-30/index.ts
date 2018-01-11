@@ -30,6 +30,7 @@ class MS3toOAS30 {
       openapi: '3.0',
       info: this.convertSettings(),
       paths: {},
+      servers: this.convertServers(),
       components: {}
     };
 
@@ -63,6 +64,14 @@ class MS3toOAS30 {
       API: this.oasAPI,
       externalFiles: this.externalFiles
     };
+  }
+
+  private convertServers(): OAS30Interface.Server[] {
+    const server: OAS30Interface.Server = {
+      url: this.ms3API.settings.baseUri
+    };
+    if (this.ms3API.settings.description) server.description = this.ms3API.settings.description;
+    return [server];
   }
 
   private convertSettings(): OAS30Interface.Info {
