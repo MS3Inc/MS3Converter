@@ -143,7 +143,10 @@ exports.oasResourceWithResponsesAndInlineExamples = {
     },
     definitions: {
         'schema': {
-            '$ref': './schemas/schema.json#schema'
+            'default': 'default',
+            'description': 'desc',
+            'title': 'schema',
+            'type': 'string',
         }
     }
 };

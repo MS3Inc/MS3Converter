@@ -47,7 +47,7 @@ class MS3toOAS20 {
     }
 
     if (this.ms3API.dataTypes) {
-      if (this.options.destinationPath) {
+      if (this.options.destinationPath && !this.options.asSingleFile) {
         this.externalFiles.schemas = this.externalFiles.schemas.concat(convertExternalSchemas(this.ms3API, this.options.destinationPath));
         this.oasAPI.definitions = convertExternalSchemasReferences(this.ms3API);
       }

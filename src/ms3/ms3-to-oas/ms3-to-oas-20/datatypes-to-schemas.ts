@@ -43,8 +43,10 @@ export class ConvertDataTypesToSchemasOAS2 {
 
   convertType(dataType: DataType | DataTypeObject | DataTypePrimitive | DataTypeArray ) {
     if (dataType.type == 'nil') return null;
-    const convertedType = <any> cloneDeep(dataType);
+    let convertedType = <any> cloneDeep(dataType);
     delete convertedType.fileTypes;
+
+    convertedType = this.parseIntegerValues(convertedType);
 
     switch (convertedType.type) {
       case 'number':
@@ -59,6 +61,22 @@ export class ConvertDataTypesToSchemasOAS2 {
     }
 
     return convertedType;
+  }
+
+  parseIntegerValues(schema: any) {
+    if (schema.maximum && schema.maximum.length) schema.maximum = parseFloat(schema.maximum);
+    if (schema.maxLength && schema.maxLength.length) schema.maxLength = parseFloat(schema.maxLength);
+    if (schema.minLength && schema.minLength.length) schema.minLength = parseFloat(schema.minLength);
+    if (schema.minimum && schema.minimum.length) schema.minimum = parseFloat(schema.minimum);
+    if (schema.maximum && schema.maximum.length) schema.maximum = parseFloat(schema.maximum);
+    if (schema.minItems && schema.minItems.length) schema.minItems = parseFloat(schema.minItems);
+    if (schema.maxItems && schema.maxItems.length) schema.maxItems = parseFloat(schema.maxItems);
+    if (schema.multipleOf && schema.multipleOf.length) schema.multipleOf = parseFloat(schema.multipleOf);
+    if (schema.type == 'integer' || schema.type == 'number') {
+      if (schema.default && schema.default.length) schema.default = parseFloat(schema.default);
+      if (schema.example && schema.example.length) schema.example = parseFloat(schema.example);
+    }
+    return schema;
   }
 
   convertSchema(schema: DataType): SchemaObject {

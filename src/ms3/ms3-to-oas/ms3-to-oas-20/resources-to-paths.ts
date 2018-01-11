@@ -1,13 +1,13 @@
 import * as OAS from '../../../oas/oas-20-api-interface';
 import * as MS3 from '../../ms3-v1-api-interface';
 import { securitySchemeType } from '../../../oas/oas-30-api-interface';
-import { filter, find, cloneDeep } from 'lodash';
+import { filter, find, cloneDeep, pickBy } from 'lodash';
 
 class ConvertResourcesToPaths {
   constructor(private API: MS3.API, private asSingleFile: boolean) {}
 
-  getSecuritySchemaByName(securitySchemeName: string): MS3.SecurityScheme {
-    return find(this.API.securitySchemes, ['name', securitySchemeName]);
+  getSecuritySchemaById(id: string): MS3.SecurityScheme {
+    return find(this.API.securitySchemes, ['__id', id]);
   }
 
   getParentResourcePath(id: string): string {
@@ -97,8 +97,7 @@ class ConvertResourcesToPaths {
     delete clonedParameter.repeat;
     delete clonedParameter.example;
     delete clonedParameter.required;
-
-    return clonedParameter;
+    return pickBy(clonedParameter);
   }
 
   getParametersByType(parameters: MS3.Parameter[], type: string): OAS.ParameterObject[] {
@@ -154,17 +153,17 @@ class ConvertResourcesToPaths {
   }
 
   getSecurityRequirement(securedBy: string[]): OAS. SecurityRequirementObject[] {
-    return securedBy.reduce( (resultArray: any, securedByName: string) => {
-      const securitySchema: MS3.SecurityScheme = this.getSecuritySchemaByName(securedByName);
+    return securedBy.reduce( (resultArray: any, id: string) => {
+      const securitySchema: MS3.SecurityScheme = this.getSecuritySchemaById(id);
 
       if (securitySchema.type == 'OAuth 2.0') {
         resultArray.push({
-          [securedByName]: securitySchema.settings.scopes
+          [securitySchema.name]: securitySchema.settings.scopes
         });
       }
       if (securitySchema.type == 'Basic Authentication') {
         resultArray.push({
-          [securedByName]: []
+          [securitySchema.name]: []
         });
       }
 
