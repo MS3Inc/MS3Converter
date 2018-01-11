@@ -7,6 +7,7 @@ const resources_to_paths_1 = require("./resources-to-paths");
 const datatypes_to_schemas_1 = require("./datatypes-to-schemas");
 const examples_to_oas_1 = require("../examples-to-oas");
 const lodash_1 = require("lodash");
+const url = require("url");
 class MS3toOAS20 {
     constructor(ms3API, options) {
         this.ms3API = ms3API;
@@ -21,12 +22,13 @@ class MS3toOAS20 {
         return new MS3toOAS20(ms3API, options);
     }
     convert() {
+        const parsedBaseUri = url.parse(this.ms3API.settings.baseUri || '/');
         this.oasAPI = {
             swagger: '2.0',
             info: this.convertSettings(),
             paths: {},
-            basePath: '/',
-            host: this.getPath(this.ms3API.settings.baseUri)
+            basePath: decodeURI(parsedBaseUri.path) || '/',
+            host: decodeURI(parsedBaseUri.host)
         };
         if (this.ms3API.libraries)
             this.ms3API = merge_library_to_ms3_1.default(this.ms3API);
@@ -59,9 +61,6 @@ class MS3toOAS20 {
             API: this.oasAPI,
             externalFiles: this.externalFiles
         };
-    }
-    getPath(baseUri) {
-        return baseUri.split('://')[1];
     }
     convertSettings() {
         const settings = this.ms3API.settings;
