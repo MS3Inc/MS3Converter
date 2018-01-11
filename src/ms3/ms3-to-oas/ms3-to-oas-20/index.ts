@@ -11,6 +11,7 @@ import { convertDataTypesToSchemas, convertExternalSchemas, convertExternalSchem
 import { convertInlineExamples, convertExternalExamples, convertExternalExampleReferences } from '../examples-to-oas';
 
 import { cloneDeep, map } from 'lodash';
+import * as url from 'url';
 
 class MS3toOAS20 {
   oasAPI: OAS20Interface.API;
@@ -27,12 +28,13 @@ class MS3toOAS20 {
   }
 
   convert() {
+    const parsedBaseUri: url.Url = url.parse(this.ms3API.settings.baseUri || '/');
     this.oasAPI = {
       swagger: '2.0',
       info: this.convertSettings(),
       paths: {},
-      basePath: '/',
-      host: this.getPath(this.ms3API.settings.baseUri)
+      basePath: decodeURI(parsedBaseUri.path) || '/',
+      host: decodeURI(parsedBaseUri.host)
     };
 
     if (this.ms3API.libraries) this.ms3API = mergeLibraryToMs3(this.ms3API);
@@ -69,10 +71,6 @@ class MS3toOAS20 {
       API: this.oasAPI,
       externalFiles: this.externalFiles
     };
-  }
-
-  private getPath(baseUri: string): string {
-    return baseUri.split('://')[1];
   }
 
   private convertSettings(): OAS20Interface.Info {
