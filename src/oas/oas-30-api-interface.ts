@@ -204,7 +204,16 @@ export interface Server {
   variables?: ServerVariable[];
 }
 
-interface ServerVariable {}
+export interface ServerVariable {
+  [propName: string]: ServerVariableParams;
+}
+
+export interface ServerVariableParams {
+  description?: any;
+  default?: any;
+  enum?: any[];
+  [propName: string]: any;
+}
 
 interface Tag {}
 
