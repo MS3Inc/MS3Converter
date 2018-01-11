@@ -40,8 +40,9 @@ class ConvertDataTypesToSchemasOAS2 {
     convertType(dataType) {
         if (dataType.type == 'nil')
             return null;
-        const convertedType = lodash_1.cloneDeep(dataType);
+        let convertedType = lodash_1.cloneDeep(dataType);
         delete convertedType.fileTypes;
+        convertedType = this.parseIntegerValues(convertedType);
         switch (convertedType.type) {
             case 'number':
                 convertedType.type = 'long';
@@ -54,6 +55,31 @@ class ConvertDataTypesToSchemasOAS2 {
                 break;
         }
         return convertedType;
+    }
+    parseIntegerValues(schema) {
+        if (schema.maximum && schema.maximum.length)
+            schema.maximum = parseFloat(schema.maximum);
+        if (schema.maxLength && schema.maxLength.length)
+            schema.maxLength = parseFloat(schema.maxLength);
+        if (schema.minLength && schema.minLength.length)
+            schema.minLength = parseFloat(schema.minLength);
+        if (schema.minimum && schema.minimum.length)
+            schema.minimum = parseFloat(schema.minimum);
+        if (schema.maximum && schema.maximum.length)
+            schema.maximum = parseFloat(schema.maximum);
+        if (schema.minItems && schema.minItems.length)
+            schema.minItems = parseFloat(schema.minItems);
+        if (schema.maxItems && schema.maxItems.length)
+            schema.maxItems = parseFloat(schema.maxItems);
+        if (schema.multipleOf && schema.multipleOf.length)
+            schema.multipleOf = parseFloat(schema.multipleOf);
+        if (schema.type == 'integer' || schema.type == 'number') {
+            if (schema.default && schema.default.length)
+                schema.default = parseFloat(schema.default);
+            if (schema.example && schema.example.length)
+                schema.example = parseFloat(schema.example);
+        }
+        return schema;
     }
     convertSchema(schema) {
         const convertedSchema = lodash_1.cloneDeep(this.convertType(schema)); // TODO: Refactor this temporary hack to satisfy typescript
