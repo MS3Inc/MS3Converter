@@ -9,6 +9,7 @@ import { ms3ResourceWithParameters, oasResourceWithParameters } from './files/MS
 import { ms3ResourceWithRequestBody, oasResourceWithRequestBody } from './files/MS3-to-OAS-20/ms3-resource-with-request-body-to-oas';
 import { ms3ResourceWithResponses, oasResourceWithResponses, oasResourceWithResponsesAndInlineExamples } from './files/MS3-to-OAS-20/ms3-resource-with-responses-to-oas';
 import { ms3ResourceWithPathParameters, oasResourceWithPathParameters } from './files/MS3-to-OAS-20/ms3-resource-with-path-parameters-to-oas';
+import { ms3APIBaseUri, OASApiHostAndBasePath } from './files/MS3-to-OAS-20/ms3-baseuri-to-oas';
 
 import { exists } from 'fs';
 import { promisify } from 'util';
@@ -189,6 +190,17 @@ describe('ms3 to oas 20 tests', () => {
     };
 
     expect(JSON.parse( <string> await MS3toOAS.create(ms3ResourceWithPathParameters, options).convert() )).toEqual(oasResourceWithPathParameters);
+  });
+
+  test('MS3 baseUri should be converted to host and basePath', async() => {
+
+    const options: ConvertorOptions = {
+      fileFormat: 'json',
+      asSingleFile: true,
+      oasVersion: '2.0'
+    };
+
+    expect(JSON.parse( <string> await MS3toOAS.create(ms3APIBaseUri, options).convert() )).toEqual(OASApiHostAndBasePath);
   });
 
 });

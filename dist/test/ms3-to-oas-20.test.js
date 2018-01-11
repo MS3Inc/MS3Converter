@@ -17,6 +17,7 @@ const ms3_resource_with_parameters_to_oas_1 = require("./files/MS3-to-OAS-20/ms3
 const ms3_resource_with_request_body_to_oas_1 = require("./files/MS3-to-OAS-20/ms3-resource-with-request-body-to-oas");
 const ms3_resource_with_responses_to_oas_1 = require("./files/MS3-to-OAS-20/ms3-resource-with-responses-to-oas");
 const ms3_resource_with_path_parameters_to_oas_1 = require("./files/MS3-to-OAS-20/ms3-resource-with-path-parameters-to-oas");
+const ms3_baseuri_to_oas_1 = require("./files/MS3-to-OAS-20/ms3-baseuri-to-oas");
 const fs_1 = require("fs");
 const util_1 = require("util");
 const rmdir = require("rmdir");
@@ -158,6 +159,14 @@ describe('ms3 to oas 20 tests', () => {
             oasVersion: '2.0'
         };
         expect(JSON.parse(yield index_1.default.create(ms3_resource_with_path_parameters_to_oas_1.ms3ResourceWithPathParameters, options).convert())).toEqual(ms3_resource_with_path_parameters_to_oas_1.oasResourceWithPathParameters);
+    }));
+    test('MS3 baseUri should be converted to host and basePath', () => __awaiter(this, void 0, void 0, function* () {
+        const options = {
+            fileFormat: 'json',
+            asSingleFile: true,
+            oasVersion: '2.0'
+        };
+        expect(JSON.parse(yield index_1.default.create(ms3_baseuri_to_oas_1.ms3APIBaseUri, options).convert())).toEqual(ms3_baseuri_to_oas_1.OASApiHostAndBasePath);
     }));
 });
 //# sourceMappingURL=ms3-to-oas-20.test.js.map
