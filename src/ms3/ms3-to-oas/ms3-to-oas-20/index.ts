@@ -11,7 +11,7 @@ import { convertDataTypesToSchemas, convertExternalSchemas, convertExternalSchem
 import { convertInlineExamples, convertExternalExamples, convertExternalExampleReferences } from '../examples-to-oas';
 
 import { cloneDeep, map } from 'lodash';
-import * as url from 'url';
+import * as urlParser from 'url-parse';
 
 class MS3toOAS20 {
   oasAPI: OAS20Interface.API;
@@ -28,12 +28,12 @@ class MS3toOAS20 {
   }
 
   convert() {
-    const parsedBaseUri: url.Url = url.parse(this.ms3API.settings.baseUri || '/');
+    const parsedBaseUri: any = urlParser(this.ms3API.settings.baseUri || '/');
     this.oasAPI = {
       swagger: '2.0',
       info: this.convertSettings(),
       paths: {},
-      basePath: decodeURI(parsedBaseUri.path) || '/',
+      basePath: decodeURI(parsedBaseUri.pathname) || '/',
       host: decodeURI(parsedBaseUri.host)
     };
 
