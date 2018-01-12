@@ -10,7 +10,7 @@ import convertResourcesToPaths from './resources-to-paths';
 import { convertDataTypesToSchemas, convertExternalSchemas, convertExternalSchemasReferences } from './datatypes-to-schemas';
 import { convertInlineExamples, convertExternalExamples, convertExternalExampleReferences } from '../examples-to-oas';
 
-import { cloneDeep } from 'lodash';
+import { cloneDeep, map } from 'lodash';
 
 class MS3toOAS30 {
   oasAPI: OAS30Interface.API;
@@ -30,6 +30,7 @@ class MS3toOAS30 {
       openapi: '3.0',
       info: this.convertSettings(),
       paths: {},
+      servers: this.convertServers(),
       components: {}
     };
 
@@ -63,6 +64,23 @@ class MS3toOAS30 {
       API: this.oasAPI,
       externalFiles: this.externalFiles
     };
+  }
+
+  private convertServers(): OAS30Interface.Server[] {
+    const server: OAS30Interface.Server = {
+      url: this.ms3API.settings.baseUri
+    };
+    if (this.ms3API.settings.baseUriParameters && this.ms3API.settings.baseUriParameters.length)
+      server.variables = map(this.ms3API.settings.baseUriParameters, param => {
+        const newParam: OAS30Interface.ServerVariableParams = {};
+        if (param.enum && param.enum.length) newParam.enum = param.enum;
+        if (param.default) newParam.default = param.default;
+        if (param.description) newParam.description = param.description;
+        const newVariable: any = {};
+        newVariable[param.displayName] = newParam;
+        return newVariable;
+      });
+    return [server];
   }
 
   private convertSettings(): OAS30Interface.Info {
