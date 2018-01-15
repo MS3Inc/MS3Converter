@@ -37,7 +37,6 @@ export interface SchemaObject {
   uniqueItems?: boolean;
   maxProperties?: number;
   minProperties?: number;
-  required?: boolean;
   enum?: string[];
   items?: SchemaObject | ReferenceObject;
   properties?: Schema | ReferenceObject;
@@ -50,10 +49,12 @@ export interface SchemaObject {
   additionalProperties?: object;
   default?: number | string | boolean;
   example?: any;
+  required?: string[];
 }
 
 export interface Schema {
-  [propName: string]: SchemaObject | ReferenceObject;
+  required?: string[];
+  [propName: string]: SchemaObject | ReferenceObject| string[];
 }
 
 interface EncodingObject {

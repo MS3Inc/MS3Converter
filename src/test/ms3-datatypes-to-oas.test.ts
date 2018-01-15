@@ -178,6 +178,10 @@ test('MS3 schemas should be converted to OAS successfully', async() => {
         'ObjectSchema' : {
           'title': 'ObjectSchema',
           'type': 'object',
+          'required': [
+            'StringProperty',
+            'BooleanProperty',
+          ],
           'properties': {
             'StringProperty': {
               'type': 'string',
@@ -190,15 +194,13 @@ test('MS3 schemas should be converted to OAS successfully', async() => {
               'enum': [
                 'Ted',
                 'Bob'
-              ],
-              'required': true
+              ]
             },
             'BooleanProperty': {
               'type': 'boolean',
               'description': 'Description here',
               'example': false,
-              'default': true,
-              'required': true
+              'default': true
             },
             'isNumber': {
               'type': 'integer'

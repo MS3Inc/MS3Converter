@@ -54,6 +54,7 @@ export interface DataTypePrimitive {
   maxItems?: number;
   minItems?: number;
   includes?: string;
+  required?: boolean;
 }
 
 export interface DataTypeObject extends DataTypePrimitive {
