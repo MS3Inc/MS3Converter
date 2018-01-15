@@ -21,7 +21,6 @@ export const ms3ResourceWithPathParameters: MS3Interface.API = {
           'default': '',
           'example': 'example string',
           'repeat': false,
-          'required': true,
           'enum': [
             'enum1',
             'enum2'

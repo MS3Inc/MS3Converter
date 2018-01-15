@@ -104,7 +104,8 @@ class ConvertResourcesToPaths {
     return parameters.map( (parameter: MS3.Parameter) => {
       let convertedParameter: any = {
         name: parameter.displayName,
-        in: type
+        in: type,
+        required: type == 'path' ? true : parameter.required || false
       };
 
       const parameterProperties = this.transformParameterObject(parameter);

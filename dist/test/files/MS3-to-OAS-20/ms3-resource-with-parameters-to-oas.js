@@ -157,6 +157,7 @@ exports.oasResourceWithParameters = {
                     },
                     {
                         name: 'stringArray',
+                        required: false,
                         in: 'query',
                         description: 'description',
                         type: 'array',
