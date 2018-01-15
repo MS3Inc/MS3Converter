@@ -37,7 +37,7 @@ class ConvertResourcesToPaths {
     }
     getResponseHeaders(headers) {
         return headers.reduce((resultObject, header) => {
-            resultObject[header.displayName] = this.transformParameterObject(header);
+            resultObject[header.displayName] = this.transformParameterObject(header, null);
             return resultObject;
         }, {});
     }
@@ -86,11 +86,13 @@ class ConvertResourcesToPaths {
             return resultObject;
         }, {});
     }
-    transformParameterObject(parameter) {
+    transformParameterObject(parameter, paramIn) {
         const clonedParameter = lodash_1.cloneDeep(parameter);
         delete clonedParameter.displayName;
         delete clonedParameter.repeat;
         delete clonedParameter.example;
+        if (paramIn == 'path')
+            clonedParameter.required = true;
         if (clonedParameter.enum && !clonedParameter.enum.length)
             delete clonedParameter.enum;
         return lodash_1.pickBy(clonedParameter);
@@ -101,7 +103,7 @@ class ConvertResourcesToPaths {
                 name: parameter.displayName,
                 in: type
             };
-            const parameterProperties = this.transformParameterObject(parameter);
+            const parameterProperties = this.transformParameterObject(parameter, type);
             if (parameter.repeat) {
                 convertedParameter = Object.assign({}, convertedParameter, { type: 'array', items: parameterProperties });
                 if (parameterProperties.description)

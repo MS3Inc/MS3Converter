@@ -10,7 +10,7 @@ export const ms3ResourceWithPathParameters: MS3Interface.API = {
   entityTypeName: 'api',
   'resources': [
     {
-      'path': '/res',
+      'path': '/res/{path}',
       'name': 'res',
       'pathVariables': [
         {
@@ -21,7 +21,6 @@ export const ms3ResourceWithPathParameters: MS3Interface.API = {
           'default': '',
           'example': 'example string',
           'repeat': false,
-          'required': true,
           'enum': [
             'enum1',
             'enum2'
@@ -45,7 +44,7 @@ export const oasResourceWithPathParameters: OASInterface.API = {
   host: 'params',
   basePath: '/',
   paths: {
-    '/res': {
+    '/res/{path}': {
       parameters: [
         {
           name: 'path',
