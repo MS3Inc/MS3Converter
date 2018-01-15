@@ -176,11 +176,25 @@ class ConvertResourcesToPaths {
                 result[methodType] = this.getMethodObject(activeMethod, methodType, resource.name);
                 return result;
             }, {});
+            // get Parameters from parents and join them with cur pathVars
+            if (resource.parentId) {
+                resource.pathVariables = this.mergeParentPathVariables(resource.pathVariables, resource.parentId);
+            }
             if (resource.pathVariables && resource.pathVariables.length) {
                 resultObject[path].parameters = this.getParametersByType(resource.pathVariables, 'path');
             }
             return resultObject;
         }, {});
+    }
+    mergeParentPathVariables(pathVariables, parentId) {
+        const parent = lodash_1.find(this.API.resources, ['__id', parentId]);
+        if (parent.pathVariables && parent.pathVariables.length) {
+            parent.pathVariables.forEach(el => pathVariables.push(el));
+        }
+        if (parent && parent.parentId) {
+            parent.pathVariables = this.mergeParentPathVariables(parent.pathVariables, parent.parentId);
+        }
+        return pathVariables;
     }
     static create(api, asSingleFile) {
         return new ConvertResourcesToPaths(api, asSingleFile);
