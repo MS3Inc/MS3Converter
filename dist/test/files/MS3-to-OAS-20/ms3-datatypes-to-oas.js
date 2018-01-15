@@ -23,6 +23,18 @@ exports.ms3DataTypes = {
             'type': 'object',
             'properties': [
                 {
+                    'name': 'NestedObject',
+                    'type': 'object',
+                    'properties': [
+                        {
+                            'name': 'someString',
+                            'type': 'string',
+                            'required': true
+                        }
+                    ],
+                    'required': true
+                },
+                {
                     'name': 'StringProperty',
                     'type': 'string',
                     'description': 'Description here',
@@ -60,6 +72,7 @@ exports.ms3DataTypes = {
                 {
                     'name': 'default-3',
                     'mode': 'include',
+                    'required': true,
                     'includes': 'c6710947-1eed-472d-a4f3-c4807c24fe6b'
                 },
                 {
@@ -160,7 +173,24 @@ exports.oasDataTypes = {
         'ObjectSchema': {
             'title': 'ObjectSchema',
             'type': 'object',
+            'required': [
+                'NestedObject',
+                'StringProperty',
+                'BooleanProperty',
+                'default-3',
+            ],
             'properties': {
+                'NestedObject': {
+                    'properties': {
+                        'someString': {
+                            'type': 'string',
+                        },
+                    },
+                    'required': [
+                        'someString',
+                    ],
+                    'type': 'object',
+                },
                 'StringProperty': {
                     'type': 'string',
                     'description': 'Description here',
@@ -172,15 +202,13 @@ exports.oasDataTypes = {
                     'enum': [
                         'Ted',
                         'Bob'
-                    ],
-                    'required': true
+                    ]
                 },
                 'BooleanProperty': {
                     'type': 'boolean',
                     'description': 'Description here',
                     'example': false,
-                    'default': true,
-                    'required': true
+                    'default': true
                 },
                 'isNumber': {
                     'type': 'long'

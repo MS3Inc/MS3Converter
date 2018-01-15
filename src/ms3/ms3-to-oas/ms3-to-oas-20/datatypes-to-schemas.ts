@@ -41,7 +41,11 @@ export class ConvertDataTypesToSchemasOAS2 {
     }, {});
   }
 
-  convertType(dataType: DataType | DataTypeObject | DataTypePrimitive | DataTypeArray ) {
+  /**
+   * Convert datatype type field to types compatible with json schema
+   * @param dataType - data type
+   */
+  convertType(dataType: DataType | DataTypeObject | DataTypePrimitive | DataTypeArray) {
     if (dataType.type == 'nil') return null;
     let convertedType = <any> cloneDeep(dataType);
     delete convertedType.fileTypes;
@@ -88,6 +92,8 @@ export class ConvertDataTypesToSchemasOAS2 {
     delete convertedSchema.__id;
 
     if (convertedSchema.properties && schema.properties.length) {
+      const required = this.getRequiredPropertiesFromDataType(convertedSchema.properties);
+      if (required.length) convertedSchema.required = required;
       convertedSchema.properties = this.convertProperties(convertedSchema.properties);
     }
 
@@ -112,8 +118,16 @@ export class ConvertDataTypesToSchemasOAS2 {
 
   }
 
+  getRequiredPropertiesFromDataType(props: Array<object>): string[] {
+    return <string[]> props.reduce((resultArray: string[], prop: (DataTypeObject | DataTypePrimitive | DataTypeArray)) => {
+      if (prop.hasOwnProperty('required') && prop.required) resultArray.push(prop.name);
+      return resultArray;
+    }, []);
+  }
+
   convertProperties(props: Array<object>): Schema {
     return props.reduce( (resultObject: any, prop: (DataTypeObject | DataTypePrimitive | DataTypeArray)) => {
+      if (prop.required) delete prop.required;
       if (prop.includes) {
         const dataTypeName = this.getSchemaName(prop.includes);
         if (!dataTypeName) {
@@ -130,8 +144,10 @@ export class ConvertDataTypesToSchemasOAS2 {
           return resultObject;
         }
         delete resultObject[prop.name].name;
-        if (resultObject.properties && resultObject.properties.length) {
-          resultObject.properties = this.convertProperties(resultObject.properties);
+        if (resultObject[prop.name].properties && resultObject[prop.name].properties.length) {
+          const required = this.getRequiredPropertiesFromDataType(resultObject[prop.name].properties);
+          if (required.length) resultObject[prop.name].required = required;
+          resultObject[prop.name].properties = this.convertProperties(resultObject[prop.name].properties);
         }
       }
       return resultObject;
