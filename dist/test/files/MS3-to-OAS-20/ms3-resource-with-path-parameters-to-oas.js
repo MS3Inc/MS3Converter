@@ -9,7 +9,7 @@ exports.ms3ResourceWithPathParameters = {
     entityTypeName: 'api',
     'resources': [
         {
-            'path': '/res',
+            'path': '/res/{path}',
             'name': 'res',
             'pathVariables': [
                 {
@@ -20,7 +20,6 @@ exports.ms3ResourceWithPathParameters = {
                     'default': '',
                     'example': 'example string',
                     'repeat': false,
-                    'required': true,
                     'enum': [
                         'enum1',
                         'enum2'
@@ -43,7 +42,7 @@ exports.oasResourceWithPathParameters = {
     host: 'params',
     basePath: '/',
     paths: {
-        '/res': {
+        '/res/{path}': {
             parameters: [
                 {
                     name: 'path',

@@ -38,7 +38,7 @@ class ConvertResourcesToPaths {
 
   getResponseHeaders(headers: MS3.Parameter[]): OAS.HeadersObject {
     return headers.reduce( (resultObject: any, header: MS3.Parameter) => {
-      resultObject[header.displayName] = this.transformParameterObject(header);
+      resultObject[header.displayName] = this.transformParameterObject(header, null);
       return resultObject;
     }, {});
   }
@@ -91,11 +91,12 @@ class ConvertResourcesToPaths {
     }, {});
   }
 
-  transformParameterObject(parameter: MS3.Parameter): MS3.Parameter {
+  transformParameterObject(parameter: MS3.Parameter, paramIn: string): MS3.Parameter {
     const clonedParameter: MS3.Parameter = cloneDeep(parameter);
     delete clonedParameter.displayName;
     delete clonedParameter.repeat;
     delete clonedParameter.example;
+    if (paramIn == 'path') clonedParameter.required = true;
     if (clonedParameter.enum && !clonedParameter.enum.length) delete clonedParameter.enum;
     return pickBy(clonedParameter);
   }
@@ -107,7 +108,7 @@ class ConvertResourcesToPaths {
         in: type
       };
 
-      const parameterProperties = this.transformParameterObject(parameter);
+      const parameterProperties = this.transformParameterObject(parameter, type);
 
       if (parameter.repeat) {
         convertedParameter = {
