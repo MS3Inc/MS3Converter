@@ -136,6 +136,9 @@ test('MS3 schemas should be converted to OAS successfully', async() => {
       description: 'API description',
       version: '3.0'
     },
+    servers: [{
+      url: 'http://params'
+    }],
     paths: {},
     components: {
       schemas: {
@@ -226,6 +229,9 @@ test('MS3 schemas should be converted to OAS with references && external files s
       description: 'API description',
       version: '3.0'
     },
+    servers: [{
+      url: 'http://params'
+    }],
     paths: {},
     components: {
       schemas: {

@@ -35,6 +35,9 @@ exports.resultExamples = {
         description: 'API description',
         version: '3.0'
     },
+    servers: [{
+            url: 'http://params'
+        }],
     paths: {},
     components: {
         examples: {
@@ -57,6 +60,9 @@ exports.resultExamplesWithReferences = {
         description: 'API description',
         version: '3.0'
     },
+    servers: [{
+            url: 'http://params'
+        }],
     paths: {},
     components: {
         examples: {

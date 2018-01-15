@@ -10,7 +10,7 @@ interface Contact {
   name?: string;
   url?: string;
   email?: string;
-} 
+}
 
 interface License {
   name: string;
@@ -198,7 +198,22 @@ export interface Operation {
   externalDocs?: object; // TODO: create External Documentation Object interface
 }
 
-interface Server {}
+export interface Server {
+  url: String;
+  description?: String;
+  variables?: ServerVariable[];
+}
+
+export interface ServerVariable {
+  [propName: string]: ServerVariableParams;
+}
+
+export interface ServerVariableParams {
+  description?: any;
+  default?: any;
+  enum?: any[];
+  [propName: string]: any;
+}
 
 interface Tag {}
 

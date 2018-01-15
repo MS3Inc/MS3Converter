@@ -176,7 +176,6 @@ class ConvertResourcesToPaths {
                 result[methodType] = this.getMethodObject(activeMethod, methodType, resource.name);
                 return result;
             }, {});
-            // get Parameters from parents and join them with cur pathVars
             if (resource.parentId) {
                 resource.pathVariables = this.mergeParentPathVariables(resource.pathVariables, resource.parentId);
             }

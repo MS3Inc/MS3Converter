@@ -197,7 +197,6 @@ class ConvertResourcesToPaths {
         return result;
       }, {});
 
-      // get Parameters from parents and join them with cur pathVars
       if (resource.parentId) {
         resource.pathVariables = this.mergeParentPathVariables(resource.pathVariables, resource.parentId);
       }
@@ -205,7 +204,6 @@ class ConvertResourcesToPaths {
       if (resource.pathVariables && resource.pathVariables.length) {
         resultObject[path].parameters = this.getParametersByType(resource.pathVariables, 'path');
       }
-
 
       return resultObject;
     }, {});

@@ -24,6 +24,7 @@ class MS3toOAS30 {
             openapi: '3.0',
             info: this.convertSettings(),
             paths: {},
+            servers: this.convertServers(),
             components: {}
         };
         if (this.ms3API.libraries)
@@ -57,6 +58,25 @@ class MS3toOAS30 {
             API: this.oasAPI,
             externalFiles: this.externalFiles
         };
+    }
+    convertServers() {
+        const server = {
+            url: this.ms3API.settings.baseUri
+        };
+        if (this.ms3API.settings.baseUriParameters && this.ms3API.settings.baseUriParameters.length)
+            server.variables = lodash_1.map(this.ms3API.settings.baseUriParameters, param => {
+                const newParam = {};
+                if (param.enum && param.enum.length)
+                    newParam.enum = param.enum;
+                if (param.default)
+                    newParam.default = param.default;
+                if (param.description)
+                    newParam.description = param.description;
+                const newVariable = {};
+                newVariable[param.displayName] = newParam;
+                return newVariable;
+            });
+        return [server];
     }
     convertSettings() {
         if (!this.ms3API.settings.title) {
