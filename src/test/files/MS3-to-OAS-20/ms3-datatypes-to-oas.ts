@@ -185,7 +185,7 @@ export const oasDataTypes: OASInterface.API = {
           'required': true
         },
         'isNumber': {
-          'type': 'long'
+          'type': 'integer'
         },
         'isDateOnly': {
           'type': 'date'

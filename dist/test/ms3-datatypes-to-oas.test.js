@@ -202,7 +202,7 @@ test('MS3 schemas should be converted to OAS successfully', () => __awaiter(this
                             'required': true
                         },
                         'isNumber': {
-                            'type': 'long'
+                            'type': 'integer'
                         },
                         'isDateOnly': {
                             'type': 'date'
