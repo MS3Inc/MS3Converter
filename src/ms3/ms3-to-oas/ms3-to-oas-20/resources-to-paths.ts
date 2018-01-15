@@ -96,7 +96,15 @@ class ConvertResourcesToPaths {
     delete clonedParameter.displayName;
     delete clonedParameter.repeat;
     delete clonedParameter.example;
+    if (clonedParameter.maxLength) clonedParameter.maxLength = parseFloat(<string>clonedParameter.maxLength);
+    if (clonedParameter.minLength) clonedParameter.minLength = parseFloat(<string>clonedParameter.minLength);
+    if (clonedParameter.minimum) clonedParameter.minimum = parseFloat(<string>clonedParameter.minimum);
+    if (clonedParameter.maximum) clonedParameter.maximum = parseFloat(<string>clonedParameter.maximum);
     if (clonedParameter.enum && !clonedParameter.enum.length) delete clonedParameter.enum;
+    if (clonedParameter.type == 'integer' || clonedParameter.type == 'number') {
+      if (clonedParameter.default) clonedParameter.default = parseFloat(<string>clonedParameter.default);
+    }
+
     return pickBy(clonedParameter);
   }
 
