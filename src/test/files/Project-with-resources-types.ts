@@ -45,14 +45,6 @@ const originalProject: ApiInterfaces.API = {
               'displayName': 'dsdsd',
               'description': '',
               'type': 'integer',
-              'enum': [],
-              'pattern': '',
-              'minLength': '',
-              'maxLength': '',
-              'minimum': '',
-              'maximum': '',
-              'example': '',
-              'default': '',
               'repeat': false,
               'required': false
             }

@@ -91,8 +91,20 @@ class ConvertResourcesToPaths {
         delete clonedParameter.displayName;
         delete clonedParameter.repeat;
         delete clonedParameter.example;
+        if (clonedParameter.maxLength)
+            clonedParameter.maxLength = parseFloat(clonedParameter.maxLength);
+        if (clonedParameter.minLength)
+            clonedParameter.minLength = parseFloat(clonedParameter.minLength);
+        if (clonedParameter.minimum)
+            clonedParameter.minimum = parseFloat(clonedParameter.minimum);
+        if (clonedParameter.maximum)
+            clonedParameter.maximum = parseFloat(clonedParameter.maximum);
         if (clonedParameter.enum && !clonedParameter.enum.length)
             delete clonedParameter.enum;
+        if (clonedParameter.type == 'integer' || clonedParameter.type == 'number') {
+            if (clonedParameter.default)
+                clonedParameter.default = parseFloat(clonedParameter.default);
+        }
         return lodash_1.pickBy(clonedParameter);
     }
     getParametersByType(parameters, type) {

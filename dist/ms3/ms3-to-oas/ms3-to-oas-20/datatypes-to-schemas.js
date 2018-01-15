@@ -57,8 +57,6 @@ class ConvertDataTypesToSchemasOAS2 {
         return convertedType;
     }
     parseIntegerValues(schema) {
-        if (schema.maximum && schema.maximum.length)
-            schema.maximum = parseFloat(schema.maximum);
         if (schema.maxLength && schema.maxLength.length)
             schema.maxLength = parseFloat(schema.maxLength);
         if (schema.minLength && schema.minLength.length)
