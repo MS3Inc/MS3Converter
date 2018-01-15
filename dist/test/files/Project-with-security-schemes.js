@@ -27,14 +27,6 @@ const originalProject = {
                                 'displayName': 'dsdsdsd',
                                 'description': '',
                                 'type': 'integer',
-                                'enum': [],
-                                'pattern': '',
-                                'minLength': '',
-                                'maxLength': '',
-                                'minimum': '',
-                                'maximum': '',
-                                'example': '',
-                                'default': '',
                                 'repeat': false,
                                 'required': true
                             }
@@ -79,14 +71,6 @@ const originalProject = {
                         'displayName': 'name',
                         'description': '',
                         'type': 'number',
-                        'enum': [],
-                        'pattern': '',
-                        'minLength': '',
-                        'maxLength': '',
-                        'minimum': '',
-                        'maximum': '',
-                        'example': '',
-                        'default': '',
                         'repeat': false,
                         'required': false
                     }
