@@ -96,7 +96,7 @@ class ConvertResourcesToPaths {
     delete clonedParameter.displayName;
     delete clonedParameter.repeat;
     delete clonedParameter.example;
-    delete clonedParameter.required;
+    if (clonedParameter.enum && !clonedParameter.enum.length) delete clonedParameter.enum;
     return pickBy(clonedParameter);
   }
 
@@ -104,7 +104,8 @@ class ConvertResourcesToPaths {
     return parameters.map( (parameter: MS3.Parameter) => {
       let convertedParameter: any = {
         name: parameter.displayName,
-        in: type
+        in: type,
+        required: type == 'path' ? true : parameter.required || false
       };
 
       const parameterProperties = this.transformParameterObject(parameter);
@@ -197,12 +198,28 @@ class ConvertResourcesToPaths {
         return result;
       }, {});
 
+      if (resource.parentId) {
+        resource.pathVariables = this.mergeParentPathVariables(resource.pathVariables, resource.parentId);
+      }
+
       if (resource.pathVariables && resource.pathVariables.length) {
         resultObject[path].parameters = this.getParametersByType(resource.pathVariables, 'path');
       }
 
       return resultObject;
     }, {});
+  }
+
+  private mergeParentPathVariables(pathVariables: MS3.Parameter[], parentId: string) {
+    const parent = find(this.API.resources, ['__id', parentId]);
+    if (parent.pathVariables && parent.pathVariables.length) {
+      parent.pathVariables.forEach(el => pathVariables.push(el));
+    }
+    if (parent && parent.parentId) {
+      parent.pathVariables = this.mergeParentPathVariables(parent.pathVariables, parent.parentId);
+    }
+
+    return pathVariables;
   }
 
   static create(api: MS3.API, asSingleFile: boolean) {

@@ -211,7 +211,7 @@ exports.oasDataTypes = {
                     'default': true
                 },
                 'isNumber': {
-                    'type': 'long'
+                    'type': 'integer'
                 },
                 'isDateOnly': {
                     'type': 'date'

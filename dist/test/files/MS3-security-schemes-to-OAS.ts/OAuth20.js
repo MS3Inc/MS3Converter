@@ -67,6 +67,9 @@ exports.resultOAuth20 = {
         description: 'API description',
         version: '3.0'
     },
+    servers: [{
+            url: 'http://params'
+        }],
     paths: {},
     components: {
         securitySchemes: {

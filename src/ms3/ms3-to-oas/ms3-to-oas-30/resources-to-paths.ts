@@ -89,6 +89,7 @@ class ConvertResourcesToPaths {
     delete clonedParameter.required;
     delete clonedParameter.example;
     if (clonedParameter.type == 'number') clonedParameter.type = 'long';
+    if (clonedParameter.enum && !clonedParameter.enum.length) delete clonedParameter.enum;
     return pickBy(clonedParameter);
   }
 

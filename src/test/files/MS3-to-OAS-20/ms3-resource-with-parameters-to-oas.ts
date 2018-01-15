@@ -127,6 +127,7 @@ export const oasResourceWithParameters: OASInterface.API = {
             type: 'string',
             default: 'default',
             pattern: '.*',
+            required: true,
             enum: [
               'enum1',
               'enum2'
@@ -140,6 +141,7 @@ export const oasResourceWithParameters: OASInterface.API = {
             description: 'description',
             type: 'integer',
             default: 1,
+            required: true,
             enum: [
               'enum1',
               'enum2'
@@ -152,10 +154,12 @@ export const oasResourceWithParameters: OASInterface.API = {
             in: 'header',
             description: 'description',
             type: 'boolean',
+            required: true,
             default: true
           },
           {
             name: 'stringArray',
+            required: false,
             in: 'query',
             description: 'description',
             type: 'array',
@@ -176,6 +180,7 @@ export const oasResourceWithParameters: OASInterface.API = {
             in: 'query',
             description: 'description',
             type: 'number',
+            required: true,
             default: 1
           }
         ]

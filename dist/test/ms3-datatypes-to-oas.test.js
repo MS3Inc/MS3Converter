@@ -140,6 +140,9 @@ test('MS3 schemas should be converted to OAS successfully', () => __awaiter(this
             description: 'API description',
             version: '3.0'
         },
+        servers: [{
+                url: 'http://params'
+            }],
         paths: {},
         components: {
             schemas: {
@@ -204,7 +207,7 @@ test('MS3 schemas should be converted to OAS successfully', () => __awaiter(this
                             'default': true
                         },
                         'isNumber': {
-                            'type': 'long'
+                            'type': 'integer'
                         },
                         'isDateOnly': {
                             'type': 'date'
@@ -231,6 +234,9 @@ test('MS3 schemas should be converted to OAS with references && external files s
             description: 'API description',
             version: '3.0'
         },
+        servers: [{
+                url: 'http://params'
+            }],
         paths: {},
         components: {
             schemas: {

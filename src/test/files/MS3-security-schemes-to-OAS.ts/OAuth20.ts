@@ -69,6 +69,9 @@ export const resultOAuth20: OAS = {
     description: 'API description',
     version: '3.0'
   },
+  servers: [{
+    url: 'http://params'
+  }],
   paths: {},
   components: {
     securitySchemes: {

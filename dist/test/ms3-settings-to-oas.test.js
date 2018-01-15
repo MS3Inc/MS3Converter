@@ -31,6 +31,9 @@ test('MS3 settings should be converted to OAS successfully', () => __awaiter(thi
             description: 'API description',
             version: '3.0',
         },
+        servers: [{
+                url: 'http://params'
+            }],
         components: {},
         paths: {}
     };

@@ -49,7 +49,7 @@ class ConvertDataTypesToSchemasOAS2 {
         convertedType = this.parseIntegerValues(convertedType);
         switch (convertedType.type) {
             case 'number':
-                convertedType.type = 'long';
+                convertedType.type = 'integer';
                 break;
             case 'datetime':
                 convertedType.type = 'dateTime';

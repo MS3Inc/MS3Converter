@@ -46,6 +46,9 @@ export const resultNestedResources: OAS = {
     description: 'API description',
     version: '3.0'
   },
+  servers: [{
+    url: 'http://params'
+  }],
   paths: {
     '/res': {
       get: {

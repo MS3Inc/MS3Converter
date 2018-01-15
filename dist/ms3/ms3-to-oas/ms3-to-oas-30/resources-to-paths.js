@@ -78,6 +78,8 @@ class ConvertResourcesToPaths {
         delete clonedParameter.example;
         if (clonedParameter.type == 'number')
             clonedParameter.type = 'long';
+        if (clonedParameter.enum && !clonedParameter.enum.length)
+            delete clonedParameter.enum;
         return lodash_1.pickBy(clonedParameter);
     }
     getArrayTypeSchema(parameter) {
