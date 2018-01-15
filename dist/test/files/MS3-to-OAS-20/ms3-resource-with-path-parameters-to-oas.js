@@ -51,6 +51,7 @@ exports.oasResourceWithPathParameters = {
                     description: 'description',
                     type: 'string',
                     pattern: '.*',
+                    required: true,
                     enum: [
                         'enum1',
                         'enum2'

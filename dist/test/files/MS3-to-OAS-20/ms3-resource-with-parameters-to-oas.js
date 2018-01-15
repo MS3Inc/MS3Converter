@@ -125,6 +125,7 @@ exports.oasResourceWithParameters = {
                         type: 'string',
                         default: 'default',
                         pattern: '.*',
+                        required: true,
                         enum: [
                             'enum1',
                             'enum2'
@@ -138,6 +139,7 @@ exports.oasResourceWithParameters = {
                         description: 'description',
                         type: 'integer',
                         default: 1,
+                        required: true,
                         enum: [
                             'enum1',
                             'enum2'
@@ -150,6 +152,7 @@ exports.oasResourceWithParameters = {
                         in: 'header',
                         description: 'description',
                         type: 'boolean',
+                        required: true,
                         default: true
                     },
                     {
@@ -174,6 +177,7 @@ exports.oasResourceWithParameters = {
                         in: 'query',
                         description: 'description',
                         type: 'number',
+                        required: true,
                         default: 1
                     }
                 ]
