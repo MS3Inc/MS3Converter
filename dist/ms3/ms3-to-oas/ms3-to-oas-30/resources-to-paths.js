@@ -76,10 +76,22 @@ class ConvertResourcesToPaths {
         delete clonedParameter.repeat;
         delete clonedParameter.required;
         delete clonedParameter.example;
+        if (clonedParameter.maxLength)
+            clonedParameter.maxLength = parseFloat(clonedParameter.maxLength);
+        if (clonedParameter.minLength)
+            clonedParameter.minLength = parseFloat(clonedParameter.minLength);
+        if (clonedParameter.minimum)
+            clonedParameter.minimum = parseFloat(clonedParameter.minimum);
+        if (clonedParameter.maximum)
+            clonedParameter.maximum = parseFloat(clonedParameter.maximum);
         if (clonedParameter.type == 'number')
             clonedParameter.type = 'long';
         if (clonedParameter.enum && !clonedParameter.enum.length)
             delete clonedParameter.enum;
+        if (clonedParameter.type == 'integer' || clonedParameter.type == 'long') {
+            if (clonedParameter.default)
+                clonedParameter.default = parseFloat(clonedParameter.default);
+        }
         return lodash_1.pickBy(clonedParameter);
     }
     getArrayTypeSchema(parameter) {
@@ -149,8 +161,24 @@ class ConvertResourcesToPaths {
                 result[methodType] = this.getMethodObject(activeMethod, methodType, resource.name);
                 return result;
             }, {});
+            if (resource.parentId) {
+                resource.pathVariables = this.mergeParentPathVariables(resource.pathVariables, resource.parentId);
+            }
+            if (resource.pathVariables && resource.pathVariables.length) {
+                resultObject[path].parameters = this.getParametersByType(resource.pathVariables, 'path');
+            }
             return resultObject;
         }, {});
+    }
+    mergeParentPathVariables(pathVariables, parentId) {
+        const parent = lodash_1.find(this.API.resources, ['__id', parentId]);
+        if (parent.pathVariables && parent.pathVariables.length) {
+            parent.pathVariables.forEach(el => pathVariables.push(el));
+        }
+        if (parent && parent.parentId) {
+            parent.pathVariables = this.mergeParentPathVariables(parent.pathVariables, parent.parentId);
+        }
+        return pathVariables;
     }
     static create(api) {
         return new ConvertResourcesToPaths(api);

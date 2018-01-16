@@ -88,8 +88,16 @@ class ConvertResourcesToPaths {
     delete clonedParameter.repeat;
     delete clonedParameter.required;
     delete clonedParameter.example;
+    if (clonedParameter.maxLength) clonedParameter.maxLength = parseFloat(<string>clonedParameter.maxLength);
+    if (clonedParameter.minLength) clonedParameter.minLength = parseFloat(<string>clonedParameter.minLength);
+    if (clonedParameter.minimum) clonedParameter.minimum = parseFloat(<string>clonedParameter.minimum);
+    if (clonedParameter.maximum) clonedParameter.maximum = parseFloat(<string>clonedParameter.maximum);
     if (clonedParameter.type == 'number') clonedParameter.type = 'long';
     if (clonedParameter.enum && !clonedParameter.enum.length) delete clonedParameter.enum;
+    if (clonedParameter.type == 'integer' || clonedParameter.type == 'long') {
+      if (clonedParameter.default) clonedParameter.default = parseFloat(<string>clonedParameter.default);
+    }
+
     return pickBy(clonedParameter);
   }
 
@@ -167,8 +175,28 @@ class ConvertResourcesToPaths {
         return result;
       }, {});
 
+      if (resource.parentId) {
+        resource.pathVariables = this.mergeParentPathVariables(resource.pathVariables, resource.parentId);
+      }
+
+      if (resource.pathVariables && resource.pathVariables.length) {
+        resultObject[path].parameters = this.getParametersByType(resource.pathVariables, 'path');
+      }
+
       return resultObject;
     }, {});
+  }
+
+  private mergeParentPathVariables(pathVariables: MS3.Parameter[], parentId: string) {
+    const parent = find(this.API.resources, ['__id', parentId]);
+    if (parent.pathVariables && parent.pathVariables.length) {
+      parent.pathVariables.forEach(el => pathVariables.push(el));
+    }
+    if (parent && parent.parentId) {
+      parent.pathVariables = this.mergeParentPathVariables(parent.pathVariables, parent.parentId);
+    }
+
+    return pathVariables;
   }
 
   static create(api: MS3.API) {
