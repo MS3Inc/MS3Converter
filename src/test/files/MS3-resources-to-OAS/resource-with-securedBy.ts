@@ -60,9 +60,11 @@ export const resultResourceWithSecuredBy: OAS = {
       get: {
         operationId: 'RES_GET',
         responses: {},
-        security: {
-          'auth20': []
-        }
+        security: [
+          {
+            'auth20': []
+          }
+        ]
       }
     }
   },

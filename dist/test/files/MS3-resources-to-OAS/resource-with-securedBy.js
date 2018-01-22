@@ -58,9 +58,11 @@ exports.resultResourceWithSecuredBy = {
             get: {
                 operationId: 'RES_GET',
                 responses: {},
-                security: {
-                    'auth20': []
-                }
+                security: [
+                    {
+                        'auth20': []
+                    }
+                ]
             }
         }
     },

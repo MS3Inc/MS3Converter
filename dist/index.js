@@ -21,6 +21,8 @@ function validateConvertFormats(from, to) {
 function getLoaderByFormat(format, path) {
     if (format == 'ms3_1')
         return Ms3.loader.create(path);
+    if (format == 'oas')
+        return OAS.loader.create(path);
     throw new Error(`Loader of format ${format} does not exist.`);
 }
 function getConverterByFormat(format, source, options) {

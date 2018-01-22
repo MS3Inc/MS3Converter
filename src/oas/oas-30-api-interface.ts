@@ -10,7 +10,7 @@ interface Contact {
   name?: string;
   url?: string;
   email?: string;
-}
+} 
 
 interface License {
   name: string;
@@ -19,6 +19,7 @@ interface License {
 
 export interface ReferenceObject {
   '$ref': string;
+  [index: string]: string;
 }
 
 export interface SchemaObject {
@@ -50,6 +51,7 @@ export interface SchemaObject {
   default?: number | string | boolean;
   example?: any;
   required?: string[];
+  [index: string]: any;
 }
 
 export interface Schema {
@@ -69,7 +71,7 @@ interface Encoding {
   [propName: string]: EncodingObject;
 }
 
-interface MediaTypeObject {
+export interface MediaTypeObject {
   schema?: SchemaObject | ReferenceObject;
   example?: any;
   examples?: Example;
@@ -107,7 +109,7 @@ export interface Example {
   [propName: string]: ExampleObject | ReferenceObject;
 }
 
-interface RequestBodyObject {
+export interface RequestBodyObject {
   description?: string;
   content: MediaType;
   required?: boolean;
@@ -145,6 +147,7 @@ interface OAuthFlows {
   password?: OAuthFlow;
   clientCredentials?: OAuthFlow;
   authorizationCode?: OAuthFlow;
+  [propName: string]: any;
 }
 
 export interface SecuritySchemeObject {
@@ -156,6 +159,7 @@ export interface SecuritySchemeObject {
   bearerFormat?: string;
   flows?: OAuthFlows;
   openIdConnectUrl?: string;
+  [propName: string]: any;
 }
 
 export interface SecurityScheme {
@@ -193,7 +197,7 @@ export interface Operation {
   responses: ResponsesObject;
   tags?: string[];
   deprecated?: boolean;
-  security?: SecurityRequirement;
+  security?: SecurityRequirement[];
   servers?: Server[];
   callbacks?: object; // TODO: create Callback Object interface
   externalDocs?: object; // TODO: create External Documentation Object interface
@@ -220,7 +224,7 @@ interface Tag {}
 
 interface ExternalDocs {}
 
-interface PathItemObject {
+export interface PathItemObject {
   '$ref'?: string;
   summary?: string;
   description?: string;

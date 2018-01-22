@@ -5,13 +5,13 @@ import * as Library from './ms3-v1-library-interface';
  */
 
 type mediaType = 'any/*' | 'application/json' | 'application/xml' | 'application/sql' | 'application/pdf' | 'text/plain' | 'text/html' | 'text/xml' | 'text/json' | 'application/octet-stream' | 'application/x-www-form-urlencoded';
-type protocol = 'HTTP' | 'HTTPS';
+type protocol = 'HTTP' | 'HTTPS' | 'http' | 'https';
 export type parameterType = 'string' | 'integer' | 'number' | 'boolean' | 'date';
-type datatypeType = 'object' | 'string' | 'integer' | 'number' | 'boolean' | 'array' | 'date-only' | 'time-only' | 'datetime' | 'datetime-only' | 'file' | 'nil';
+export type datatypeType = 'object' | 'string' | 'integer' | 'number' | 'boolean' | 'array' | 'date-only' | 'time-only' | 'datetime' | 'datetime-only' | 'file' | 'nil';
 type numberFormat = 'int64' | 'int32' | 'int16' | 'int8' | 'double' | 'float';
 type dateFormat = 'rfc3339' | 'rfc2616';
 type exampleFormat = 'json' | 'xml' | 'txt';
-type contentType = 'application/json' | 'application/xml' | 'application/sql' | 'application/pdf' | 'text/plain' | 'text/html' | 'text/xml' | 'text/json' | 'application/octet-stream' | 'application/x-www-form-urlencoded';
+export type contentType = 'application/json' | 'application/xml' | 'application/sql' | 'application/pdf' | 'text/plain' | 'text/html' | 'text/xml' | 'text/json' | 'application/octet-stream' | 'application/x-www-form-urlencoded';
 type methodType = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'OPTIONS' | 'HEAD' | 'TRACE';
 export type entityName = 'api' | 'library' | 'overlay' | 'extension';
 export type securitySchemeType = 'OAuth 1.0' | 'OAuth 2.0' | 'Basic Authentication' | 'Digest Authentication' | 'Pass Through' | 'x-Other';
@@ -69,7 +69,7 @@ export interface DataTypeArray extends DataTypePrimitive {
 }
 
 export interface DataType extends DataTypePrimitive {
-  __id: string;
+  __id?: string;
   name: string;
   properties?: (DataTypeObject | DataTypePrimitive | DataTypeArray)[];
   items?: DataTypeArray | DataTypePrimitive;

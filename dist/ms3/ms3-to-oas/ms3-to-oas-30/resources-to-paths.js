@@ -5,7 +5,7 @@ class ConvertResourcesToPaths {
     constructor(API) {
         this.API = API;
     }
-    getSecuritySchemaByName(id) {
+    getSecuritySchemaById(id) {
         return lodash_1.find(this.API.securitySchemes, ['__id', id]);
     }
     getParentResourcePath(id) {
@@ -126,13 +126,16 @@ class ConvertResourcesToPaths {
         return convertedParameters;
     }
     getSecurityRequirement(securedBy) {
-        return securedBy.reduce((resultObject, id) => {
-            const securitySchema = this.getSecuritySchemaByName(id);
+        return lodash_1.reduce(securedBy, (result, id) => {
+            const securitySchema = this.getSecuritySchemaById(id);
+            const newObj = {
+                [securitySchema.name]: []
+            };
             if (securitySchema.type != 'OAuth 2.0' && securitySchema.type != 'Basic Authentication')
-                return resultObject;
-            resultObject[securitySchema.name] = [];
-            return resultObject;
-        }, {});
+                return result;
+            result.push(newObj);
+            return result;
+        }, []);
     }
     getMethodObject(method, methodType, pathName) {
         const resultObject = {
