@@ -9,7 +9,7 @@ const fileExistsPromise = promisify(exists);
 const rmdirPromise = promisify(rmdir);
 
 test('MS3 examples should be converted to OAS and included inline successfully', async () => {
-  await expect(MS3toOAS.create(originalExamples).convert()).resolves.toEqual(resultExamples);
+  expect(JSON.parse( <string> await MS3toOAS.create(originalExamples).convert() )).toEqual(resultExamples);
 });
 
 test('MS3 examples should be converted to OAS with references && external files should be created in "/examples" folder', async () => {
@@ -19,7 +19,7 @@ test('MS3 examples should be converted to OAS with references && external files 
     destinationPath: './'
   };
 
-  await expect(MS3toOAS.create(originalExamples, config).convert()).resolves.toEqual(resultExamplesWithReferences);
+  expect(JSON.parse( <string> await MS3toOAS.create(originalExamples, config).convert() )).toEqual(resultExamplesWithReferences);
 
   const mainFileExist = await fileExistsPromise('./api.json');
   const examplesFolderExist = await fileExistsPromise('./examples/exampleJSON.json');

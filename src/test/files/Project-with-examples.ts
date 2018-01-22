@@ -37,11 +37,14 @@ export const resultExamples: OAS = {
     description: 'API description',
     version: '3.0'
   },
+  servers: [{
+    url: 'http://params'
+  }],
   paths: {},
   components: {
     examples: {
       'exampleJSON': {
-        value: '{"some": "example","name": "value"}'
+        value: {'some': 'example', 'name': 'value'}
       },
       'exampleTXT': {
         value: 'example in txt'
@@ -60,6 +63,9 @@ export const resultExamplesWithReferences: OAS = {
     description: 'API description',
     version: '3.0'
   },
+  servers: [{
+    url: 'http://params'
+  }],
   paths: {},
   components: {
     examples: {

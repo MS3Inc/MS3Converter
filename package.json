@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "Converts between MS3, OAS(Swagger), Blueprint",
   "main": "dist/index.js",
+  "types": "src/index.d.ts",
   "scripts": {
     "start": "npm run build && npm run watch-ts",
     "test": "npm run build && node ./node_modules/.bin/jest --forceExit",
@@ -54,11 +55,13 @@
     "node-find-files2": "0.0.4",
     "path": "^0.12.7",
     "rmdir": "^1.2.0",
-    "unzip": "^0.1.11",
+    "url-parse": "^1.2.0",
     "uuid": "^3.1.0",
+    "unzip": "^0.1.11",
     "yamljs": "^0.3.0"
   },
   "devDependencies": {
+    "@types/url-parse": "^1.1.0",
     "@types/uuid": "^3.4.3",
     "@types/unzip": "^0.1.0",
     "@types/yamljs": "^0.2.30",

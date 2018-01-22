@@ -4,7 +4,7 @@ import { originalProjectWithExamples, resultProjectWithExamples } from './files/
 import { originalProjectWithDataTypes, resultProjectWithDataTypes } from './files/Merge-extension-with-api/merge-extension-with-api-datatypes';
 import { originalProjectWithTraits, resultProjectWithTraits } from './files/Merge-extension-with-api/merge-extension-with-api-traits';
 import { originalProjectWithResources, resultProjectWithResources } from './files/Merge-extension-with-api/merge-extension-with-api-resources';
-import { originalProjectWithSecuritySchemes, resultProjectWithSecuritySchemes } from './files/Merge-extension-with-api/merge-extension-with-api-securitySchemes';
+import { originalProjectWithSecuritySchemes, resultProjectWithSecuritySchemes } from './files/Merge-extension-with-api/merge-extension-with-api-securityschemes';
 import { originalProject, resultProject } from './files/Merge-extension-with-api/merge-extension-with-api';
 
 test('MS3 Extension and Api settings should be merged together successfully', async () => {

@@ -1,13 +1,13 @@
 import * as OAS from '../../../oas/oas-20-api-interface';
 import * as MS3 from '../../ms3-v1-api-interface';
 import { securitySchemeType } from '../../../oas/oas-30-api-interface';
-import { filter, find, cloneDeep } from 'lodash';
+import { filter, find, cloneDeep, pickBy } from 'lodash';
 
 class ConvertResourcesToPaths {
   constructor(private API: MS3.API, private asSingleFile: boolean) {}
 
-  getSecuritySchemaByName(securitySchemeName: string): MS3.SecurityScheme {
-    return find(this.API.securitySchemes, ['name', securitySchemeName]);
+  getSecuritySchemaById(id: string): MS3.SecurityScheme {
+    return find(this.API.securitySchemes, ['__id', id]);
   }
 
   getParentResourcePath(id: string): string {
@@ -47,8 +47,13 @@ class ConvertResourcesToPaths {
     if (this.asSingleFile) {
       return selectedExamples.reduce((resultExamples: any, selectedExample: string) => {
         const example = this.getExample(selectedExample);
+        let isJson;
+        try {
+          isJson = JSON.parse(example.content);
+        } catch (err) {}
+
         resultExamples[mediaType] = {
-          content: example.content
+          content: isJson ? isJson : example.content
         };
         return resultExamples;
       }, {});
@@ -91,16 +96,24 @@ class ConvertResourcesToPaths {
     delete clonedParameter.displayName;
     delete clonedParameter.repeat;
     delete clonedParameter.example;
-    delete clonedParameter.required;
+    if (clonedParameter.maxLength) clonedParameter.maxLength = parseFloat(<string>clonedParameter.maxLength);
+    if (clonedParameter.minLength) clonedParameter.minLength = parseFloat(<string>clonedParameter.minLength);
+    if (clonedParameter.minimum) clonedParameter.minimum = parseFloat(<string>clonedParameter.minimum);
+    if (clonedParameter.maximum) clonedParameter.maximum = parseFloat(<string>clonedParameter.maximum);
+    if (clonedParameter.enum && !clonedParameter.enum.length) delete clonedParameter.enum;
+    if (clonedParameter.type == 'integer' || clonedParameter.type == 'number') {
+      if (clonedParameter.default) clonedParameter.default = parseFloat(<string>clonedParameter.default);
+    }
 
-    return clonedParameter;
+    return pickBy(clonedParameter);
   }
 
   getParametersByType(parameters: MS3.Parameter[], type: string): OAS.ParameterObject[] {
     return parameters.map( (parameter: MS3.Parameter) => {
       let convertedParameter: any = {
         name: parameter.displayName,
-        in: type
+        in: type,
+        required: type == 'path' ? true : parameter.required || false
       };
 
       const parameterProperties = this.transformParameterObject(parameter);
@@ -149,17 +162,17 @@ class ConvertResourcesToPaths {
   }
 
   getSecurityRequirement(securedBy: string[]): OAS. SecurityRequirementObject[] {
-    return securedBy.reduce( (resultArray: any, securedByName: string) => {
-      const securitySchema: MS3.SecurityScheme = this.getSecuritySchemaByName(securedByName);
+    return securedBy.reduce( (resultArray: any, id: string) => {
+      const securitySchema: MS3.SecurityScheme = this.getSecuritySchemaById(id);
 
       if (securitySchema.type == 'OAuth 2.0') {
         resultArray.push({
-          [securedByName]: securitySchema.settings.scopes
+          [securitySchema.name]: securitySchema.settings.scopes
         });
       }
       if (securitySchema.type == 'Basic Authentication') {
         resultArray.push({
-          [securedByName]: []
+          [securitySchema.name]: []
         });
       }
 
@@ -193,12 +206,28 @@ class ConvertResourcesToPaths {
         return result;
       }, {});
 
+      if (resource.parentId) {
+        resource.pathVariables = this.mergeParentPathVariables(resource.pathVariables, resource.parentId);
+      }
+
       if (resource.pathVariables && resource.pathVariables.length) {
         resultObject[path].parameters = this.getParametersByType(resource.pathVariables, 'path');
       }
 
       return resultObject;
     }, {});
+  }
+
+  private mergeParentPathVariables(pathVariables: MS3.Parameter[], parentId: string) {
+    const parent = find(this.API.resources, ['__id', parentId]);
+    if (parent.pathVariables && parent.pathVariables.length) {
+      parent.pathVariables.forEach(el => pathVariables.push(el));
+    }
+    if (parent && parent.parentId) {
+      parent.pathVariables = this.mergeParentPathVariables(parent.pathVariables, parent.parentId);
+    }
+
+    return pathVariables;
   }
 
   static create(api: MS3.API, asSingleFile: boolean) {

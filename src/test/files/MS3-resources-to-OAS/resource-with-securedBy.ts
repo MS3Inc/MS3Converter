@@ -37,7 +37,7 @@ export const originalResourceWithSecuredBy: MS3 = {
         {
           'active': true,
           'name': 'GET',
-          'securedBy': ['auth20', 'Digest Auth']
+          'securedBy': ['a3c8a352-2b7f-4955-839d-d980da30ae4f', 'f068746b-acd9-40c8-af83-83a89095b0a1']
         }
       ],
       '__id': 'f068746b-acd9-40c8-af83-83a89095b0a0'
@@ -52,6 +52,9 @@ export const resultResourceWithSecuredBy: OAS = {
     description: 'API description',
     version: '3.0'
   },
+  servers: [{
+    url: 'http://params'
+  }],
   paths: {
     '/res': {
       get: {

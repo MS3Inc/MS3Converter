@@ -58,7 +58,6 @@ export interface SchemaObject {
   uniqueItems?: boolean;
   maxProperties?: number;
   minProperties?: number;
-  required?: boolean;
   enum?: string[];
   items?: SchemaObject | ReferenceObject;
   properties?: DefinitionsObject | ReferenceObject;
@@ -71,10 +70,12 @@ export interface SchemaObject {
   additionalProperties?: object;
   default?: number | string | boolean;
   example?: any;
+  required?: string[];
 }
 
 export interface DefinitionsObject {
-  [propName: string]: SchemaObject | ReferenceObject;
+  required?: string[];
+  [propName: string]: SchemaObject | ReferenceObject| string[];
 }
 
 interface BasicParameterFields {

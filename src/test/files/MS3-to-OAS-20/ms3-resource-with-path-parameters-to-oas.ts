@@ -18,10 +18,9 @@ export const ms3ResourceWithPathParameters: MS3Interface.API = {
           'type': 'string',
           'description': 'description',
           'pattern': '.*',
-          'default': 'default',
+          'default': '',
           'example': 'example string',
           'repeat': false,
-          'required': true,
           'enum': [
             'enum1',
             'enum2'
@@ -52,8 +51,8 @@ export const oasResourceWithPathParameters: OASInterface.API = {
           in: 'path',
           description: 'description',
           type: 'string',
-          default: 'default',
           pattern: '.*',
+          required: true,
           enum: [
             'enum1',
             'enum2'

@@ -1,13 +1,13 @@
 import { securitySchemeType } from '../../../oas/oas-30-api-interface';
 import * as OAS from '../../../oas/oas-30-api-interface';
 import * as MS3 from '../../ms3-v1-api-interface';
-import { filter, find, cloneDeep, reduce } from 'lodash';
+import { filter, find, cloneDeep, pickBy, reduce } from 'lodash';
 
 class ConvertResourcesToPaths {
   constructor(private API: MS3.API) {}
 
-  getSecuritySchemaByName(securitySchemeName: string): MS3.SecurityScheme {
-    return find(this.API.securitySchemes, ['name', securitySchemeName]);
+  getSecuritySchemaById(id: string): MS3.SecurityScheme {
+    return find(this.API.securitySchemes, ['__id', id]);
   }
 
   getParentResourcePath(id: string): string {
@@ -88,8 +88,17 @@ class ConvertResourcesToPaths {
     delete clonedParameter.repeat;
     delete clonedParameter.required;
     delete clonedParameter.example;
+    if (clonedParameter.maxLength) clonedParameter.maxLength = parseFloat(<string>clonedParameter.maxLength);
+    if (clonedParameter.minLength) clonedParameter.minLength = parseFloat(<string>clonedParameter.minLength);
+    if (clonedParameter.minimum) clonedParameter.minimum = parseFloat(<string>clonedParameter.minimum);
+    if (clonedParameter.maximum) clonedParameter.maximum = parseFloat(<string>clonedParameter.maximum);
     if (clonedParameter.type == 'number') clonedParameter.type = 'long';
-    return clonedParameter;
+    if (clonedParameter.enum && !clonedParameter.enum.length) delete clonedParameter.enum;
+    if (clonedParameter.type == 'integer' || clonedParameter.type == 'long') {
+      if (clonedParameter.default) clonedParameter.default = parseFloat(<string>clonedParameter.default);
+    }
+
+    return pickBy(clonedParameter);
   }
 
   getArrayTypeSchema(parameter: MS3.Parameter): OAS.SchemaObject {
@@ -129,11 +138,11 @@ class ConvertResourcesToPaths {
   }
 
   getSecurityRequirement(securedBy: string[]): OAS.SecurityRequirement[] {
-    return reduce(securedBy, (result: any, secureByName: string): OAS.SecurityRequirement[] => {
+    return reduce(securedBy, (result: any, id: string): OAS.SecurityRequirement[] => {
+      const securitySchema: MS3.SecurityScheme = this.getSecuritySchemaById(id);
       const newObj: OAS.SecurityRequirement = {
-        [secureByName]: []
+        [securitySchema.name]: []
       };
-      const securitySchema: MS3.SecurityScheme = this.getSecuritySchemaByName(secureByName);
       if (securitySchema.type != 'OAuth 2.0' && securitySchema.type != 'Basic Authentication') return result;
 
       result.push(newObj);
@@ -169,8 +178,28 @@ class ConvertResourcesToPaths {
         return result;
       }, {});
 
+      if (resource.parentId) {
+        resource.pathVariables = this.mergeParentPathVariables(resource.pathVariables, resource.parentId);
+      }
+
+      if (resource.pathVariables && resource.pathVariables.length) {
+        resultObject[path].parameters = this.getParametersByType(resource.pathVariables, 'path');
+      }
+
       return resultObject;
     }, {});
+  }
+
+  private mergeParentPathVariables(pathVariables: MS3.Parameter[], parentId: string) {
+    const parent = find(this.API.resources, ['__id', parentId]);
+    if (parent.pathVariables && parent.pathVariables.length) {
+      parent.pathVariables.forEach(el => pathVariables.push(el));
+    }
+    if (parent && parent.parentId) {
+      parent.pathVariables = this.mergeParentPathVariables(parent.pathVariables, parent.parentId);
+    }
+
+    return pathVariables;
   }
 
   static create(api: MS3.API) {

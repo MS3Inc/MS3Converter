@@ -7,10 +7,11 @@ import mergeTypesAndTraits from '../merge-resource-types-and-traits';
 import convertSecuritySchemes from './security-schemes-to-oas';
 import convertResourcesToPaths from './resources-to-paths';
 
-import { convertDataTypesToSchemas, convertExternalSchemas, convertExternalSchemasReferences } from '../datatypes-to-schemas';
+import { convertDataTypesToSchemas, convertExternalSchemas, convertExternalSchemasReferences } from './datatypes-to-schemas';
 import { convertInlineExamples, convertExternalExamples, convertExternalExampleReferences } from '../examples-to-oas';
 
 import { cloneDeep, map } from 'lodash';
+import * as urlParser from 'url-parse';
 
 class MS3toOAS20 {
   oasAPI: OAS20Interface.API;
@@ -27,12 +28,13 @@ class MS3toOAS20 {
   }
 
   convert() {
+    const parsedBaseUri: any = urlParser(this.ms3API.settings.baseUri || '/');
     this.oasAPI = {
       swagger: '2.0',
       info: this.convertSettings(),
       paths: {},
-      basePath: '/',
-      host: this.getPath(this.ms3API.settings.baseUri)
+      basePath: decodeURI(parsedBaseUri.pathname) || '/',
+      host: decodeURI(parsedBaseUri.host)
     };
 
     if (this.ms3API.libraries) this.ms3API = mergeLibraryToMs3(this.ms3API);
@@ -44,7 +46,7 @@ class MS3toOAS20 {
     }
 
     if (this.ms3API.dataTypes) {
-      if (this.options.destinationPath) {
+      if (this.options.destinationPath && !this.options.asSingleFile) {
         this.externalFiles.schemas = this.externalFiles.schemas.concat(convertExternalSchemas(this.ms3API, this.options.destinationPath));
         this.oasAPI.definitions = convertExternalSchemasReferences(this.ms3API);
       }
@@ -69,10 +71,6 @@ class MS3toOAS20 {
       API: this.oasAPI,
       externalFiles: this.externalFiles
     };
-  }
-
-  private getPath(baseUri: string): string {
-    return baseUri.split('://')[1];
   }
 
   private convertSettings(): OAS20Interface.Info {

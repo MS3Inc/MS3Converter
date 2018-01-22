@@ -18,8 +18,8 @@ export type securitySchemeType = 'OAuth 1.0' | 'OAuth 2.0' | 'Basic Authenticati
 export type signatures = 'HMAC-SHA1' | 'RSA-SHA1' | 'PLAINTEXT';
 
 export interface Parameter {
-  type: parameterType;
-  displayName: string;
+  type?: parameterType;
+  displayName?: string;
   description?: string;
   default?: string | boolean | number;
   example?: string | boolean | number;
@@ -54,6 +54,7 @@ export interface DataTypePrimitive {
   maxItems?: number;
   minItems?: number;
   includes?: string;
+  required?: boolean;
 }
 
 export interface DataTypeObject extends DataTypePrimitive {

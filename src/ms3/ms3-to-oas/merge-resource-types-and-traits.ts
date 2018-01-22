@@ -6,12 +6,12 @@ import { Method } from '../ms3-v1-api-interface';
 class MergeTypesAndTraits {
   constructor(private API: MS3.API) {}
 
-  getTrait(name: string): MS3.Trait {
-    return find(this.API.traits, ['name', name]);
+  getTrait(id: string): MS3.Trait {
+    return find(this.API.traits, ['__id', id]);
   }
 
-  getResourceType(name: string): MS3.ResourcesType {
-    return find(this.API.resourcesTypes, ['name', name]);
+  getResourceType(id: string): MS3.ResourcesType {
+    return find(this.API.resourcesTypes, ['__id', id]);
   }
 
   mergeParameters(originalParameters: MS3.Parameter[], parametersFromType: MS3.Parameter[]): MS3.Parameter[] {
@@ -62,7 +62,7 @@ class MergeTypesAndTraits {
   mergeResourceType(resource: MS3.Resource): MS3.Resource {
     const mergedResource = cloneDeep(resource);
     const resourceType = this.getResourceType(resource.type);
-
+    if (!resourceType) throw new Error(`Cannot find resource type with id: ${resource.type} in resource with path ${resource.path}`);
     if (resourceType.description && !resource.description) mergedResource.description = resourceType.description;
     if (resourceType.methods) mergedResource.methods = this.mergeMethods(resource.methods, resourceType.methods);
 

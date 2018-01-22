@@ -10,7 +10,7 @@ interface Contact {
   name?: string;
   url?: string;
   email?: string;
-}
+} 
 
 interface License {
   name: string;
@@ -38,7 +38,6 @@ export interface SchemaObject {
   uniqueItems?: boolean;
   maxProperties?: number;
   minProperties?: number;
-  required?: boolean; // TODO: Refactor string[]
   enum?: string[];
   items?: SchemaObject | ReferenceObject;
   properties?: Schema | ReferenceObject;
@@ -51,11 +50,13 @@ export interface SchemaObject {
   additionalProperties?: object;
   default?: number | string | boolean;
   example?: any;
+  required?: string[];
   [index: string]: any;
 }
 
 export interface Schema {
-  [propName: string]: SchemaObject | ReferenceObject;
+  required?: string[];
+  [propName: string]: SchemaObject | ReferenceObject| string[];
 }
 
 interface EncodingObject {
@@ -202,7 +203,22 @@ export interface Operation {
   externalDocs?: object; // TODO: create External Documentation Object interface
 }
 
-interface Server {}
+export interface Server {
+  url: String;
+  description?: String;
+  variables?: ServerVariable[];
+}
+
+export interface ServerVariable {
+  [propName: string]: ServerVariableParams;
+}
+
+export interface ServerVariableParams {
+  description?: any;
+  default?: any;
+  enum?: any[];
+  [propName: string]: any;
+}
 
 interface Tag {}
 
