@@ -52,9 +52,7 @@ class ConvertResourcesToPaths {
           isJson = JSON.parse(example.content);
         } catch (err) {}
 
-        resultExamples[mediaType] = {
-          content: isJson ? isJson : example.content
-        };
+        resultExamples[mediaType] = isJson ? isJson : example.content;
         return resultExamples;
       }, {});
     }
