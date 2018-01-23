@@ -130,10 +130,6 @@ class MS3toOAS20toMS3 {
          description: value.description,
       };
 
-      // if (value.content) {
-      //   convertedResponse.body = this.convertRequestBody(<OAS20Interface.RequestBodyObject>value);
-      // }
-
       const body = {
         contentType: <MS3Interface.contentType> 'application/json',
         type: '',
@@ -192,31 +188,8 @@ class MS3toOAS20toMS3 {
   }
 
   getRefId(name: string) {
-    let ID = '';
-
-    this.oasAPI.definitions = reduce(this.oasAPI.definitions, (result: any, value: any, key: string) => {
-      if (key == name) {
-        if (!value.__id) {
-          value.__id = v4();
-        }
-        ID = value.__id;
-        this.convertEntity(value, key);
-      }
-      result[key] = value;
-    }, {});
-    return ID;
-  }
-
-  /**
-   * Modify given entity and push it to respective collection of resources(dataTypes, examples) on resulting Ms3 API
-   */
-  convertEntity(data: any, name: string) {
-    if (!find(this.ms3API.dataTypes, {__id: data.__id})) {
-      data.name = name;
-      const schema = <any> {};
-      schema[name] = data;
-      this.ms3API.dataTypes.push(schemaToDataType(schema));
-    }
+    const foundDataType = find(this.ms3API.dataTypes, {name});
+    return foundDataType.__id;
   }
 
   private getParameters(parameters: OAS20Interface.ParameterObject[]): any {
