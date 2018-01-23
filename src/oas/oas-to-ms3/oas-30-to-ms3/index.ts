@@ -180,7 +180,7 @@ class MS3toOAS30toMS3 {
         const headers = reduce(value.headers, (result: any, value: any, key: string) => {
           value.name = key;
           result.push(value);
-          return value;
+          return result;
         }, []);
         if (headers.length) {
           convertedResponse.headers = this.convertParameters(headers);

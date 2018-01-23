@@ -107,8 +107,32 @@ class MS3toOAS20toMS3 {
             method.headers = parameters.headers;
         if (parameters.body)
             method.body = parameters.body;
-        // if (operation.responses) method.responses = this.convertResponses(<OAS20Interface.ResponsesObject>operation.responses);
+        if (operation.responses)
+            method.responses = this.convertResponses(operation.responses);
         return method;
+    }
+    convertResponses(responses) {
+        return lodash_1.reduce(responses, (resultArray, value, key) => {
+            const convertedResponse = {
+                code: key,
+                description: value.description,
+            };
+            // if (value.content) {
+            //   convertedResponse.body = this.convertRequestBody(<OAS20Interface.RequestBodyObject>value);
+            // }
+            if (value.headers) {
+                const headers = lodash_1.reduce(value.headers, (result, value, key) => {
+                    value.name = key;
+                    result.push(value);
+                    return result;
+                }, []);
+                if (headers.length) {
+                    convertedResponse.headers = this.convertParameters(headers);
+                }
+            }
+            resultArray.push(convertedResponse);
+            return resultArray;
+        }, []);
     }
     getParameters(parameters) {
         const query = lodash_1.filter(parameters, ['in', 'query']);

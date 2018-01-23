@@ -21,25 +21,19 @@ exports.ms3ResourceWithResponses = {
                     'responses': [
                         {
                             'code': '200',
-                            'body': [],
+                            'description': 'description',
                             'headers': [
                                 {
                                     'displayName': 'header',
                                     'description': 'description',
                                     'type': 'number',
-                                    'example': 3,
-                                    'default': 5,
-                                    'repeat': false,
-                                    'required': false
+                                    'default': 5
                                 },
                                 {
                                     'displayName': 'header2',
                                     'description': 'description2',
                                     'type': 'number',
-                                    'example': 3,
-                                    'default': 5,
-                                    'repeat': false,
-                                    'required': false
+                                    'default': 5
                                 }
                             ],
                         }

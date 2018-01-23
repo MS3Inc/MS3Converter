@@ -118,9 +118,36 @@ class MS3toOAS20toMS3 {
     if (parameters.queryParameters) method.queryParameters = parameters.queryParameters;
     if (parameters.headers) method.headers = parameters.headers;
     if (parameters.body) method.body = parameters.body;
-    // if (operation.responses) method.responses = this.convertResponses(<OAS20Interface.ResponsesObject>operation.responses);
+    if (operation.responses) method.responses = this.convertResponses(<OAS20Interface.ResponsesObject>operation.responses);
 
     return method;
+  }
+
+  convertResponses(responses: OAS20Interface.ResponsesObject): MS3Interface.Response[] {
+    return reduce(responses, (resultArray: any, value: any, key: string) => {
+      const convertedResponse: MS3Interface.Response = {
+         code: key,
+         description: value.description,
+      };
+
+      // if (value.content) {
+      //   convertedResponse.body = this.convertRequestBody(<OAS20Interface.RequestBodyObject>value);
+      // }
+
+      if (value.headers) {
+        const headers = reduce(value.headers, (result: any, value: any, key: string) => {
+          value.name = key;
+          result.push(value);
+          return result;
+        }, []);
+        if (headers.length) {
+          convertedResponse.headers = this.convertParameters(headers);
+        }
+      }
+
+      resultArray.push(convertedResponse);
+      return resultArray;
+    }, []);
   }
 
   private getParameters(parameters: OAS20Interface.ParameterObject[]): any {

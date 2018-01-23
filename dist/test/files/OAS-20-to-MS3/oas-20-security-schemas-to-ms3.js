@@ -19,6 +19,7 @@ exports.ms3SecuritySchemes = {
                     name: 'POST',
                     active: true,
                     description: 'MyDescription',
+                    responses: [],
                     securedBy: ['uuid']
                 }]
         }

@@ -119,7 +119,8 @@ exports.ms3Body = {
                             'contentType': 'application/json',
                             'type': 'uuid',
                         }
-                    ]
+                    ],
+                    'responses': []
                 }
             ],
             '__id': 'uuid'

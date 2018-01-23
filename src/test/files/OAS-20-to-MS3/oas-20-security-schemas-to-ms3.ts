@@ -20,6 +20,7 @@ export const ms3SecuritySchemes: MS3Interface.API = {
         name: 'POST',
         active: true,
         description: 'MyDescription',
+        responses: [],
         securedBy: ['uuid']
       }]
     }

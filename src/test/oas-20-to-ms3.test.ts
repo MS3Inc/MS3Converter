@@ -26,6 +26,6 @@ test('Swagger path body should be converted to MS3 successfully', async() => {
   expect(convertOAS20toMS3(oasBody)).toEqual(ms3Body);
 });
 
-// test('Swagger response should be converted to MS3 successfully', async() => {
-//   expect(convertOAS20toMS3(oasResourceWithResponses)).toEqual(ms3ResourceWithResponses);
-// });
+test('Swagger response should be converted to MS3 successfully', async() => {
+  expect(convertOAS20toMS3(oasResourceWithResponses)).toEqual(ms3ResourceWithResponses);
+});

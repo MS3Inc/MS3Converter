@@ -162,7 +162,7 @@ class MS3toOAS30toMS3 {
                 const headers = lodash_1.reduce(value.headers, (result, value, key) => {
                     value.name = key;
                     result.push(value);
-                    return value;
+                    return result;
                 }, []);
                 if (headers.length) {
                     convertedResponse.headers = this.convertParameters(headers);
