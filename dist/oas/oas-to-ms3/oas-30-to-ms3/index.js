@@ -159,7 +159,14 @@ class MS3toOAS30toMS3 {
                 convertedResponse.body = this.convertRequestBody(value);
             }
             if (value.headers) {
-                convertedResponse.headers = this.convertParameters(value.headers);
+                const headers = lodash_1.reduce(value.headers, (result, value, key) => {
+                    value.name = key;
+                    result.push(value);
+                    return value;
+                }, []);
+                if (headers.length) {
+                    convertedResponse.headers = this.convertParameters(headers);
+                }
             }
             resultArray.push(convertedResponse);
             return resultArray;
