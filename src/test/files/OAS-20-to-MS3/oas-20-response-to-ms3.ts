@@ -8,7 +8,13 @@ export const ms3ResourceWithResponses: MS3Interface.API = {
     version: '2.0',
     protocols: ['HTTP']
   },
-  dataTypes: [],
+  dataTypes: [{
+    __id: 'uuid',
+    type: 'string',
+    default: 'default',
+    description: 'desc',
+    name: 'schema',
+  }],
   securitySchemes: [],
   ms3_version: '1.0',
   entityTypeName: 'api',
@@ -37,6 +43,10 @@ export const ms3ResourceWithResponses: MS3Interface.API = {
                   'default': 5
                 }
               ],
+              body: [{
+                contentType: 'application/json',
+                type: 'uuid'
+              }]
             }
           ],
         }
@@ -44,67 +54,6 @@ export const ms3ResourceWithResponses: MS3Interface.API = {
       '__id': 'uuid'
     }
   ]
-};
-
-export const oasResourceWithResponsesAndInlineExamples: OASInterface.API = {
-  swagger: '2.0',
-  info: {
-    title: 'params',
-    version: '2.0'
-  },
-  host: 'params',
-  basePath: '/',
-  paths: {
-    '/res': {
-      get: {
-        operationId: 'RES_GET',
-        responses: {
-          '200': {
-            description: 'description',
-            schema: {
-              '$ref': '#/definitions/schema'
-            },
-            examples: {
-              'application/json': {
-                'content': {}
-              }
-            },
-            headers: {
-              'header': {
-                description: 'description',
-                type: 'number',
-                default: 5,
-              },
-              'header2': {
-                description: 'description2',
-                type: 'number',
-                default: 5,
-              }
-            }
-          },
-          '201': {
-            description: 'description',
-            schema: {
-              '$ref': '#/definitions/schema'
-            },
-            examples: {
-              'application/xml': {
-                content: '<xml></xml>'
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  definitions: {
-    'schema': {
-      'default': 'default',
-      'description': 'desc',
-      'title': 'schema',
-      'type': 'string',
-    }
-  }
 };
 
 export const oasResourceWithResponses: OASInterface.API = {
@@ -133,10 +82,21 @@ export const oasResourceWithResponses: OASInterface.API = {
                 type: 'number',
                 default: 5
               }
+            },
+            schema: {
+              '$ref': '#/definitions/schema'
             }
           }
         }
       }
+    }
+  },
+  definitions: {
+    'schema': {
+      'default': 'default',
+      'description': 'desc',
+      'title': 'schema',
+      'type': 'string',
     }
   }
 };

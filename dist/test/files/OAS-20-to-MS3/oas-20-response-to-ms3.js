@@ -7,7 +7,13 @@ exports.ms3ResourceWithResponses = {
         version: '2.0',
         protocols: ['HTTP']
     },
-    dataTypes: [],
+    dataTypes: [{
+            __id: 'uuid',
+            type: 'string',
+            default: 'default',
+            description: 'desc',
+            name: 'schema',
+        }],
     securitySchemes: [],
     ms3_version: '1.0',
     entityTypeName: 'api',
@@ -36,6 +42,10 @@ exports.ms3ResourceWithResponses = {
                                     'default': 5
                                 }
                             ],
+                            body: [{
+                                    contentType: 'application/json',
+                                    type: 'uuid'
+                                }]
                         }
                     ],
                 }
@@ -43,66 +53,6 @@ exports.ms3ResourceWithResponses = {
             '__id': 'uuid'
         }
     ]
-};
-exports.oasResourceWithResponsesAndInlineExamples = {
-    swagger: '2.0',
-    info: {
-        title: 'params',
-        version: '2.0'
-    },
-    host: 'params',
-    basePath: '/',
-    paths: {
-        '/res': {
-            get: {
-                operationId: 'RES_GET',
-                responses: {
-                    '200': {
-                        description: 'description',
-                        schema: {
-                            '$ref': '#/definitions/schema'
-                        },
-                        examples: {
-                            'application/json': {
-                                'content': {}
-                            }
-                        },
-                        headers: {
-                            'header': {
-                                description: 'description',
-                                type: 'number',
-                                default: 5,
-                            },
-                            'header2': {
-                                description: 'description2',
-                                type: 'number',
-                                default: 5,
-                            }
-                        }
-                    },
-                    '201': {
-                        description: 'description',
-                        schema: {
-                            '$ref': '#/definitions/schema'
-                        },
-                        examples: {
-                            'application/xml': {
-                                content: '<xml></xml>'
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    },
-    definitions: {
-        'schema': {
-            'default': 'default',
-            'description': 'desc',
-            'title': 'schema',
-            'type': 'string',
-        }
-    }
 };
 exports.oasResourceWithResponses = {
     swagger: '2.0',
@@ -130,10 +80,21 @@ exports.oasResourceWithResponses = {
                                 type: 'number',
                                 default: 5
                             }
+                        },
+                        schema: {
+                            '$ref': '#/definitions/schema'
                         }
                     }
                 }
             }
+        }
+    },
+    definitions: {
+        'schema': {
+            'default': 'default',
+            'description': 'desc',
+            'title': 'schema',
+            'type': 'string',
         }
     }
 };

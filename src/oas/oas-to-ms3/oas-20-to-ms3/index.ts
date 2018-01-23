@@ -134,6 +134,26 @@ class MS3toOAS20toMS3 {
       //   convertedResponse.body = this.convertRequestBody(<OAS20Interface.RequestBodyObject>value);
       // }
 
+      const body = {
+        contentType: <MS3Interface.contentType> 'application/json',
+        type: ''
+      };
+
+      if (value.schema && value.schema.$ref) {
+        const splitArr: string[] = value.schema.$ref.split('/');
+        const name: string = splitArr.pop();
+        body.type = this.getRefId(name);
+      } else if (value.schema) {
+        body.type = v4();
+        value.schema.__id = body.type;
+        this.ms3API.dataTypes.push(value.schema);
+      }
+
+      if (value.schema || value .examples) {
+        convertedResponse.body = [];
+        convertedResponse.body.push(body);
+      }
+
       if (value.headers) {
         const headers = reduce(value.headers, (result: any, value: any, key: string) => {
           value.name = key;
@@ -148,6 +168,34 @@ class MS3toOAS20toMS3 {
       resultArray.push(convertedResponse);
       return resultArray;
     }, []);
+  }
+
+  getRefId(name: string) {
+    let ID = '';
+
+    this.oasAPI.definitions = reduce(this.oasAPI.definitions, (result: any, value: any, key: string) => {
+      if (key == name) {
+        if (!value.__id) {
+          value.__id = v4();
+        }
+        ID = value.__id;
+        this.convertEntity(value, key);
+      }
+      result[key] = value;
+    }, {});
+    return ID;
+  }
+
+  /**
+   * Modify given entity and push it to respective collection of resources(dataTypes, examples) on resulting Ms3 API
+   */
+  convertEntity(data: any, name: string) {
+    if (!find(this.ms3API.dataTypes, {__id: data.__id})) {
+      data.name = name;
+      const schema = <any> {};
+      schema[name] = data;
+      this.ms3API.dataTypes.push(schemaToDataType(schema));
+    }
   }
 
   private getParameters(parameters: OAS20Interface.ParameterObject[]): any {

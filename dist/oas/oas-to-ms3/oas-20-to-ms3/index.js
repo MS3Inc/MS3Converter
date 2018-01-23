@@ -120,6 +120,24 @@ class MS3toOAS20toMS3 {
             // if (value.content) {
             //   convertedResponse.body = this.convertRequestBody(<OAS20Interface.RequestBodyObject>value);
             // }
+            const body = {
+                contentType: 'application/json',
+                type: ''
+            };
+            if (value.schema && value.schema.$ref) {
+                const splitArr = value.schema.$ref.split('/');
+                const name = splitArr.pop();
+                body.type = this.getRefId(name);
+            }
+            else if (value.schema) {
+                body.type = uuid_1.v4();
+                value.schema.__id = body.type;
+                this.ms3API.dataTypes.push(value.schema);
+            }
+            if (value.schema || value.examples) {
+                convertedResponse.body = [];
+                convertedResponse.body.push(body);
+            }
             if (value.headers) {
                 const headers = lodash_1.reduce(value.headers, (result, value, key) => {
                     value.name = key;
@@ -133,6 +151,31 @@ class MS3toOAS20toMS3 {
             resultArray.push(convertedResponse);
             return resultArray;
         }, []);
+    }
+    getRefId(name) {
+        let ID = '';
+        this.oasAPI.definitions = lodash_1.reduce(this.oasAPI.definitions, (result, value, key) => {
+            if (key == name) {
+                if (!value.__id) {
+                    value.__id = uuid_1.v4();
+                }
+                ID = value.__id;
+                this.convertEntity(value, key);
+            }
+            result[key] = value;
+        }, {});
+        return ID;
+    }
+    /**
+     * Modify given entity and push it to respective collection of resources(dataTypes, examples) on resulting Ms3 API
+     */
+    convertEntity(data, name) {
+        if (!lodash_1.find(this.ms3API.dataTypes, { __id: data.__id })) {
+            data.name = name;
+            const schema = {};
+            schema[name] = data;
+            this.ms3API.dataTypes.push(schemas_to_dataTypes_1.default(schema));
+        }
     }
     getParameters(parameters) {
         const query = lodash_1.filter(parameters, ['in', 'query']);
