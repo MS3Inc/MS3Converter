@@ -49,7 +49,7 @@ class MS3toOAS20toMS3 {
             title: info.title,
             baseUri: this.getBaseUri(),
             version: info.version,
-            protocols: this.oasAPI.schemes
+            protocols: this.oasAPI.schemes ? this.oasAPI.schemes : ['HTTP']
         };
         if (info.description)
             settings.description = info.description;

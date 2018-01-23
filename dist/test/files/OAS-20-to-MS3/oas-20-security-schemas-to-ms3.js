@@ -5,7 +5,8 @@ exports.ms3SecuritySchemes = {
         title: 'params',
         baseUri: 'http://params/',
         version: '2.0',
-        securedBy: ['uuid']
+        securedBy: ['uuid'],
+        protocols: ['HTTP']
     },
     ms3_version: '1.0',
     entityTypeName: 'api',

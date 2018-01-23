@@ -29,4 +29,7 @@ test('Swagger securityDefinitions should be converted to MS3 successfully', () =
 test('Swagger path body should be converted to MS3 successfully', () => __awaiter(this, void 0, void 0, function* () {
     expect(oas_20_to_ms3_1.default(oas_20_body_to_ms3_1.oasBody)).toEqual(oas_20_body_to_ms3_1.ms3Body);
 }));
+// test('Swagger response should be converted to MS3 successfully', async() => {
+//   expect(convertOAS20toMS3(oasResourceWithResponses)).toEqual(ms3ResourceWithResponses);
+// }); 
 //# sourceMappingURL=oas-20-to-ms3.test.js.map
