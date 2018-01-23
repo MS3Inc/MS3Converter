@@ -18,12 +18,11 @@ interface DataToWrite {
 }
 
 export default class MS3toOAS {
-  oasAPI: any;
   result: DataToWrite = {
     path: ''
   };
 
-  constructor(protected ms3API: any, protected options: any) {}
+  constructor(protected oasAPI: any, protected options: any) {}
 
   convertOAStoMS3(): MS3Interface {
     if (this.oasAPI.openapi) {

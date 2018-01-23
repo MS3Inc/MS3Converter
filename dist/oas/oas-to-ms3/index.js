@@ -14,8 +14,8 @@ const oas_30_to_ms3_1 = require("../oas-to-ms3/oas-30-to-ms3");
 const oas_20_to_ms3_1 = require("../oas-to-ms3/oas-20-to-ms3");
 const writeFilePromise = util_1.promisify(fs_1.writeFile);
 class MS3toOAS {
-    constructor(ms3API, options) {
-        this.ms3API = ms3API;
+    constructor(oasAPI, options) {
+        this.oasAPI = oasAPI;
         this.options = options;
         this.result = {
             path: ''
