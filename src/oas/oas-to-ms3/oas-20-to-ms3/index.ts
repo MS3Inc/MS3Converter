@@ -130,10 +130,10 @@ class MS3toOAS20toMS3 {
          description: value.description,
       };
 
-      const body = {
-        contentType: <MS3Interface.contentType> 'application/json',
+      const body: MS3Interface.Body = {
+        contentType: 'application/json',
         type: '',
-        selectedExamples: <any>[]
+        selectedExamples: []
       };
 
       if (value.schema && value.schema.$ref) {
