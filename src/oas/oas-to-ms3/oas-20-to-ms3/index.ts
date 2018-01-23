@@ -136,7 +136,8 @@ class MS3toOAS20toMS3 {
 
       const body = {
         contentType: <MS3Interface.contentType> 'application/json',
-        type: ''
+        type: '',
+        selectedExamples: <any>[]
       };
 
       if (value.schema && value.schema.$ref) {
@@ -147,6 +148,10 @@ class MS3toOAS20toMS3 {
         body.type = v4();
         value.schema.__id = body.type;
         this.ms3API.dataTypes.push(value.schema);
+      }
+
+      if (value.examples) {
+        body.selectedExamples = this.convertExamples(value.examples);
       }
 
       if (value.schema || value .examples) {
@@ -166,6 +171,22 @@ class MS3toOAS20toMS3 {
       }
 
       resultArray.push(convertedResponse);
+      return resultArray;
+    }, []);
+  }
+
+
+  convertExamples(examples: Object): string[] {
+    return reduce(examples, (resultArray: any, value: any, key: string) => {
+      const ID = v4();
+      if (!this.ms3API.examples) this.ms3API.examples = [];
+      this.ms3API.examples.push({
+        __id: ID,
+        title: 'Examples-' + (this.ms3API.examples.length + 1),
+        format: 'json',
+        content: JSON.stringify(value)
+      });
+      resultArray.push(ID);
       return resultArray;
     }, []);
   }

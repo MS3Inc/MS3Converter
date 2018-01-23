@@ -15,6 +15,12 @@ exports.ms3ResourceWithResponses = {
             name: 'schema',
         }],
     securitySchemes: [],
+    examples: [{
+            __id: 'uuid',
+            title: 'Examples-1',
+            format: 'json',
+            content: '{\"name\":\"Tom\"}'
+        }],
     ms3_version: '1.0',
     entityTypeName: 'api',
     'resources': [
@@ -44,7 +50,8 @@ exports.ms3ResourceWithResponses = {
                             ],
                             body: [{
                                     contentType: 'application/json',
-                                    type: 'uuid'
+                                    type: 'uuid',
+                                    selectedExamples: ['uuid']
                                 }]
                         }
                     ],
@@ -79,6 +86,11 @@ exports.oasResourceWithResponses = {
                                 description: 'description2',
                                 type: 'number',
                                 default: 5
+                            }
+                        },
+                        examples: {
+                            'application/json': {
+                                'name': 'Tom'
                             }
                         },
                         schema: {
