@@ -22,11 +22,11 @@ class MS3toOAS {
         };
     }
     convertOAStoMS3() {
-        if (this.oasAPI.openapi) {
-            return oas_30_to_ms3_1.default(this.oasAPI);
+        if (this.oasAPI.api.openapi) {
+            return oas_30_to_ms3_1.default(this.oasAPI.api);
         }
-        else if (this.oasAPI.swagger == '2.0') {
-            return oas_20_to_ms3_1.default(this.oasAPI);
+        else if (this.oasAPI.api.swagger == '2.0') {
+            return oas_20_to_ms3_1.default(this.oasAPI.api);
         }
         else {
             throw new Error('Wrong Swagger format');

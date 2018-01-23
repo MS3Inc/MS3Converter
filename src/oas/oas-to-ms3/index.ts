@@ -25,11 +25,11 @@ export default class MS3toOAS {
   constructor(protected oasAPI: any, protected options: any) {}
 
   convertOAStoMS3(): MS3Interface {
-    if (this.oasAPI.openapi) {
-      return convertOAS30toMS3(this.oasAPI);
+    if (this.oasAPI.api.openapi) {
+      return convertOAS30toMS3(this.oasAPI.api);
     }
-    else if (this.oasAPI.swagger == '2.0') {
-      return convertOAS20toMS3(this.oasAPI);
+    else if (this.oasAPI.api.swagger == '2.0') {
+      return convertOAS20toMS3(this.oasAPI.api);
     }
     else {
       throw new Error('Wrong Swagger format');
