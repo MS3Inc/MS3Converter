@@ -16,6 +16,7 @@ class ConvertSecuritySchemes {
     const resultObject: any = {
     };
 
+    if (!securityScheme.flows) return null;
     const validGrants = intersection(Object.keys(securityScheme.flows), ['implicit', 'password', 'clientCredentials', 'authorizationCode']);
     if (!validGrants.length) return null;
 

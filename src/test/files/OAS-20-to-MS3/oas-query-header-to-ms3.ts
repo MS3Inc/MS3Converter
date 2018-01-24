@@ -75,6 +75,7 @@ export const ms3HeaderQuery: MS3Interface.API = {
           'active': true,
           'name': 'POST',
           'description': 'MyDescription',
+          'responses': [],
           'headers': [
             {
               default: 'default',

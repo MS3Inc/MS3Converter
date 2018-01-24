@@ -121,7 +121,8 @@ export const ms3Body: MS3Interface.API = {
               'contentType': 'application/json',
               'type': 'uuid',
             }
-          ]
+          ],
+          'responses': []
         }
       ],
       '__id': 'uuid'

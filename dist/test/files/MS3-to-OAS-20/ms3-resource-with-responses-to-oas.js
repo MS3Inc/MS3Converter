@@ -109,9 +109,7 @@ exports.oasResourceWithResponsesAndInlineExamples = {
                             '$ref': '#/definitions/schema'
                         },
                         examples: {
-                            'application/json': {
-                                'content': {}
-                            }
+                            'application/json': {}
                         },
                         headers: {
                             'header': {
@@ -132,9 +130,7 @@ exports.oasResourceWithResponsesAndInlineExamples = {
                             '$ref': '#/definitions/schema'
                         },
                         examples: {
-                            'application/xml': {
-                                content: '<xml></xml>'
-                            }
+                            'application/xml': '<xml></xml>'
                         }
                     }
                 }

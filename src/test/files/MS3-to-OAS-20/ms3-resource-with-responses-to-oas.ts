@@ -111,9 +111,7 @@ export const oasResourceWithResponsesAndInlineExamples: OASInterface.API = {
               '$ref': '#/definitions/schema'
             },
             examples: {
-              'application/json': {
-                'content': {}
-              }
+              'application/json': {}
             },
             headers: {
               'header': {
@@ -134,9 +132,7 @@ export const oasResourceWithResponsesAndInlineExamples: OASInterface.API = {
               '$ref': '#/definitions/schema'
             },
             examples: {
-              'application/xml': {
-                content: '<xml></xml>'
-              }
+              'application/xml': '<xml></xml>'
             }
           }
         }

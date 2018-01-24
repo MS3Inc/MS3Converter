@@ -22,6 +22,7 @@ function getLoaderByFormat(format: format, path: string): LoaderInterface {
 function getConverterByFormat(format: format, source: any, options: ConvertorOptions ): ConvertorInterface {
   if (format == 'oas') return Ms3.convertToOAS.create(source, options);
   if (format == 'blueprint') return Ms3.convertToBlueprint.create(source, options);
+  if (format == 'ms3_1') return OAS.convertToMs3.create(source, options);
   throw new Error(`Convertor to format ${format} does not exist.`);
 }
 

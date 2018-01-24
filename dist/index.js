@@ -30,6 +30,8 @@ function getConverterByFormat(format, source, options) {
         return Ms3.convertToOAS.create(source, options);
     if (format == 'blueprint')
         return Ms3.convertToBlueprint.create(source, options);
+    if (format == 'ms3_1')
+        return OAS.convertToMs3.create(source, options);
     throw new Error(`Convertor to format ${format} does not exist.`);
 }
 function convertData(source, from, to, options) {

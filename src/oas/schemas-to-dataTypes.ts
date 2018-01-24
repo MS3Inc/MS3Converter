@@ -19,10 +19,10 @@ class SchemasToDataTypes {
         } catch (error) {
           throw new Error(`Error parsing data type ${name}: ${error.message}`);
         }
+        dataType.__id = v4();
+        dataType.name = name;
+        return dataType;
       }
-      dataType.__id = v4();
-      dataType.name = name;
-      return dataType;
     }, {name: ''});
   }
 

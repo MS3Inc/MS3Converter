@@ -73,6 +73,7 @@ exports.ms3HeaderQuery = {
                     'active': true,
                     'name': 'POST',
                     'description': 'MyDescription',
+                    'responses': [],
                     'headers': [
                         {
                             default: 'default',

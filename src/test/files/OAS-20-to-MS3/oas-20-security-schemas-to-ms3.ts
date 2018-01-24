@@ -6,7 +6,8 @@ export const ms3SecuritySchemes: MS3Interface.API = {
     title: 'params',
     baseUri: 'http://params/',
     version: '2.0',
-    securedBy: ['uuid']
+    securedBy: ['uuid'],
+    protocols: ['HTTP']
   },
   ms3_version: '1.0',
   entityTypeName: 'api',
@@ -19,6 +20,7 @@ export const ms3SecuritySchemes: MS3Interface.API = {
         name: 'POST',
         active: true,
         description: 'MyDescription',
+        responses: [],
         securedBy: ['uuid']
       }]
     }

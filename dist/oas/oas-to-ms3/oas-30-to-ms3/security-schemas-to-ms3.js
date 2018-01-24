@@ -15,6 +15,8 @@ class ConvertSecuritySchemes {
     }
     getOAuthFlows(securityScheme) {
         const resultObject = {};
+        if (!securityScheme.flows)
+            return null;
         const validGrants = lodash_1.intersection(Object.keys(securityScheme.flows), ['implicit', 'password', 'clientCredentials', 'authorizationCode']);
         if (!validGrants.length)
             return null;

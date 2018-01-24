@@ -55,7 +55,7 @@ class MS3toOAS20toMS3 {
       title: info.title,
       baseUri: this.getBaseUri(),
       version: info.version,
-      protocols: this.oasAPI.schemes
+      protocols: this.oasAPI.schemes ? this.oasAPI.schemes : ['HTTP']
     };
     if (info.description) settings.description = info.description;
     return settings;
@@ -118,9 +118,78 @@ class MS3toOAS20toMS3 {
     if (parameters.queryParameters) method.queryParameters = parameters.queryParameters;
     if (parameters.headers) method.headers = parameters.headers;
     if (parameters.body) method.body = parameters.body;
-    // if (operation.responses) method.responses = this.convertResponses(<OAS20Interface.ResponsesObject>operation.responses);
+    if (operation.responses) method.responses = this.convertResponses(<OAS20Interface.ResponsesObject>operation.responses);
 
     return method;
+  }
+
+  convertResponses(responses: OAS20Interface.ResponsesObject): MS3Interface.Response[] {
+    return reduce(responses, (resultArray: any, value: any, key: string) => {
+      const convertedResponse: MS3Interface.Response = {
+         code: key,
+         description: value.description,
+      };
+
+      const body: MS3Interface.Body = {
+        contentType: 'application/json',
+        type: '',
+        selectedExamples: []
+      };
+
+      if (value.schema && value.schema.$ref) {
+        const splitArr: string[] = value.schema.$ref.split('/');
+        const name: string = splitArr.pop();
+        body.type = this.getRefId(name);
+      } else if (value.schema) {
+        body.type = v4();
+        value.schema.__id = body.type;
+        this.ms3API.dataTypes.push(value.schema);
+      }
+
+      if (value.examples) {
+        body.selectedExamples = this.convertExamples(value.examples);
+      }
+
+      if (value.schema || value .examples) {
+        convertedResponse.body = [];
+        convertedResponse.body.push(body);
+      }
+
+      if (value.headers) {
+        const headers = reduce(value.headers, (result: any, value: any, key: string) => {
+          value.name = key;
+          result.push(value);
+          return result;
+        }, []);
+        if (headers.length) {
+          convertedResponse.headers = this.convertParameters(headers);
+        }
+      }
+
+      resultArray.push(convertedResponse);
+      return resultArray;
+    }, []);
+  }
+
+
+  convertExamples(examples: Object): string[] {
+    return reduce(examples, (resultArray: any, value: any, key: string) => {
+      const ID = v4();
+      if (!this.ms3API.examples) this.ms3API.examples = [];
+      this.ms3API.examples.push({
+        __id: ID,
+        title: 'Examples-' + (this.ms3API.examples.length + 1),
+        format: 'json',
+        content: JSON.stringify(value)
+      });
+      resultArray.push(ID);
+      return resultArray;
+    }, []);
+  }
+
+  getRefId(name: string) {
+    const foundDataType = find(this.ms3API.dataTypes, {name});
+    return foundDataType.__id;
   }
 
   private getParameters(parameters: OAS20Interface.ParameterObject[]): any {
