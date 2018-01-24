@@ -143,6 +143,9 @@ export class ConvertDataTypesToSchemasOAS2 {
           return resultObject;
         }
         delete resultObject[prop.name].name;
+        if (resultObject[prop.name].items) {
+          resultObject[prop.name].items = this.convertArrayItems(resultObject[prop.name].items);
+        }
         if (resultObject[prop.name].properties && resultObject[prop.name].properties.length) {
           const required = this.getRequiredPropertiesFromDataType(resultObject[prop.name].properties);
           if (required.length) resultObject[prop.name].required = required;
