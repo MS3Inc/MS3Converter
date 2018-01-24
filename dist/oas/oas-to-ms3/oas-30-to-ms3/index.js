@@ -124,6 +124,7 @@ class MS3toOAS30toMS3 {
                 this.convertEntity(value, key, entity);
             }
             result[key] = value;
+            return result;
         }, {});
         return ID;
     }
