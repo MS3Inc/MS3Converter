@@ -66,30 +66,24 @@ class MS3toOAS30toMS3 {
 
   convertOperations(operations: OAS30Interface.PathItemObject | any): MS3Interface.Method[] {
     const methodsKeys = ['get', 'post', 'put', 'delete', 'options', 'head', 'patch'];
-    const foundTraitsName: string[] = [];
-    const methods = methodsKeys.reduce((methodsArray: MS3Interface.Method[], methodKey: string) => {
+    return methodsKeys.reduce((methodsArray: MS3Interface.Method[], methodKey: string) => {
       const operation: OAS30Interface.Operation = operations[methodKey];
-      if (!operation) return methodsArray;
-
+      if (!operation) {
+        methodsArray.push({
+          active: false,
+          name: methodKey.toUpperCase(),
+          description: '',
+          queryParameters: [],
+          headers: [],
+          selectedTraits: [],
+          responses: []
+        });
+        return methodsArray;
+      }
       const method: MS3Interface.Method = this.convertOperation(operation, methodKey);
       methodsArray.push(method);
-      foundTraitsName.push(method.name.toLowerCase());
-
       return methodsArray;
     }, []);
-    const missedMethods = difference(methodsKeys, foundTraitsName);
-    each(missedMethods, (methodName) => {
-      methods.push({
-        active: false,
-        name: methodName.toUpperCase(),
-        description: '',
-        queryParameters: [],
-        headers: [],
-        selectedTraits: [],
-        responses: []
-      });
-    });
-    return methods;
   }
 
   convertOperation(operation: OAS30Interface.Operation, name: string): MS3Interface.Method {

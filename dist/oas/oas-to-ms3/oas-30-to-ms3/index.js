@@ -56,29 +56,24 @@ class MS3toOAS30toMS3 {
     }
     convertOperations(operations) {
         const methodsKeys = ['get', 'post', 'put', 'delete', 'options', 'head', 'patch'];
-        const foundTraitsName = [];
-        const methods = methodsKeys.reduce((methodsArray, methodKey) => {
+        return methodsKeys.reduce((methodsArray, methodKey) => {
             const operation = operations[methodKey];
-            if (!operation)
+            if (!operation) {
+                methodsArray.push({
+                    active: false,
+                    name: methodKey.toUpperCase(),
+                    description: '',
+                    queryParameters: [],
+                    headers: [],
+                    selectedTraits: [],
+                    responses: []
+                });
                 return methodsArray;
+            }
             const method = this.convertOperation(operation, methodKey);
             methodsArray.push(method);
-            foundTraitsName.push(method.name.toLowerCase());
             return methodsArray;
         }, []);
-        const missedMethods = lodash_1.difference(methodsKeys, foundTraitsName);
-        lodash_1.each(missedMethods, (methodName) => {
-            methods.push({
-                active: false,
-                name: methodName.toUpperCase(),
-                description: '',
-                queryParameters: [],
-                headers: [],
-                selectedTraits: [],
-                responses: []
-            });
-        });
-        return methods;
     }
     convertOperation(operation, name) {
         const method = {
