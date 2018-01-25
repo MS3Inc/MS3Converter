@@ -10,7 +10,7 @@ interface Contact {
   name?: string;
   url?: string;
   email?: string;
-} 
+}
 
 interface License {
   name: string;
@@ -204,8 +204,8 @@ export interface Operation {
 }
 
 export interface Server {
-  url: String;
-  description?: String;
+  url: string;
+  description?: string;
   variables?: ServerVariable[];
 }
 

@@ -17,18 +17,74 @@ export const ms3SecuredBy: MS3 = {
     {
       __id: 'uuid',
       path: '/res',
-      methods: [{
-        name: 'GET',
-        active: true,
-        description: 'desc',
-        securedBy: ['uuid'],
-        responses: [
-          {
-            code: '200',
-            description: 'a pet to be returned'
-          }
-        ]
-      }]
+      methods: [
+        {
+          name: 'GET',
+          active: true,
+          description: 'desc',
+          securedBy: ['uuid'],
+          responses: [
+            {
+              code: '200',
+              description: 'a pet to be returned'
+            }
+          ]
+        },
+        {
+          active: false,
+          description: '',
+          headers: [],
+          name: 'POST',
+          queryParameters: [],
+          responses: [],
+          selectedTraits: [],
+        },
+        {
+          active: false,
+          description: '',
+          headers: [],
+          name: 'PUT',
+          queryParameters: [],
+          responses: [],
+          selectedTraits: [],
+        },
+        {
+          active: false,
+          description: '',
+          headers: [],
+          name: 'DELETE',
+          queryParameters: [],
+          responses: [],
+          selectedTraits: [],
+        },
+        {
+          active: false,
+          description: '',
+          headers: [],
+          name: 'OPTIONS',
+          queryParameters: [],
+          responses: [],
+          selectedTraits: [],
+        },
+        {
+          active: false,
+          description: '',
+          headers: [],
+          name: 'HEAD',
+          queryParameters: [],
+          responses: [],
+          selectedTraits: [],
+        },
+        {
+          active: false,
+          description: '',
+          headers: [],
+          name: 'PATCH',
+          queryParameters: [],
+          responses: [],
+          selectedTraits: [],
+        },
+      ]
     }
   ],
   'securitySchemes': [

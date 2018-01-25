@@ -114,6 +114,33 @@ export const ms3ResourcesWithRequestBody: MS3Interface.API = {
           name: 'DELETE',
           active: true,
           responses: [],
+        },
+        {
+          active: false,
+          description: '',
+          headers: [],
+          name: 'OPTIONS',
+          queryParameters: [],
+          responses: [],
+          selectedTraits: [],
+        },
+        {
+          active: false,
+          description: '',
+          headers: [],
+          name: 'HEAD',
+          queryParameters: [],
+          responses: [],
+          selectedTraits: [],
+        },
+        {
+          active: false,
+          description: '',
+          headers: [],
+          name: 'PATCH',
+          queryParameters: [],
+          responses: [],
+          selectedTraits: [],
         }
       ]
     }

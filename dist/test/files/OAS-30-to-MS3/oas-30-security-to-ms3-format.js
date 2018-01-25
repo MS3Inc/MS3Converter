@@ -16,7 +16,8 @@ exports.ms3SecuredBy = {
         {
             __id: 'uuid',
             path: '/res',
-            methods: [{
+            methods: [
+                {
                     name: 'GET',
                     active: true,
                     description: 'desc',
@@ -27,7 +28,62 @@ exports.ms3SecuredBy = {
                             description: 'a pet to be returned'
                         }
                     ]
-                }]
+                },
+                {
+                    active: false,
+                    description: '',
+                    headers: [],
+                    name: 'POST',
+                    queryParameters: [],
+                    responses: [],
+                    selectedTraits: [],
+                },
+                {
+                    active: false,
+                    description: '',
+                    headers: [],
+                    name: 'PUT',
+                    queryParameters: [],
+                    responses: [],
+                    selectedTraits: [],
+                },
+                {
+                    active: false,
+                    description: '',
+                    headers: [],
+                    name: 'DELETE',
+                    queryParameters: [],
+                    responses: [],
+                    selectedTraits: [],
+                },
+                {
+                    active: false,
+                    description: '',
+                    headers: [],
+                    name: 'OPTIONS',
+                    queryParameters: [],
+                    responses: [],
+                    selectedTraits: [],
+                },
+                {
+                    active: false,
+                    description: '',
+                    headers: [],
+                    name: 'HEAD',
+                    queryParameters: [],
+                    responses: [],
+                    selectedTraits: [],
+                },
+                {
+                    active: false,
+                    description: '',
+                    headers: [],
+                    name: 'PATCH',
+                    queryParameters: [],
+                    responses: [],
+                    selectedTraits: [],
+                },
+            ]
         }
     ],
     'securitySchemes': [

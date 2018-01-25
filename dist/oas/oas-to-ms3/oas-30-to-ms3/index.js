@@ -46,20 +46,38 @@ class MS3toOAS30toMS3 {
             baseUri: 'http://base.uri',
             version: info.version
         };
+        if (this.oasAPI.servers && this.oasAPI.servers.length && this.oasAPI.servers[0].url) {
+            settings.baseUri = this.oasAPI.servers[0].url;
+        }
         if (info.description)
             settings.description = info.description;
         return settings;
     }
     convertOperations(operations) {
         const methodsKeys = ['get', 'post', 'put', 'delete', 'options', 'head', 'patch'];
-        return methodsKeys.reduce((methodsArray, methodKey) => {
+        const foundTraitsName = [];
+        const methods = methodsKeys.reduce((methodsArray, methodKey) => {
             const operation = operations[methodKey];
             if (!operation)
                 return methodsArray;
             const method = this.convertOperation(operation, methodKey);
             methodsArray.push(method);
+            foundTraitsName.push(method.name.toLowerCase());
             return methodsArray;
         }, []);
+        const missedMethods = lodash_1.difference(methodsKeys, foundTraitsName);
+        lodash_1.each(missedMethods, (methodName) => {
+            methods.push({
+                active: false,
+                name: methodName.toUpperCase(),
+                description: '',
+                queryParameters: [],
+                headers: [],
+                selectedTraits: [],
+                responses: []
+            });
+        });
+        return methods;
     }
     convertOperation(operation, name) {
         const method = {
@@ -252,6 +270,10 @@ class MS3toOAS30toMS3 {
             };
             if (pathValue.description)
                 resource.description = pathValue.description;
+            if (pathValue.parameters) {
+                const uri = lodash_1.filter(pathValue.parameters, ['in', 'path']);
+                resource.pathVariables = this.convertParameters(uri);
+            }
             resultResources.push(resource);
             return resultResources;
         }, []);

@@ -3,7 +3,7 @@ import * as OAS30Interface from '../../../oas/oas-30-api-interface';
 import schemaToDataType from '../../schemas-to-dataTypes';
 import securitySchemasToMS3 from './security-schemas-to-ms3';
 
-import { reduce, filter, find as _find, each, map } from 'lodash';
+import { reduce, filter, find as _find, each, map, difference } from 'lodash';
 import { v4 } from 'uuid';
 
 class MS3toOAS30toMS3 {
@@ -55,6 +55,10 @@ class MS3toOAS30toMS3 {
       version: info.version
     };
 
+    if (this.oasAPI.servers && this.oasAPI.servers.length && this.oasAPI.servers[0].url) {
+      settings.baseUri = this.oasAPI.servers[0].url;
+    }
+
     if (info.description) settings.description = info.description;
 
     return settings;
@@ -62,16 +66,30 @@ class MS3toOAS30toMS3 {
 
   convertOperations(operations: OAS30Interface.PathItemObject | any): MS3Interface.Method[] {
     const methodsKeys = ['get', 'post', 'put', 'delete', 'options', 'head', 'patch'];
-
-    return methodsKeys.reduce((methodsArray: any[], methodKey: string) => {
+    const foundTraitsName: string[] = [];
+    const methods = methodsKeys.reduce((methodsArray: MS3Interface.Method[], methodKey: string) => {
       const operation: OAS30Interface.Operation = operations[methodKey];
       if (!operation) return methodsArray;
 
       const method: MS3Interface.Method = this.convertOperation(operation, methodKey);
       methodsArray.push(method);
+      foundTraitsName.push(method.name.toLowerCase());
 
       return methodsArray;
     }, []);
+    const missedMethods = difference(methodsKeys, foundTraitsName);
+    each(missedMethods, (methodName) => {
+      methods.push({
+        active: false,
+        name: methodName.toUpperCase(),
+        description: '',
+        queryParameters: [],
+        headers: [],
+        selectedTraits: [],
+        responses: []
+      });
+    });
+    return methods;
   }
 
   convertOperation(operation: OAS30Interface.Operation, name: string): MS3Interface.Method {
@@ -269,6 +287,10 @@ class MS3toOAS30toMS3 {
       };
 
       if (pathValue.description) resource.description = pathValue.description;
+      if (pathValue.parameters) {
+        const uri: OAS30Interface.ParameterObject[] = filter(<OAS30Interface.ParameterObject[]>pathValue.parameters, ['in', 'path']);
+        resource.pathVariables = this.convertParameters(uri);
+      }
 
       resultResources.push(resource);
 
