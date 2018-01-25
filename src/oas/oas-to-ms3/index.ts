@@ -26,7 +26,7 @@ export default class MS3toOAS {
 
   convertOAStoMS3(): MS3Interface {
     if (this.oasAPI.api.openapi) {
-      return convertOAS30toMS3(this.oasAPI.api);
+      return convertOAS30toMS3(this.oasAPI.api, this.oasAPI.definitions);
     }
     else if (this.oasAPI.api.swagger == '2.0') {
       return convertOAS20toMS3(this.oasAPI.api);

@@ -5,8 +5,9 @@ const security_schemas_to_ms3_1 = require("./security-schemas-to-ms3");
 const lodash_1 = require("lodash");
 const uuid_1 = require("uuid");
 class MS3toOAS30toMS3 {
-    constructor(oasAPI) {
+    constructor(oasAPI, loadedParts) {
         this.oasAPI = oasAPI;
+        this.loadedParts = loadedParts;
         this.ms3API = {
             entityTypeName: 'api',
             ms3_version: '1.0',
@@ -19,8 +20,8 @@ class MS3toOAS30toMS3 {
             dataTypes: []
         };
     }
-    static create(oasAPI) {
-        return new MS3toOAS30toMS3(oasAPI);
+    static create(oasAPI, loadedParts) {
+        return new MS3toOAS30toMS3(oasAPI, loadedParts);
     }
     convert() {
         this.ms3API.settings = this.convertSettings();
@@ -151,9 +152,23 @@ class MS3toOAS30toMS3 {
      */
     convertEntity(data, name, entity) {
         if (entity == 'schemas') {
-            if (!lodash_1.find(this.ms3API.dataTypes, { __id: data.__id })) {
-                data.name = name;
-                const schema = {};
+            const schema = {};
+            data.name = name;
+            if (data.$ref) {
+                let foundSchema;
+                try {
+                    const foundContent = lodash_1.find(this.loadedParts, { name }).content;
+                    foundSchema = JSON.parse(foundContent)[name];
+                    delete foundSchema.title;
+                    foundSchema.name = name;
+                }
+                catch (error) {
+                    throw new Error(error);
+                }
+                schema[name] = foundSchema;
+                this.ms3API.dataTypes.push(schemas_to_dataTypes_1.default(schema));
+            }
+            else {
                 schema[name] = data;
                 this.ms3API.dataTypes.push(schemas_to_dataTypes_1.default(schema));
             }
@@ -279,8 +294,8 @@ class MS3toOAS30toMS3 {
         }, []);
     }
 }
-function convertOAS30toMS3(oasAPI) {
-    return MS3toOAS30toMS3.create(oasAPI).convert();
+function convertOAS30toMS3(oasAPI, loadedParts) {
+    return MS3toOAS30toMS3.create(oasAPI, loadedParts).convert();
 }
 exports.default = convertOAS30toMS3;
 //# sourceMappingURL=index.js.map

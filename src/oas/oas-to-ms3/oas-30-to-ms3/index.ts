@@ -19,10 +19,10 @@ class MS3toOAS30toMS3 {
     dataTypes: []
   };
 
-  constructor(private oasAPI: OAS30Interface.API) {}
+  constructor(private oasAPI: OAS30Interface.API, private loadedParts: any[]) {}
 
-  static create(oasAPI: OAS30Interface.API) {
-    return new MS3toOAS30toMS3(oasAPI);
+  static create(oasAPI: OAS30Interface.API, loadedParts: any[]) {
+    return new MS3toOAS30toMS3(oasAPI, loadedParts);
   }
 
   convert() {
@@ -167,9 +167,21 @@ class MS3toOAS30toMS3 {
    */
   convertEntity(data: any, name: string, entity: 'schemas' | 'examples') {
     if (entity == 'schemas') {
-      if (!_find(this.ms3API.dataTypes, {__id: data.__id})) {
-        data.name = name;
-        const schema = <any> {};
+      const schema: any = {};
+      data.name = name;
+      if (data.$ref) {
+        let foundSchema;
+        try {
+          const foundContent = _find(this.loadedParts, {name}).content;
+          foundSchema = JSON.parse(foundContent)[name];
+          delete foundSchema.title;
+          foundSchema.name = name;
+        } catch (error) {
+          throw new Error(error);
+        }
+        schema[name] = foundSchema;
+        this.ms3API.dataTypes.push(schemaToDataType(schema));
+      } else {
         schema[name] = data;
         this.ms3API.dataTypes.push(schemaToDataType(schema));
       }
@@ -299,6 +311,6 @@ class MS3toOAS30toMS3 {
   }
 }
 
-export default function convertOAS30toMS3(oasAPI: OAS30Interface.API): any {
-  return MS3toOAS30toMS3.create(oasAPI).convert();
+export default function convertOAS30toMS3(oasAPI: OAS30Interface.API, loadedParts: any[]): any {
+  return MS3toOAS30toMS3.create(oasAPI, loadedParts).convert();
 }
