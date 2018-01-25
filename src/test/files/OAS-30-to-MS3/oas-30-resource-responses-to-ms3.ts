@@ -99,6 +99,60 @@ export const ms3ResourcesWithResponses: MS3Interface.API = {
               ]
             }
           ]
+        },
+        {
+          active: false,
+          description: '',
+          headers: [],
+          name: 'POST',
+          queryParameters: [],
+          responses: [],
+          selectedTraits: [],
+        },
+        {
+          active: false,
+          description: '',
+          headers: [],
+          name: 'PUT',
+          queryParameters: [],
+          responses: [],
+          selectedTraits: [],
+        },
+        {
+          active: false,
+          description: '',
+          headers: [],
+          name: 'DELETE',
+          queryParameters: [],
+          responses: [],
+          selectedTraits: [],
+        },
+        {
+          active: false,
+          description: '',
+          headers: [],
+          name: 'OPTIONS',
+          queryParameters: [],
+          responses: [],
+          selectedTraits: [],
+        },
+        {
+          active: false,
+          description: '',
+          headers: [],
+          name: 'HEAD',
+          queryParameters: [],
+          responses: [],
+          selectedTraits: [],
+        },
+        {
+          active: false,
+          description: '',
+          headers: [],
+          name: 'PATCH',
+          queryParameters: [],
+          responses: [],
+          selectedTraits: [],
         }
       ]
     }

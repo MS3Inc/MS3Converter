@@ -3,7 +3,7 @@ import * as OAS30Interface from '../../../oas/oas-30-api-interface';
 import schemaToDataType from '../../schemas-to-dataTypes';
 import securitySchemasToMS3 from './security-schemas-to-ms3';
 
-import { reduce, filter, find as _find, each, map } from 'lodash';
+import { reduce, filter, find as _find, each, map, difference } from 'lodash';
 import { v4 } from 'uuid';
 
 class MS3toOAS30toMS3 {
@@ -66,16 +66,31 @@ class MS3toOAS30toMS3 {
 
   convertOperations(operations: OAS30Interface.PathItemObject | any): MS3Interface.Method[] {
     const methodsKeys = ['get', 'post', 'put', 'delete', 'options', 'head', 'patch'];
-
-    return methodsKeys.reduce((methodsArray: any[], methodKey: string) => {
+    const foundTraitsName = <any>[];
+    const methods = methodsKeys.reduce((methodsArray: any[], methodKey: string) => {
       const operation: OAS30Interface.Operation = operations[methodKey];
       if (!operation) return methodsArray;
 
       const method: MS3Interface.Method = this.convertOperation(operation, methodKey);
       methodsArray.push(method);
+      foundTraitsName.push(method.name.toLowerCase());
 
       return methodsArray;
     }, []);
+    const missedMethods = difference(methodsKeys, foundTraitsName);
+    each(missedMethods, (methodName) => {
+      const template = {
+        active: false,
+        name: methodName.toUpperCase(),
+        description: '',
+        queryParameters: <any>[],
+        headers: <any>[],
+        selectedTraits: <any>[],
+        responses: <any>[]
+      };
+      methods.push(template);
+    });
+    return methods;
   }
 
   convertOperation(operation: OAS30Interface.Operation, name: string): MS3Interface.Method {
