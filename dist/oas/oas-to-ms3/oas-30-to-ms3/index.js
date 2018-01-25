@@ -67,7 +67,7 @@ class MS3toOAS30toMS3 {
         }, []);
         const missedMethods = lodash_1.difference(methodsKeys, foundTraitsName);
         lodash_1.each(missedMethods, (methodName) => {
-            const template = {
+            methods.push({
                 active: false,
                 name: methodName.toUpperCase(),
                 description: '',
@@ -75,8 +75,7 @@ class MS3toOAS30toMS3 {
                 headers: [],
                 selectedTraits: [],
                 responses: []
-            };
-            methods.push(template);
+            });
         });
         return methods;
     }
@@ -271,6 +270,10 @@ class MS3toOAS30toMS3 {
             };
             if (pathValue.description)
                 resource.description = pathValue.description;
+            if (pathValue.parameters) {
+                const uri = lodash_1.filter(pathValue.parameters, ['in', 'path']);
+                resource.pathVariables = this.convertParameters(uri);
+            }
             resultResources.push(resource);
             return resultResources;
         }, []);
