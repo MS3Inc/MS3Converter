@@ -23,7 +23,7 @@ class MS3toOAS {
     }
     convertOAStoMS3() {
         if (this.oasAPI.api.openapi) {
-            return oas_30_to_ms3_1.default(this.oasAPI.api);
+            return oas_30_to_ms3_1.default(this.oasAPI.api, this.oasAPI.definitions);
         }
         else if (this.oasAPI.api.swagger == '2.0') {
             return oas_20_to_ms3_1.default(this.oasAPI.api);
