@@ -8,6 +8,11 @@ export const oasSettings: OASInterface.API = {
     description: 'API description',
     version: '3.0',
   },
+  servers: [
+    {
+      url: 'http://google.com'
+    }
+  ],
   components: {},
   paths: {}
 };
@@ -15,7 +20,7 @@ export const oasSettings: OASInterface.API = {
 export const ms3Settings: MS3Interface.API = {
   settings: {
     title: 'params',
-    baseUri: 'http://base.uri',
+    baseUri: 'http://google.com',
     description: 'API description',
     version: '3.0'
   },

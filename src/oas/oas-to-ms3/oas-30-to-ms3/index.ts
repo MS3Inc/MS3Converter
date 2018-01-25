@@ -55,6 +55,10 @@ class MS3toOAS30toMS3 {
       version: info.version
     };
 
+    if (this.oasAPI.servers && this.oasAPI.servers.length && this.oasAPI.servers[0].url) {
+      settings.baseUri = this.oasAPI.servers[0].url;
+    }
+
     if (info.description) settings.description = info.description;
 
     return settings;
