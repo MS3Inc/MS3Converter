@@ -27,6 +27,10 @@ export default class OasLoader implements LoaderInterface {
       unzipExtractor.on('close', () => {
         this.findApiFile()
           .then((api) => {
+            if (api == null) return this.guessApiFile();
+            resolve(api);
+          })
+          .then((api) => {
             rmdirPromise('./.temp');
             resolve(api);
           })
@@ -75,58 +79,54 @@ export default class OasLoader implements LoaderInterface {
   private async findApiFile (): Promise<OasLoaderInterface> {
     const yamlFile = await this.findFileBy('api.yaml').startSearch();
     let jsonFile;
+    const result: OasLoaderInterface = {};
+
     if (yamlFile && yamlFile.length) {
       const path = yamlFile[0].path;
-      const result: OasLoaderInterface = {};
       result.api = await this.loadYamlPromise(path);
-      result.definitions = await this.getSwaggerDefinitions(result.api);
-      result.examples = await this.getSwaggerExamples(result.api);
-      return result;
     } else {
       jsonFile = await this.findFileBy('api.json').startSearch();
       if (jsonFile && jsonFile.length) {
         const path = jsonFile[0].path;
-        const result: OasLoaderInterface = {};
         result.api = await readFilePromise(path, 'utf-8');
-        result.definitions = await this.getSwaggerDefinitions(result.api);
-        result.examples = await this.getSwaggerExamples(result.api);
-        return result;
       }
     }
 
-    return await this.guessApiFile();
+    if (!result.api) return null;
+
+    result.definitions = await this.getSwaggerDefinitions(result.api);
+    result.examples = await this.getSwaggerExamples(result.api);
+
+    return result;
   }
 
   private async guessApiFile(): Promise<OasLoaderInterface> {
     const fileInYamlFormat = await this.findFileBy(null, '.yaml').startSearch();
     const result: OasLoaderInterface = {};
+
     if (fileInYamlFormat.length) {
       for (const file of fileInYamlFormat) {
         const isSwaggerApi = this.isSwaggerApiFile((await readFilePromise(file.path, 'utf-8')));
-        if (isSwaggerApi) {
-          result.api = await this.loadYamlPromise(file.path);
-          result.definitions = await this.getSwaggerDefinitions(result.api);
-          result.examples = await this.getSwaggerExamples(result.api);
-        }
+        if (isSwaggerApi) result.api = await this.loadYamlPromise(file.path);
       }
-      if (result.api) return result;
     }
 
-    const fileInJsonFormat = await this.findFileBy(null, '.json').startSearch();
-    if (fileInJsonFormat.length) {
-      for (const file of fileInJsonFormat) {
-        const content = await readFilePromise(file.path, 'utf-8');
-        const isSwaggerApi = this.isSwaggerApiFile(content);
-        if (isSwaggerApi) {
-          result.api = content;
-          result.definitions = await this.getSwaggerDefinitions(result.api);
-          result.examples = await this.getSwaggerExamples(result.api);
+    if (!result.api) {
+      const fileInJsonFormat = await this.findFileBy(null, '.json').startSearch();
+      if (fileInJsonFormat.length) {
+        for (const file of fileInJsonFormat) {
+          const content = await readFilePromise(file.path, 'utf-8');
+          const isSwaggerApi = this.isSwaggerApiFile(content);
+          if (isSwaggerApi) result.api = content;
         }
       }
-      if (result.api) return result;
     }
 
-    throw new Error('Failed to find main api definition file.');
+    if (!result.api) throw new Error('Failed to find main api definition file.');
+    result.definitions = await this.getSwaggerDefinitions(result.api);
+    result.examples = await this.getSwaggerExamples(result.api);
+
+    return result;
   }
 
   private async getSwaggerDefinitions(api: Object): Promise<Object[]> {
