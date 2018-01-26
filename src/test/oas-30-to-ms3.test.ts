@@ -10,19 +10,19 @@ import { oas_security, ms3SecuredBy } from './files/OAS-30-to-MS3/oas-30-securit
 import { oasResourceParams, ms3ResourcesWithPathParameters } from './files/OAS-30-to-MS3/oas-30-path-params-to-ms3';
 
 test('OAS settings should be converted to MS3 successfully', async() => {
-  expect(convertOAS30toMS3(oasSettings, null)).toEqual(ms3Settings);
+  expect(convertOAS30toMS3(oasSettings, null, null)).toEqual(ms3Settings);
 });
 
 test('OAS paths with parameters should be converted to MS3 resources successfully', async() => {
-  expect(convertOAS30toMS3(oasPathsWithParameters, null)).toEqual(ms3ResourcesWithParameters);
+  expect(convertOAS30toMS3(oasPathsWithParameters, null, null)).toEqual(ms3ResourcesWithParameters);
 });
 
 test('OAS paths with request body should be converted to MS3 resources successfully', async() => {
-  expect(convertOAS30toMS3(oasPathsWithRequestBody, null)).toEqual(ms3ResourcesWithRequestBody);
+  expect(convertOAS30toMS3(oasPathsWithRequestBody, null, null)).toEqual(ms3ResourcesWithRequestBody);
 });
 
 test('OAS paths with responses should be converted to MS3 resources successfully', async() => {
-  expect(convertOAS30toMS3(oasPathsWithResponses, null)).toEqual(ms3ResourcesWithResponses);
+  expect(convertOAS30toMS3(oasPathsWithResponses, null, null)).toEqual(ms3ResourcesWithResponses);
 });
 
 test('OAS primitive schema should be converted successfully', async() => {
@@ -38,13 +38,13 @@ test('OAS object schema should be converted successfully', async() => {
 });
 
 test('OAS security Schemas should should be converted successfully', async() => {
-  expect(convertOAS30toMS3(oas_security_schemas, null)).toEqual(ms3SecuritySchemasResult);
+  expect(convertOAS30toMS3(oas_security_schemas, null, null)).toEqual(ms3SecuritySchemasResult);
 });
 
 test('OAS security property should be converted successfully', async() => {
-  expect(convertOAS30toMS3(oas_security, null)).toEqual(ms3SecuredBy);
+  expect(convertOAS30toMS3(oas_security, null, null)).toEqual(ms3SecuredBy);
 });
 
 test('OAS path parameters should be converted successfully', async() => {
-  expect(convertOAS30toMS3(oasResourceParams, null)).toEqual(ms3ResourcesWithPathParameters);
+  expect(convertOAS30toMS3(oasResourceParams, null, null)).toEqual(ms3ResourcesWithPathParameters);
 });

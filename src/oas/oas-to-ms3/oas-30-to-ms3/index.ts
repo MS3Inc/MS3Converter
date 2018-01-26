@@ -19,10 +19,10 @@ class MS3toOAS30toMS3 {
     dataTypes: []
   };
 
-  constructor(private oasAPI: OAS30Interface.API, private loadedParts: any[]) {}
+  constructor(private oasAPI: OAS30Interface.API, private loadedSchemas: any[], private loadedExamples: any[]) {}
 
-  static create(oasAPI: OAS30Interface.API, loadedParts: any[]) {
-    return new MS3toOAS30toMS3(oasAPI, loadedParts);
+  static create(oasAPI: OAS30Interface.API, loadedSchemas: any[], loadedExamples: any[]) {
+    return new MS3toOAS30toMS3(oasAPI, loadedSchemas, loadedExamples);
   }
 
   convert() {
@@ -148,7 +148,8 @@ class MS3toOAS30toMS3 {
           value.__id = v4();
         }
         ID = value.__id;
-        this.convertEntity(value, key, entity);
+        if (entity == 'schemas') this.getSchemas(value, key);
+        if (entity == 'examples') this.getExamples(value, key);
       }
       result[key] = value;
       return result;
@@ -159,36 +160,40 @@ class MS3toOAS30toMS3 {
   /**
    * Modify given entity and push it to respective collection of resources(dataTypes, examples) on resulting Ms3 API
    */
-  convertEntity(data: any, name: string, entity: 'schemas' | 'examples') {
-    if (entity == 'schemas') {
-      const schema: any = {};
-      data.name = name;
-      if (_find(this.ms3API.dataTypes, {name})) return;
-      if (data.$ref) {
-        let foundSchema;
-        try {
-          const foundContent = _find(this.loadedParts, {name}).content;
-          foundSchema = JSON.parse(foundContent)[name];
-          delete foundSchema.title;
-          foundSchema.name = name;
-        } catch (error) {
-          throw new Error(error);
-        }
-        schema[name] = foundSchema;
-        this.ms3API.dataTypes.push(schemaToDataType(schema));
-      } else {
-        schema[name] = data;
-        this.ms3API.dataTypes.push(schemaToDataType(schema));
-      }
-    } else if (!_find(this.ms3API.examples, {__id: data.__id})) {
-      const example: MS3Interface.Example = {
-        __id: data.__id,
-        title: name,
-        format: 'json',
-        content: JSON.stringify(data.value)
-      };
-      this.ms3API.examples.push(example);
+  getSchemas(data: any, name: string) {
+    const schema: any = {};
+    data.name = name;
+    if (_find(this.ms3API.dataTypes, {name})) return;
+    if (data.$ref) {
+      const foundContent = _find(this.loadedSchemas, {name}).content;
+      const foundSchema = JSON.parse(foundContent)[name];
+      delete foundSchema.title;
+      foundSchema.name = name;
+      schema[name] = foundSchema;
+      this.ms3API.dataTypes.push(schemaToDataType(schema));
+    } else {
+      schema[name] = data;
+      this.ms3API.dataTypes.push(schemaToDataType(schema));
     }
+  }
+
+  getExamples(data: any, name: string) {
+    if (_find(this.ms3API.examples, {title: name})) return;
+    let content;
+    if (data.externalValue) {
+      content = _find(this.loadedExamples, {name}).content;
+    } else {
+      content = JSON.stringify(data.value);
+    }
+
+    const example: MS3Interface.Example = {
+      __id: data.__id,
+      title: name,
+      format: 'json',
+      content: content
+    };
+
+    this.ms3API.examples.push(example);
   }
 
   convertResponses(responses: OAS30Interface.ResponsesObject): MS3Interface.Response[] {
@@ -306,6 +311,6 @@ class MS3toOAS30toMS3 {
   }
 }
 
-export default function convertOAS30toMS3(oasAPI: OAS30Interface.API, loadedParts: any[]): any {
-  return MS3toOAS30toMS3.create(oasAPI, loadedParts).convert();
+export default function convertOAS30toMS3(oasAPI: OAS30Interface.API, loadedSchemas: any[], loadedExamples: any[]): any {
+  return MS3toOAS30toMS3.create(oasAPI, loadedSchemas, loadedExamples).convert();
 }

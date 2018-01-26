@@ -31,6 +31,11 @@ class OasLoader {
             unzipExtractor.on('close', () => {
                 this.findApiFile()
                     .then((api) => {
+                    if (api == null)
+                        return this.guessApiFile();
+                    resolve(api);
+                })
+                    .then((api) => {
                     rmdirPromise('./.temp');
                     resolve(api);
                 })
@@ -76,24 +81,23 @@ class OasLoader {
         return __awaiter(this, void 0, void 0, function* () {
             const yamlFile = yield this.findFileBy('api.yaml').startSearch();
             let jsonFile;
+            const result = {};
             if (yamlFile && yamlFile.length) {
                 const path = yamlFile[0].path;
-                const result = {};
                 result.api = yield this.loadYamlPromise(path);
-                result.definitions = yield this.getSwaggerDefinitions(result.api);
-                return result;
             }
             else {
                 jsonFile = yield this.findFileBy('api.json').startSearch();
                 if (jsonFile && jsonFile.length) {
                     const path = jsonFile[0].path;
-                    const result = {};
                     result.api = yield readFilePromise(path, 'utf-8');
-                    result.definitions = yield this.getSwaggerDefinitions(result.api);
-                    return result;
                 }
             }
-            return yield this.guessApiFile();
+            if (!result.api)
+                return null;
+            result.definitions = yield this.getSwaggerDefinitions(result.api);
+            result.examples = yield this.getSwaggerExamples(result.api);
+            return result;
         });
     }
     guessApiFile() {
@@ -103,28 +107,26 @@ class OasLoader {
             if (fileInYamlFormat.length) {
                 for (const file of fileInYamlFormat) {
                     const isSwaggerApi = this.isSwaggerApiFile((yield readFilePromise(file.path, 'utf-8')));
-                    if (isSwaggerApi) {
+                    if (isSwaggerApi)
                         result.api = yield this.loadYamlPromise(file.path);
-                        result.definitions = yield this.getSwaggerDefinitions(result.api);
+                }
+            }
+            if (!result.api) {
+                const fileInJsonFormat = yield this.findFileBy(null, '.json').startSearch();
+                if (fileInJsonFormat.length) {
+                    for (const file of fileInJsonFormat) {
+                        const content = yield readFilePromise(file.path, 'utf-8');
+                        const isSwaggerApi = this.isSwaggerApiFile(content);
+                        if (isSwaggerApi)
+                            result.api = content;
                     }
                 }
-                if (result.api)
-                    return result;
             }
-            const fileInJsonFormat = yield this.findFileBy(null, '.json').startSearch();
-            if (fileInJsonFormat.length) {
-                for (const file of fileInJsonFormat) {
-                    const content = yield readFilePromise(file.path, 'utf-8');
-                    const isSwaggerApi = this.isSwaggerApiFile(content);
-                    if (isSwaggerApi) {
-                        result.api = content;
-                        result.definitions = yield this.getSwaggerDefinitions(result.api);
-                    }
-                }
-                if (result.api)
-                    return result;
-            }
-            throw new Error('Failed to find main api definition file.');
+            if (!result.api)
+                throw new Error('Failed to find main api definition file.');
+            result.definitions = yield this.getSwaggerDefinitions(result.api);
+            result.examples = yield this.getSwaggerExamples(result.api);
+            return result;
         });
     }
     getSwaggerDefinitions(api) {
@@ -138,9 +140,33 @@ class OasLoader {
             return Promise.resolve([]);
         });
     }
+    getSwaggerExamples(api) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const stringApi = JSON.stringify(api);
+            const reg = /externalValue\"\:\"[^#](.[^"}]+)\#/g;
+            const externalPaths = stringApi.match(reg);
+            if (externalPaths) {
+                return Promise.all(externalPaths.map(this.loadSwaggerExamples));
+            }
+            return Promise.resolve([]);
+        });
+    }
     loadSwaggerDefinition(path) {
         return __awaiter(this, void 0, void 0, function* () {
             const parsedPath = path.slice(8, path.length - 1);
+            const name = fsPath.basename(parsedPath, fsPath.extname(parsedPath));
+            try {
+                const content = yield readFilePromise(`./.temp${parsedPath}`, 'utf-8');
+                return { name, content };
+            }
+            catch (error) {
+                throw new Error(`Error reading file: ${error.message}`);
+            }
+        });
+    }
+    loadSwaggerExamples(path) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const parsedPath = path.slice(17, path.length - 1);
             const name = fsPath.basename(parsedPath, fsPath.extname(parsedPath));
             try {
                 const content = yield readFilePromise(`./.temp${parsedPath}`, 'utf-8');
