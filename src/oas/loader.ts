@@ -80,6 +80,7 @@ export default class OasLoader implements LoaderInterface {
       const result: OasLoaderInterface = {};
       result.api = await this.loadYamlPromise(path);
       result.definitions = await this.getSwaggerDefinitions(result.api);
+      result.examples = await this.getSwaggerExamples(result.api);
       return result;
     } else {
       jsonFile = await this.findFileBy('api.json').startSearch();
@@ -88,6 +89,7 @@ export default class OasLoader implements LoaderInterface {
         const result: OasLoaderInterface = {};
         result.api = await readFilePromise(path, 'utf-8');
         result.definitions = await this.getSwaggerDefinitions(result.api);
+        result.examples = await this.getSwaggerExamples(result.api);
         return result;
       }
     }
@@ -104,6 +106,7 @@ export default class OasLoader implements LoaderInterface {
         if (isSwaggerApi) {
           result.api = await this.loadYamlPromise(file.path);
           result.definitions = await this.getSwaggerDefinitions(result.api);
+          result.examples = await this.getSwaggerExamples(result.api);
         }
       }
       if (result.api) return result;
@@ -117,6 +120,7 @@ export default class OasLoader implements LoaderInterface {
         if (isSwaggerApi) {
           result.api = content;
           result.definitions = await this.getSwaggerDefinitions(result.api);
+          result.examples = await this.getSwaggerExamples(result.api);
         }
       }
       if (result.api) return result;
@@ -135,8 +139,29 @@ export default class OasLoader implements LoaderInterface {
     return Promise.resolve([]);
   }
 
+  private async getSwaggerExamples(api: Object): Promise<Object[]> {
+    const stringApi = JSON.stringify(api);
+    const reg = /externalValue\"\:\"[^#](.[^"}]+)\#/g;
+    const externalPaths = stringApi.match(reg);
+    if (externalPaths) {
+      return Promise.all(externalPaths.map(this.loadSwaggerExamples));
+    }
+    return Promise.resolve([]);
+  }
+
   private async loadSwaggerDefinition(path: string) {
     const parsedPath = path.slice(8, path.length - 1);
+    const name = fsPath.basename(parsedPath, fsPath.extname(parsedPath));
+    try {
+      const content = await readFilePromise(`./.temp${parsedPath}`, 'utf-8');
+      return { name, content };
+    } catch (error) {
+      throw new Error(`Error reading file: ${error.message}`);
+    }
+  }
+
+  private async loadSwaggerExamples(path: string) {
+    const parsedPath = path.slice(17, path.length - 1);
     const name = fsPath.basename(parsedPath, fsPath.extname(parsedPath));
     try {
       const content = await readFilePromise(`./.temp${parsedPath}`, 'utf-8');

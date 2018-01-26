@@ -19,16 +19,16 @@ const oas_30_security_schemas_to_ms3_1 = require("./files/OAS-30-to-MS3/oas-30-s
 const oas_30_security_to_ms3_format_1 = require("./files/OAS-30-to-MS3/oas-30-security-to-ms3-format");
 const oas_30_path_params_to_ms3_1 = require("./files/OAS-30-to-MS3/oas-30-path-params-to-ms3");
 test('OAS settings should be converted to MS3 successfully', () => __awaiter(this, void 0, void 0, function* () {
-    expect(oas_30_to_ms3_1.default(oas_30_settings_to_ms3_1.oasSettings, null)).toEqual(oas_30_settings_to_ms3_1.ms3Settings);
+    expect(oas_30_to_ms3_1.default(oas_30_settings_to_ms3_1.oasSettings, null, null)).toEqual(oas_30_settings_to_ms3_1.ms3Settings);
 }));
 test('OAS paths with parameters should be converted to MS3 resources successfully', () => __awaiter(this, void 0, void 0, function* () {
-    expect(oas_30_to_ms3_1.default(oas_30_resources_parameters_to_ms3_1.oasPathsWithParameters, null)).toEqual(oas_30_resources_parameters_to_ms3_1.ms3ResourcesWithParameters);
+    expect(oas_30_to_ms3_1.default(oas_30_resources_parameters_to_ms3_1.oasPathsWithParameters, null, null)).toEqual(oas_30_resources_parameters_to_ms3_1.ms3ResourcesWithParameters);
 }));
 test('OAS paths with request body should be converted to MS3 resources successfully', () => __awaiter(this, void 0, void 0, function* () {
-    expect(oas_30_to_ms3_1.default(oas_30_resources_request_body_to_ms3_1.oasPathsWithRequestBody, null)).toEqual(oas_30_resources_request_body_to_ms3_1.ms3ResourcesWithRequestBody);
+    expect(oas_30_to_ms3_1.default(oas_30_resources_request_body_to_ms3_1.oasPathsWithRequestBody, null, null)).toEqual(oas_30_resources_request_body_to_ms3_1.ms3ResourcesWithRequestBody);
 }));
 test('OAS paths with responses should be converted to MS3 resources successfully', () => __awaiter(this, void 0, void 0, function* () {
-    expect(oas_30_to_ms3_1.default(oas_30_resource_responses_to_ms3_1.oasPathsWithResponses, null)).toEqual(oas_30_resource_responses_to_ms3_1.ms3ResourcesWithResponses);
+    expect(oas_30_to_ms3_1.default(oas_30_resource_responses_to_ms3_1.oasPathsWithResponses, null, null)).toEqual(oas_30_resource_responses_to_ms3_1.ms3ResourcesWithResponses);
 }));
 test('OAS primitive schema should be converted successfully', () => __awaiter(this, void 0, void 0, function* () {
     expect(schemas_to_dataTypes_1.default(oas_schemas_to_dataTypes_1.oasPrimitive)).toEqual(oas_schemas_to_dataTypes_1.ms3Primitive);
@@ -40,12 +40,12 @@ test('OAS object schema should be converted successfully', () => __awaiter(this,
     expect(schemas_to_dataTypes_1.default(oas_schemas_to_dataTypes_1.oasObject)).toEqual(oas_schemas_to_dataTypes_1.ms3Object);
 }));
 test('OAS security Schemas should should be converted successfully', () => __awaiter(this, void 0, void 0, function* () {
-    expect(oas_30_to_ms3_1.default(oas_30_security_schemas_to_ms3_1.oas_security_schemas, null)).toEqual(oas_30_security_schemas_to_ms3_1.ms3SecuritySchemasResult);
+    expect(oas_30_to_ms3_1.default(oas_30_security_schemas_to_ms3_1.oas_security_schemas, null, null)).toEqual(oas_30_security_schemas_to_ms3_1.ms3SecuritySchemasResult);
 }));
 test('OAS security property should be converted successfully', () => __awaiter(this, void 0, void 0, function* () {
-    expect(oas_30_to_ms3_1.default(oas_30_security_to_ms3_format_1.oas_security, null)).toEqual(oas_30_security_to_ms3_format_1.ms3SecuredBy);
+    expect(oas_30_to_ms3_1.default(oas_30_security_to_ms3_format_1.oas_security, null, null)).toEqual(oas_30_security_to_ms3_format_1.ms3SecuredBy);
 }));
 test('OAS path parameters should be converted successfully', () => __awaiter(this, void 0, void 0, function* () {
-    expect(oas_30_to_ms3_1.default(oas_30_path_params_to_ms3_1.oasResourceParams, null)).toEqual(oas_30_path_params_to_ms3_1.ms3ResourcesWithPathParameters);
+    expect(oas_30_to_ms3_1.default(oas_30_path_params_to_ms3_1.oasResourceParams, null, null)).toEqual(oas_30_path_params_to_ms3_1.ms3ResourcesWithPathParameters);
 }));
 //# sourceMappingURL=oas-30-to-ms3.test.js.map

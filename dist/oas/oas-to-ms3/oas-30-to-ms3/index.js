@@ -5,9 +5,10 @@ const security_schemas_to_ms3_1 = require("./security-schemas-to-ms3");
 const lodash_1 = require("lodash");
 const uuid_1 = require("uuid");
 class MS3toOAS30toMS3 {
-    constructor(oasAPI, loadedParts) {
+    constructor(oasAPI, loadedSchemas, loadedExamples) {
         this.oasAPI = oasAPI;
-        this.loadedParts = loadedParts;
+        this.loadedSchemas = loadedSchemas;
+        this.loadedExamples = loadedExamples;
         this.ms3API = {
             entityTypeName: 'api',
             ms3_version: '1.0',
@@ -20,8 +21,8 @@ class MS3toOAS30toMS3 {
             dataTypes: []
         };
     }
-    static create(oasAPI, loadedParts) {
-        return new MS3toOAS30toMS3(oasAPI, loadedParts);
+    static create(oasAPI, loadedSchemas, loadedExamples) {
+        return new MS3toOAS30toMS3(oasAPI, loadedSchemas, loadedExamples);
     }
     convert() {
         this.ms3API.settings = this.convertSettings();
@@ -154,7 +155,7 @@ class MS3toOAS30toMS3 {
             if (data.$ref) {
                 let foundSchema;
                 try {
-                    const foundContent = lodash_1.find(this.loadedParts, { name }).content;
+                    const foundContent = lodash_1.find(this.loadedSchemas, { name }).content;
                     foundSchema = JSON.parse(foundContent)[name];
                     delete foundSchema.title;
                     foundSchema.name = name;
@@ -170,14 +171,35 @@ class MS3toOAS30toMS3 {
                 this.ms3API.dataTypes.push(schemas_to_dataTypes_1.default(schema));
             }
         }
-        else if (!lodash_1.find(this.ms3API.examples, { __id: data.__id })) {
-            const example = {
-                __id: data.__id,
-                title: name,
-                format: 'json',
-                content: JSON.stringify(data.value)
-            };
-            this.ms3API.examples.push(example);
+        else {
+            if (lodash_1.find(this.ms3API.examples, { title: name }))
+                return;
+            if (data.externalValue) {
+                let foundExample;
+                let foundContent;
+                try {
+                    foundContent = lodash_1.find(this.loadedExamples, { name }).content;
+                    foundExample = JSON.parse(foundContent)[name];
+                }
+                catch (error) {
+                    throw new Error(error);
+                }
+                this.ms3API.examples.push({
+                    __id: data.__id,
+                    title: name,
+                    format: 'json',
+                    content: foundContent
+                });
+            }
+            else {
+                const example = {
+                    __id: data.__id,
+                    title: name,
+                    format: 'json',
+                    content: JSON.stringify(data.value)
+                };
+                this.ms3API.examples.push(example);
+            }
         }
     }
     convertResponses(responses) {
@@ -291,8 +313,8 @@ class MS3toOAS30toMS3 {
         }, []);
     }
 }
-function convertOAS30toMS3(oasAPI, loadedParts) {
-    return MS3toOAS30toMS3.create(oasAPI, loadedParts).convert();
+function convertOAS30toMS3(oasAPI, loadedSchemas, loadedExamples) {
+    return MS3toOAS30toMS3.create(oasAPI, loadedSchemas, loadedExamples).convert();
 }
 exports.default = convertOAS30toMS3;
 //# sourceMappingURL=index.js.map

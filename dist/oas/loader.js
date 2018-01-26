@@ -81,6 +81,7 @@ class OasLoader {
                 const result = {};
                 result.api = yield this.loadYamlPromise(path);
                 result.definitions = yield this.getSwaggerDefinitions(result.api);
+                result.examples = yield this.getSwaggerExamples(result.api);
                 return result;
             }
             else {
@@ -90,6 +91,7 @@ class OasLoader {
                     const result = {};
                     result.api = yield readFilePromise(path, 'utf-8');
                     result.definitions = yield this.getSwaggerDefinitions(result.api);
+                    result.examples = yield this.getSwaggerExamples(result.api);
                     return result;
                 }
             }
@@ -106,6 +108,7 @@ class OasLoader {
                     if (isSwaggerApi) {
                         result.api = yield this.loadYamlPromise(file.path);
                         result.definitions = yield this.getSwaggerDefinitions(result.api);
+                        result.examples = yield this.getSwaggerExamples(result.api);
                     }
                 }
                 if (result.api)
@@ -119,6 +122,7 @@ class OasLoader {
                     if (isSwaggerApi) {
                         result.api = content;
                         result.definitions = yield this.getSwaggerDefinitions(result.api);
+                        result.examples = yield this.getSwaggerExamples(result.api);
                     }
                 }
                 if (result.api)
@@ -138,9 +142,33 @@ class OasLoader {
             return Promise.resolve([]);
         });
     }
+    getSwaggerExamples(api) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const stringApi = JSON.stringify(api);
+            const reg = /externalValue\"\:\"[^#](.[^"}]+)\#/g;
+            const externalPaths = stringApi.match(reg);
+            if (externalPaths) {
+                return Promise.all(externalPaths.map(this.loadSwaggerExamples));
+            }
+            return Promise.resolve([]);
+        });
+    }
     loadSwaggerDefinition(path) {
         return __awaiter(this, void 0, void 0, function* () {
             const parsedPath = path.slice(8, path.length - 1);
+            const name = fsPath.basename(parsedPath, fsPath.extname(parsedPath));
+            try {
+                const content = yield readFilePromise(`./.temp${parsedPath}`, 'utf-8');
+                return { name, content };
+            }
+            catch (error) {
+                throw new Error(`Error reading file: ${error.message}`);
+            }
+        });
+    }
+    loadSwaggerExamples(path) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const parsedPath = path.slice(17, path.length - 1);
             const name = fsPath.basename(parsedPath, fsPath.extname(parsedPath));
             try {
                 const content = yield readFilePromise(`./.temp${parsedPath}`, 'utf-8');
