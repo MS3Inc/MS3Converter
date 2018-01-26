@@ -163,6 +163,7 @@ class MS3toOAS30toMS3 {
     if (entity == 'schemas') {
       const schema: any = {};
       data.name = name;
+      if (_find(this.ms3API.dataTypes, {name})) return;
       if (data.$ref) {
         let foundSchema;
         try {
