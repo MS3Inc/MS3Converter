@@ -149,6 +149,8 @@ class MS3toOAS30toMS3 {
         if (entity == 'schemas') {
             const schema = {};
             data.name = name;
+            if (lodash_1.find(this.ms3API.dataTypes, { name }))
+                return;
             if (data.$ref) {
                 let foundSchema;
                 try {
