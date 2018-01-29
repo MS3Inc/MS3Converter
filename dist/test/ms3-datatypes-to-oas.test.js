@@ -15,6 +15,7 @@ const rmdir = require("rmdir");
 const path = require("path");
 const uuid_1 = require("uuid");
 const mkdirp = require("mkdirp2");
+const apro_version_1 = require("../apro_version");
 const fileExistsPromise = util_1.promisify(fs_1.exists);
 const rmdirPromise = util_1.promisify(rmdir);
 const mkdirPromise = util_1.promisify(mkdirp);
@@ -129,7 +130,7 @@ const project = {
             '__id': 'c6710947-1eed-472d-a4f3-c4807c24fe6b'
         }
     ],
-    ms3_version: '1.0.1',
+    apro_version: apro_version_1.default,
     entityTypeName: 'api'
 };
 test('MS3 schemas should be converted to OAS successfully', () => __awaiter(this, void 0, void 0, function* () {

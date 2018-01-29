@@ -5,6 +5,7 @@ const Project_with_datatypes_1 = require("./files/Project-with-datatypes");
 const Project_with_resources_1 = require("./files/Project-with-resources");
 const Project_with_security_schemes_1 = require("./files/Project-with-security-schemes");
 const Project_with_traits_1 = require("./files/Project-with-traits");
+const apro_version_1 = require("../apro_version");
 test('MS3 API settings should be sanitized successfully', () => {
     const project = {
         settings: {
@@ -20,7 +21,7 @@ test('MS3 API settings should be sanitized successfully', () => {
             version: '',
             mediaType: ''
         },
-        ms3_version: '1.0.1',
+        apro_version: apro_version_1.default,
         entityTypeName: 'api'
     };
     const expectedResult = {
@@ -32,7 +33,7 @@ test('MS3 API settings should be sanitized successfully', () => {
             description: 'dsdsd',
             baseUri: 'http://params'
         },
-        ms3_version: '1.0.1',
+        apro_version: apro_version_1.default,
         entityTypeName: 'api'
     };
     expect(ms3_sanitizer_1.default.create(project).sanitize()).toEqual(expectedResult);
@@ -58,7 +59,7 @@ test('MS3 API examples should be sanitized successfully', () => {
             'title': 'params',
             'baseUri': 'http://params'
         },
-        'ms3_version': '1.0.1',
+        'apro_version': apro_version_1.default,
         'entityTypeName': 'api',
         'examples': [
             {
@@ -75,7 +76,7 @@ test('MS3 API examples should be sanitized successfully', () => {
             'title': 'params',
             'baseUri': 'http://params'
         },
-        'ms3_version': '1.0.1',
+        'apro_version': apro_version_1.default,
         'entityTypeName': 'api',
         'examples': [
             {
@@ -94,7 +95,7 @@ test('MS3 API documentation should be sanitized successfully', () => {
             'title': 'params',
             'baseUri': 'http://params'
         },
-        'ms3_version': '1.0.1',
+        'apro_version': apro_version_1.default,
         'entityTypeName': 'api',
         'documentation': [
             {
@@ -118,7 +119,7 @@ test('MS3 API documentation should be sanitized successfully', () => {
             'title': 'params',
             'baseUri': 'http://params'
         },
-        'ms3_version': '1.0.1',
+        'apro_version': apro_version_1.default,
         'entityTypeName': 'api',
         'documentation': [
             {
@@ -141,7 +142,7 @@ test('MS3 API documentation should be sanitized successfully', () => {
             'title': 'params',
             'baseUri': 'http://params'
         },
-        'ms3_version': '1.0.1',
+        'apro_version': apro_version_1.default,
         'entityTypeName': 'api',
         'annotationTypes': [
             {
@@ -181,7 +182,7 @@ test('MS3 API documentation should be sanitized successfully', () => {
             'title': 'params',
             'baseUri': 'http://params'
         },
-        'ms3_version': '1.0.1',
+        'apro_version': apro_version_1.default,
         'entityTypeName': 'api',
         'annotationTypes': [
             {

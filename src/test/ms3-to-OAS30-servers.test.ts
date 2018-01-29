@@ -1,6 +1,7 @@
 import MS3toOAS from './../ms3/ms3-to-oas/index';
 import * as ApiInterfaces from './../ms3/ms3-v1-api-interface';
 import * as OASInterfaces from './../oas/oas-30-api-interface';
+import AproVersion from '../apro_version';
 
 const project: ApiInterfaces.API = {
   settings: {
@@ -14,7 +15,7 @@ const project: ApiInterfaces.API = {
       description: 'description2'
     }]
   },
-  ms3_version: '1.0.1',
+  apro_version: AproVersion,
   entityTypeName: 'api'
 };
 

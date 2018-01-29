@@ -1,12 +1,13 @@
 import { API as MS3 } from './../../../ms3/ms3-v1-api-interface';
 import { API as OAS } from './../../../oas/oas-30-api-interface';
+import AproVersion from '../../../apro_version';
 
 export const originalBasicAndDigestAuth: MS3 = {
   'settings': {
     'title': 'params',
     'baseUri': 'http://params'
   },
-  'ms3_version': '1.0.1',
+  'apro_version': AproVersion,
   'entityTypeName': 'api',
   'securitySchemes': [
     {

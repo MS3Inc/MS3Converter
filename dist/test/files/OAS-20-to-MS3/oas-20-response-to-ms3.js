@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const apro_version_1 = require("../../../apro_version");
 exports.ms3ResourceWithResponses = {
     settings: {
         title: 'params',
@@ -21,7 +22,7 @@ exports.ms3ResourceWithResponses = {
             format: 'json',
             content: '{\"name\":\"Tom\"}'
         }],
-    ms3_version: '1.0',
+    apro_version: apro_version_1.default,
     entityTypeName: 'api',
     'resources': [
         {

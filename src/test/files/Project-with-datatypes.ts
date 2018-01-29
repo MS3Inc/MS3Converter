@@ -1,11 +1,12 @@
 import * as ApiInterfaces from './../../ms3/ms3-v1-api-interface';
+import AproVersion from '../../apro_version';
 
 const originalProject = {
   settings: {
     title: 'params',
     baseUri: 'http://params'
   },
-  ms3_version: '1.0.1',
+  apro_version: AproVersion,
   entityTypeName: 'api',
   dataTypes: [
     {
@@ -85,7 +86,7 @@ const resultProject: ApiInterfaces.API = {
     title: 'params',
     baseUri: 'http://params'
   },
-  ms3_version: '1.0.1',
+  apro_version: AproVersion,
   entityTypeName: 'api',
   dataTypes: [
     {

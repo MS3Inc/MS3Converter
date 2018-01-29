@@ -1,5 +1,6 @@
 import * as MS3Interface from '../../../ms3/ms3-v1-api-interface';
 import * as OASInterface from '../../../oas/oas-30-api-interface';
+import AproVersion from '../../../apro_version';
 
 export const oasPathsWithResponses: OASInterface.API = {
   openapi: '3.0',
@@ -75,7 +76,7 @@ export const ms3ResourcesWithResponses: MS3Interface.API = {
     description: 'API description',
     version: '3.0'
   },
-  ms3_version: '1.0',
+  apro_version: AproVersion,
   entityTypeName: 'api',
   resources: [
     {

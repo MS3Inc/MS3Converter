@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const index_1 = require("./../ms3/ms3-to-oas/index");
+const apro_version_1 = require("../apro_version");
 const project = {
     settings: {
         title: 'params',
@@ -21,7 +22,7 @@ const project = {
                 description: 'description2'
             }]
     },
-    ms3_version: '1.0.1',
+    apro_version: apro_version_1.default,
     entityTypeName: 'api'
 };
 test('MS3 settings should be converted to OAS30 servers successfully', () => __awaiter(this, void 0, void 0, function* () {

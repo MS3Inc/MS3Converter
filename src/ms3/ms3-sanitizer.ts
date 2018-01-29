@@ -10,7 +10,7 @@ export default class MS3Sanitizer {
   sanitize(): apiInerfaces.API {
     this.sanitizedAPI = {
       entityTypeName: this.API.entityTypeName,
-      ms3_version: this.API.ms3_version,
+      apro_version: this.API.apro_version,
       settings: this.sanitizeSettings()
     };
 

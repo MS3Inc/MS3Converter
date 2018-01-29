@@ -1,7 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const apro_version_1 = require("../../../apro_version");
 exports.originalProjectWithResourcesTypes = {
-    'ms3_version': '1.0.1',
+    'apro_version': apro_version_1.default,
     'traits': [
         {
             'name': 'trait1',
@@ -169,7 +170,7 @@ exports.originalProjectWithResourcesTypes = {
     'entityTypeName': 'api'
 };
 exports.resultProjectWithResourcesTypes = {
-    'ms3_version': '1.0.1',
+    'apro_version': apro_version_1.default,
     'resources': [
         {
             'path': '\/res',

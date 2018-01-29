@@ -1,12 +1,13 @@
 import { API } from './../../../ms3/ms3-v1-api-interface';
 import Extension from './../../../ms3/ms3-v1-extension-interface';
+import AproVersion from '../../../apro_version';
 
 export const originalProjectWithExamples: Extension = {
-  'ms3_version': '1.0.1',
+  'apro_version': AproVersion,
   'settings': {
     'extends': {
       'entityTypeName': 'api',
-      'ms3_version': '1.0.1',
+      'apro_version': AproVersion,
       'settings': {
         'baseUri': 'http://mergeAPI',
         'title': 'Merge API',
@@ -106,7 +107,7 @@ export const originalProjectWithExamples: Extension = {
 };
 
 export const resultProjectWithExamples: API = {
-  'ms3_version': '1.0.1',
+  'apro_version': AproVersion,
   'settings': {
     'baseUri': 'http://mergeEXT',
     'title': 'Merge EXT',

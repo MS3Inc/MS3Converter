@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const schemas_to_dataTypes_1 = require("../../schemas-to-dataTypes");
 const security_schemas_to_ms3_1 = require("./security-schemas-to-ms3");
+const apro_version_1 = require("../../../apro_version");
 const lodash_1 = require("lodash");
 const uuid_1 = require("uuid");
 class MS3toOAS30toMS3 {
@@ -11,7 +12,7 @@ class MS3toOAS30toMS3 {
         this.loadedExamples = loadedExamples;
         this.ms3API = {
             entityTypeName: 'api',
-            ms3_version: '1.0',
+            apro_version: apro_version_1.default,
             settings: {
                 title: '',
                 version: '',

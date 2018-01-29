@@ -221,7 +221,7 @@ export interface IncludedLibrary {
 
 export interface API {
   entityTypeName: entityName;
-  ms3_version: string;
+  apro_version: string;
   settings: Settings;
   folder?: string[];
   dataTypes?: DataType[];

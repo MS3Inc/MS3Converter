@@ -1,5 +1,6 @@
 import * as MS3Interface from '../../../ms3/ms3-v1-api-interface';
 import * as OASInterface from '../../../oas/oas-20-api-interface';
+import AproVersion from '../../../apro_version';
 
 export const ms3ResourceWithResponses: MS3Interface.API = {
   settings: {
@@ -22,7 +23,7 @@ export const ms3ResourceWithResponses: MS3Interface.API = {
     format: 'json',
     content: '{\"name\":\"Tom\"}'
   }],
-  ms3_version: '1.0',
+  apro_version: AproVersion,
   entityTypeName: 'api',
   'resources': [
     {

@@ -1,5 +1,6 @@
 import { API as MS3 } from './../../../ms3/ms3-v1-api-interface';
 import { API as OAS } from './../../../oas/oas-30-api-interface';
+import AproVersion from '../../../apro_version';
 
 export const ms3SecuritySchemasResult: MS3 = {
   'settings': {
@@ -8,7 +9,7 @@ export const ms3SecuritySchemasResult: MS3 = {
     'description': 'API description',
     'version': '3.0'
   },
-  'ms3_version': '1.0',
+  apro_version: AproVersion,
   'entityTypeName': 'api',
   'dataTypes': [],
   'examples': [],

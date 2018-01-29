@@ -4,11 +4,12 @@ import schemaToDataType from '../../schemas-to-dataTypes';
 import { reduce, filter, map, find } from 'lodash';
 import { v4 } from 'uuid';
 import convertSecuritySchemes from './security-definitions-to-ms3';
+import AproVersion from '../../../apro_version';
 
 class MS3toOAS20toMS3 {
   ms3API: MS3Interface.API = {
     entityTypeName: 'api',
-    ms3_version: '1.0',
+    apro_version: AproVersion,
     settings: {
       title: '',
       version: '',

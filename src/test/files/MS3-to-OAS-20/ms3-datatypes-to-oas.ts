@@ -1,5 +1,6 @@
 import * as MS3Interface from '../../../ms3/ms3-v1-api-interface';
 import * as OASInterface from '../../../oas/oas-20-api-interface';
+import AproVersion from '../../../apro_version';
 
 export const ms3DataTypes: MS3Interface.API = {
   settings: {
@@ -125,7 +126,7 @@ export const ms3DataTypes: MS3Interface.API = {
       '__id': 'c6710947-1eed-472d-a4f3-c4807c24fe6b'
     }
   ],
-  ms3_version: '1.0.1',
+  apro_version: AproVersion,
   entityTypeName: 'api'
 };
 

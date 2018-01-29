@@ -1,7 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const apro_version_1 = require("../../../apro_version");
 exports.originalProject = {
-    'ms3_version': '1.0.1',
+    'apro_version': apro_version_1.default,
     'traits': [
         {
             'name': 'trait',
@@ -124,7 +125,7 @@ exports.originalProject = {
     'settings': {
         'mediaType': 'application\/json',
         'extends': {
-            'ms3_version': '1.0.1',
+            'apro_version': apro_version_1.default,
             'examples': [
                 {
                     'title': 'exampleJSON',
@@ -449,7 +450,7 @@ exports.originalProject = {
     'entityTypeName': 'extension'
 };
 exports.resultProject = {
-    'ms3_version': '1.0.1',
+    'apro_version': apro_version_1.default,
     'examples': [
         {
             'title': 'exampleTXT',

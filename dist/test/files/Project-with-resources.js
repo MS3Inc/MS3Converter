@@ -1,11 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const apro_version_1 = require("../../apro_version");
 const originalProject = {
     'settings': {
         'title': 'params',
         'baseUri': 'http://params'
     },
-    'ms3_version': '1.0.1',
+    'apro_version': apro_version_1.default,
     'entityTypeName': 'api',
     'resources': [
         {
@@ -212,7 +213,7 @@ const resultProject = {
         'title': 'params',
         'baseUri': 'http://params'
     },
-    'ms3_version': '1.0.1',
+    'apro_version': apro_version_1.default,
     'entityTypeName': 'api',
     'resources': [
         {
