@@ -8,6 +8,7 @@ import * as rmdir from 'rmdir';
 import * as path from 'path';
 import { v4 } from 'uuid';
 import * as mkdirp from 'mkdirp2';
+import AproVersion from '../apro_version';
 
 const fileExistsPromise = promisify(exists);
 const rmdirPromise = promisify(rmdir);
@@ -124,7 +125,7 @@ const project: ApiInterfaces.API = {
       '__id': 'c6710947-1eed-472d-a4f3-c4807c24fe6b'
     }
   ],
-  ms3_version: '1.0.1',
+  apro_version: AproVersion,
   entityTypeName: 'api'
 };
 

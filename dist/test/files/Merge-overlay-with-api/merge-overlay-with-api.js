@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const apro_version_1 = require("../../../apro_version");
 const apiSettings = {
     'mediaType': 'any\/*',
     'description': 'api description',
@@ -374,7 +375,7 @@ const api = {
     'resources': apiResources,
     'dataTypes': apiDataTypes,
     'settings': apiSettings,
-    'ms3_version': '1.0.0'
+    'apro_version': apro_version_1.default
 };
 const overlaySettings = {
     'mediaType': 'any\/*',
@@ -473,11 +474,11 @@ exports.originalProject = {
     'resources': overlayResources,
     'dataTypes': overlayDataTypes,
     'settings': overlaySettings,
-    'ms3_version': '1.0.0'
+    'apro_version': apro_version_1.default
 };
 exports.resultProject = {
     'entityTypeName': 'api',
-    'ms3_version': '1.0.0',
+    'apro_version': apro_version_1.default,
     'examples': [
         {
             'title': 'exampleJSON',

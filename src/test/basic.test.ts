@@ -6,7 +6,7 @@ test('Conversion should fail if from and to formats match.', async () => {
   const expected = new Error(`Cannot convert from ${format} to ${format}`);
   const source: API = {
     entityTypeName: 'api',
-    ms3_version: '1',
+    apro_version: '1',
     settings: {
       title: 'some-api',
       baseUri: 'http://some-api.com'

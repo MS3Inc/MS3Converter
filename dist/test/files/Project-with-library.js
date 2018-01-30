@@ -1,10 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const apro_version_1 = require("../../apro_version");
 const originalProject = {
     '_id': '5a0972db8833570d4b92471a',
     'updatedAt': '2017-11-13T10:28:14.037Z',
     'createdAt': '2017-11-13T10:24:27.978Z',
-    'ms3_version': '1.0.2',
+    'apro_version': apro_version_1.default,
     '__v': 0,
     '_creator': '587620f13b4e9f19192177e4',
     'lockedBy': 'alexei',
@@ -268,7 +269,7 @@ const originalProject = {
                 '_id': '5a0972db8833570d4b924718',
                 'updatedAt': '2017-11-13T10:24:27.929Z',
                 'createdAt': '2017-11-13T10:24:27.929Z',
-                'ms3_version': '1.0.1',
+                'apro_version': apro_version_1.default,
                 '__v': 0,
                 '_creator': '587620f13b4e9f19192177e4',
                 '_deleted': false,
@@ -439,7 +440,7 @@ const resultObject = {
     '_id': '5a0972db8833570d4b92471a',
     'updatedAt': '2017-11-13T10:28:14.037Z',
     'createdAt': '2017-11-13T10:24:27.978Z',
-    'ms3_version': '1.0.2',
+    'apro_version': apro_version_1.default,
     '__v': 0,
     '_creator': '587620f13b4e9f19192177e4',
     'lockedBy': 'alexei',

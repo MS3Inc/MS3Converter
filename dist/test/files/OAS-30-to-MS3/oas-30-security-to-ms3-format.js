@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const apro_version_1 = require("../../../apro_version");
 exports.ms3SecuredBy = {
     'settings': {
         'title': 'params',
@@ -8,7 +9,7 @@ exports.ms3SecuredBy = {
         'version': '3.0',
         'securedBy': ['uuid']
     },
-    'ms3_version': '1.0',
+    'apro_version': apro_version_1.default,
     'entityTypeName': 'api',
     'dataTypes': [],
     'examples': [],

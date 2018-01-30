@@ -4,12 +4,13 @@ const schemas_to_dataTypes_1 = require("../../schemas-to-dataTypes");
 const lodash_1 = require("lodash");
 const uuid_1 = require("uuid");
 const security_definitions_to_ms3_1 = require("./security-definitions-to-ms3");
+const apro_version_1 = require("../../../apro_version");
 class MS3toOAS20toMS3 {
     constructor(oasAPI) {
         this.oasAPI = oasAPI;
         this.ms3API = {
             entityTypeName: 'api',
-            ms3_version: '1.0',
+            apro_version: apro_version_1.default,
             settings: {
                 title: '',
                 version: '',

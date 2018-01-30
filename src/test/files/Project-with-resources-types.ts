@@ -1,7 +1,8 @@
 import * as ApiInterfaces from './../../ms3/ms3-v1-api-interface';
+import AproVersion from '../../apro_version';
 
 const originalProject: ApiInterfaces.API = {
-  'ms3_version': '1.0.1',
+  'apro_version': AproVersion,
   'resourcesTypes': [
     {
       'path': '',
@@ -112,7 +113,7 @@ const originalProject: ApiInterfaces.API = {
 };
 
 const resultProject: ApiInterfaces.API = {
-  'ms3_version': '1.0.1',
+  'apro_version': AproVersion,
   'resourcesTypes': [
     {
       'methods': [

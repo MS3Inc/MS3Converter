@@ -1,8 +1,9 @@
 import { API } from './../../../ms3/ms3-v1-api-interface';
 import Extension from './../../../ms3/ms3-v1-extension-interface';
+import AproVersion from '../../../apro_version';
 
 export const originalProject: Extension = {
-  'ms3_version': '1.0.1',
+  'apro_version': AproVersion,
   'traits': [
     {
       'name': 'trait',
@@ -125,7 +126,7 @@ export const originalProject: Extension = {
   'settings': {
     'mediaType': 'application\/json',
     'extends': {
-      'ms3_version': '1.0.1',
+      'apro_version': AproVersion,
       'examples': [
         {
           'title': 'exampleJSON',
@@ -451,7 +452,7 @@ export const originalProject: Extension = {
 };
 
 export const resultProject: API = {
-  'ms3_version': '1.0.1',
+  'apro_version': AproVersion,
   'examples': [
     {
       'title': 'exampleTXT',

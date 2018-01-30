@@ -1,11 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const apro_version_1 = require("../../../apro_version");
 exports.originalProjectWithExamples = {
-    'ms3_version': '1.0.1',
+    'apro_version': apro_version_1.default,
     'settings': {
         'extends': {
             'entityTypeName': 'api',
-            'ms3_version': '1.0.1',
+            'apro_version': apro_version_1.default,
             'settings': {
                 'baseUri': 'http://mergeAPI',
                 'title': 'Merge API',
@@ -104,7 +105,7 @@ exports.originalProjectWithExamples = {
     ],
 };
 exports.resultProjectWithExamples = {
-    'ms3_version': '1.0.1',
+    'apro_version': apro_version_1.default,
     'settings': {
         'baseUri': 'http://mergeEXT',
         'title': 'Merge EXT',

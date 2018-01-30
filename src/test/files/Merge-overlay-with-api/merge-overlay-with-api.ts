@@ -1,5 +1,6 @@
 import * as API from './../../../ms3/ms3-v1-api-interface';
 import Overlay from './../../../ms3/ms3-v1-overlay-interface';
+import AproVersion from '../../../apro_version';
 
 const apiSettings: API.Settings = {
   'mediaType': 'any\/*',
@@ -384,7 +385,7 @@ const api: API.API = {
   'resources': apiResources,
   'dataTypes': apiDataTypes,
   'settings': apiSettings,
-  'ms3_version': '1.0.0'
+  'apro_version': AproVersion
 };
 
 const overlaySettings = {
@@ -486,12 +487,12 @@ export const originalProject: any = {
   'resources': overlayResources,
   'dataTypes': overlayDataTypes,
   'settings': overlaySettings,
-  'ms3_version': '1.0.0'
+  'apro_version': AproVersion
 };
 
 export const resultProject: API.API = {
   'entityTypeName': 'api',
-  'ms3_version': '1.0.0',
+  'apro_version': AproVersion,
   'examples': [
     {
       'title': 'exampleJSON',

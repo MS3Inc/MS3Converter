@@ -8,7 +8,7 @@ class MS3Sanitizer {
     sanitize() {
         this.sanitizedAPI = {
             entityTypeName: this.API.entityTypeName,
-            ms3_version: this.API.ms3_version,
+            apro_version: this.API.apro_version,
             settings: this.sanitizeSettings()
         };
         if (this.API.folder && this.API.folder.length)

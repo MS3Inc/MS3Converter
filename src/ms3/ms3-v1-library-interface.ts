@@ -6,7 +6,7 @@ interface LibrarySettings extends apiInterfaces.Settings {
 
 interface Library {
   entityTypeName: apiInterfaces.entityName;
-  ms3_version: string;
+  apro_version: string;
   settings: LibrarySettings;
   folder?: string[];
   dataTypes?: apiInterfaces.DataType[];

@@ -7,6 +7,7 @@ import { writeFile, exists } from 'fs';
 import { promisify } from 'util';
 import * as YAML from 'yamljs';
 import * as rmdir from 'rmdir';
+import AproVersion from '../apro_version';
 
 const fileExistsPromise = promisify(exists);
 const rmdirPromise = promisify(rmdir);
@@ -17,7 +18,7 @@ const project: ApiInterfaces.API = {
     title: 'params',
     baseUri: 'http://params',
   },
-  ms3_version: '1.0.1',
+  apro_version: AproVersion,
   entityTypeName: 'api'
 };
 
@@ -45,7 +46,7 @@ test('MS3 settings to OAS conversion should fail with "library" entity type', as
       usage: 'dsdsd',
       baseUri: 'http://params',
     },
-    ms3_version: '1.0.1',
+    apro_version: AproVersion,
     entityTypeName: 'library'
   };
   try {

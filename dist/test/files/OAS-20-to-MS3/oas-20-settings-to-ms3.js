@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const apro_version_1 = require("../../../apro_version");
 exports.oasSettings = {
     swagger: '2.0',
     info: {
@@ -21,7 +22,7 @@ exports.ms3Settings = {
         protocols: ['http']
     },
     securitySchemes: [],
-    ms3_version: '1.0',
+    apro_version: apro_version_1.default,
     entityTypeName: 'api',
     dataTypes: [],
     resources: []

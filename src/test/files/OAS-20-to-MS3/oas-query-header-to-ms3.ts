@@ -1,5 +1,6 @@
 import * as MS3Interface from '../../../ms3/ms3-v1-api-interface';
 import * as OASInterface from '../../../oas/oas-20-api-interface';
+import AproVersion from '../../../apro_version';
 
 export const oasHeaderQuery: OASInterface.API = {
   swagger: '2.0',
@@ -63,7 +64,7 @@ export const ms3HeaderQuery: MS3Interface.API = {
     version: '2.0',
     protocols: ['http']
   },
-  ms3_version: '1.0',
+  apro_version: AproVersion,
   entityTypeName: 'api',
   dataTypes: [],
   securitySchemes: [],

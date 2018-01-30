@@ -1,12 +1,13 @@
 import * as MS3Interface from '../../../ms3/ms3-v1-api-interface';
 import * as OASInterface from '../../../oas/oas-20-api-interface';
+import AproVersion from '../../../apro_version';
 
 export const ms3ResourceWithRequestBody: MS3Interface.API = {
   settings: {
     title: 'params',
     baseUri: 'http://params',
   },
-  ms3_version: '1.0.1',
+  apro_version: AproVersion,
   entityTypeName: 'api',
   'dataTypes': [
     {

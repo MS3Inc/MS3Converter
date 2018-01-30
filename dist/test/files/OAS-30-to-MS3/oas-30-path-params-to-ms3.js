@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const apro_version_1 = require("../../../apro_version");
 exports.oasResourceParams = {
     'openapi': '3.0',
     'info': {
@@ -35,7 +36,7 @@ exports.oasResourceParams = {
 };
 exports.ms3ResourcesWithPathParameters = {
     'examples': [],
-    'ms3_version': '1.0',
+    'apro_version': apro_version_1.default,
     'securitySchemes': [],
     'resources': [
         {

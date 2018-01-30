@@ -14,7 +14,7 @@ test('Conversion should fail if from and to formats match.', () => __awaiter(thi
     const expected = new Error(`Cannot convert from ${format} to ${format}`);
     const source = {
         entityTypeName: 'api',
-        ms3_version: '1',
+        apro_version: '1',
         settings: {
             title: 'some-api',
             baseUri: 'http://some-api.com'

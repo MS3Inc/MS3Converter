@@ -1,7 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const apro_version_1 = require("../../apro_version");
 const originalProject = {
-    'ms3_version': '1.0.1',
+    'apro_version': apro_version_1.default,
     'resourcesTypes': [
         {
             'path': '',
@@ -112,7 +113,7 @@ const originalProject = {
 };
 exports.originalProject = originalProject;
 const resultProject = {
-    'ms3_version': '1.0.1',
+    'apro_version': apro_version_1.default,
     'resourcesTypes': [
         {
             'methods': [

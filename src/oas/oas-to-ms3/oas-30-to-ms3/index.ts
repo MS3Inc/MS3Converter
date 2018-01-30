@@ -2,14 +2,14 @@ import * as MS3Interface from '../../../ms3/ms3-v1-api-interface';
 import * as OAS30Interface from '../../../oas/oas-30-api-interface';
 import schemaToDataType from '../../schemas-to-dataTypes';
 import securitySchemasToMS3 from './security-schemas-to-ms3';
-
+import AproVersion from '../../../apro_version';
 import { reduce, filter, find as _find, each, map, difference } from 'lodash';
 import { v4 } from 'uuid';
 
 class MS3toOAS30toMS3 {
   ms3API: MS3Interface.API = {
     entityTypeName: 'api',
-    ms3_version: '1.0',
+    apro_version: AproVersion,
     settings: {
       title: '',
       version: '',

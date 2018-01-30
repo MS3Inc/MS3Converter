@@ -12,6 +12,7 @@ const index_1 = require("./../ms3/ms3-to-oas/index");
 const fs_1 = require("fs");
 const util_1 = require("util");
 const rmdir = require("rmdir");
+const apro_version_1 = require("../apro_version");
 const fileExistsPromise = util_1.promisify(fs_1.exists);
 const rmdirPromise = util_1.promisify(rmdir);
 const writeFilePromise = util_1.promisify(fs_1.writeFile);
@@ -20,7 +21,7 @@ const project = {
         title: 'params',
         baseUri: 'http://params',
     },
-    ms3_version: '1.0.1',
+    apro_version: apro_version_1.default,
     entityTypeName: 'api'
 };
 test('MS3 settings should be converted to OAS successfully', () => __awaiter(this, void 0, void 0, function* () {
@@ -46,7 +47,7 @@ test('MS3 settings to OAS conversion should fail with "library" entity type', ()
             usage: 'dsdsd',
             baseUri: 'http://params',
         },
-        ms3_version: '1.0.1',
+        apro_version: apro_version_1.default,
         entityTypeName: 'library'
     };
     try {
