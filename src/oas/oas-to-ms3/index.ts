@@ -25,6 +25,9 @@ export default class MS3toOAS {
   constructor(protected oasAPI: any, protected options: any) {}
 
   convertOAStoMS3(): MS3Interface {
+    if (this.options.version == '3.0' && !this.oasAPI.api.openapi) {
+      throw new Error('Wrong OAS format, expected 3.0');
+    }
     if (this.oasAPI.api.openapi) {
       return convertOAS30toMS3(this.oasAPI.api, this.oasAPI.definitions, this.oasAPI.examples);
     }
