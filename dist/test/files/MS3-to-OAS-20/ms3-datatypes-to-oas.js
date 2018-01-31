@@ -134,6 +134,9 @@ exports.oasDataTypes = {
         title: 'params',
         version: '2.0'
     },
+    schemes: [
+        'https'
+    ],
     host: 'params',
     basePath: '/',
     paths: {},
@@ -234,6 +237,9 @@ exports.oasDataTypesExternal = {
         title: 'params',
         version: '2.0'
     },
+    schemes: [
+        'https'
+    ],
     host: 'params',
     basePath: '/',
     paths: {},

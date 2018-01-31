@@ -37,6 +37,9 @@ class MS3toOAS20 {
                 return protocol.toLowerCase();
             });
         }
+        else {
+            this.oasAPI.schemes = ['https'];
+        }
         if (this.ms3API.dataTypes) {
             if (this.options.destinationPath && !this.options.asSingleFile) {
                 this.externalFiles.schemas = this.externalFiles.schemas.concat(datatypes_to_schemas_1.convertExternalSchemas(this.ms3API, this.options.destinationPath));

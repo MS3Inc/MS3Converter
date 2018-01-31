@@ -17,6 +17,9 @@ exports.OASApiHostAndBasePath = {
     },
     host: '{param}.params.com',
     basePath: '/{anotherparam}',
-    paths: {}
+    paths: {},
+    schemes: [
+        'https'
+    ]
 };
 //# sourceMappingURL=ms3-baseuri-to-oas.js.map

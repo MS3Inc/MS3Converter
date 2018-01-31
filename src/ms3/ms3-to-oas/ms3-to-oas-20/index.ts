@@ -43,6 +43,8 @@ class MS3toOAS20 {
       this.oasAPI.schemes = map(this.ms3API.settings.protocols, (protocol: string) => {
         return <'http' | 'https'> protocol.toLowerCase();
       });
+    } else {
+      this.oasAPI.schemes = ['https'];
     }
 
     if (this.ms3API.dataTypes) {

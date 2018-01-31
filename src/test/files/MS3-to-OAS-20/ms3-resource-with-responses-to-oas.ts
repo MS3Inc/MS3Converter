@@ -99,6 +99,9 @@ export const oasResourceWithResponsesAndInlineExamples: OASInterface.API = {
     title: 'params',
     version: '2.0'
   },
+  schemes: [
+    'https'
+  ],
   host: 'params',
   basePath: '/',
   paths: {
@@ -156,6 +159,9 @@ export const oasResourceWithResponses: OASInterface.API = {
     title: 'params',
     version: '2.0'
   },
+  schemes: [
+    'https'
+  ],
   host: 'params',
   basePath: '/',
   paths: {
