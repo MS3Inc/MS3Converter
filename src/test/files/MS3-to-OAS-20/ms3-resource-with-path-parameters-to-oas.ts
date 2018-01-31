@@ -42,6 +42,9 @@ export const oasResourceWithPathParameters: OASInterface.API = {
     title: 'params',
     version: '2.0'
   },
+  schemes: [
+    'https'
+  ],
   host: 'params',
   basePath: '/',
   paths: {

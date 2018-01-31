@@ -48,6 +48,9 @@ export const oasNestedResources: OASInterface.API = {
   },
   host: 'params',
   basePath: '/',
+  schemes: [
+    'https'
+  ],
   paths: {
     '/res': {
       'get': {

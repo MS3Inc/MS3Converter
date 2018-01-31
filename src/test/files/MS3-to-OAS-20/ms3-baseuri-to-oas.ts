@@ -19,5 +19,8 @@ export const OASApiHostAndBasePath: OASInterface.API = {
   },
   host: '{param}.params.com',
   basePath: '/{anotherparam}',
-  paths: {}
+  paths: {},
+  schemes: [
+    'https'
+  ]
 };

@@ -56,6 +56,9 @@ exports.oasResourceWithRequestBody = {
     },
     host: 'params',
     basePath: '/',
+    schemes: [
+        'https'
+    ],
     paths: {
         '/res': {
             get: {

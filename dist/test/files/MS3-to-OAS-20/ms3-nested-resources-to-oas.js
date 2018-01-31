@@ -46,6 +46,9 @@ exports.oasNestedResources = {
     },
     host: 'params',
     basePath: '/',
+    schemes: [
+        'https'
+    ],
     paths: {
         '/res': {
             'get': {

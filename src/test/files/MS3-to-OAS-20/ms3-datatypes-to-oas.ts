@@ -136,6 +136,9 @@ export const oasDataTypes: OASInterface.API = {
     title: 'params',
     version: '2.0'
   },
+  schemes: [
+    'https'
+  ],
   host: 'params',
   basePath: '/',
   paths: {},
@@ -237,6 +240,9 @@ export const oasDataTypesExternal: OASInterface.API = {
     title: 'params',
     version: '2.0'
   },
+  schemes: [
+    'https'
+  ],
   host: 'params',
   basePath: '/',
   paths: {},
