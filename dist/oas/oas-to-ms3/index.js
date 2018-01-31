@@ -22,6 +22,9 @@ class MS3toOAS {
         };
     }
     convertOAStoMS3() {
+        if (this.options.version == '3.0' && !this.oasAPI.api.openapi) {
+            throw new Error('Wrong OAS format, expected 3.0');
+        }
         if (this.oasAPI.api.openapi) {
             return oas_30_to_ms3_1.default(this.oasAPI.api, this.oasAPI.definitions, this.oasAPI.examples);
         }
