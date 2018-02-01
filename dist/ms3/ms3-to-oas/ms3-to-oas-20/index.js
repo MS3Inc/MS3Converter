@@ -32,7 +32,7 @@ class MS3toOAS20 {
         };
         if (this.ms3API.libraries)
             this.ms3API = merge_library_to_ms3_1.default(this.ms3API);
-        if (this.ms3API.settings.protocols) {
+        if (this.ms3API.settings.protocols && this.ms3API.settings.protocols.length) {
             this.oasAPI.schemes = lodash_1.map(this.ms3API.settings.protocols, (protocol) => {
                 return protocol.toLowerCase();
             });
