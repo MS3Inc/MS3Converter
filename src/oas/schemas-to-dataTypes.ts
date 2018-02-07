@@ -4,10 +4,10 @@ import { v4 } from 'uuid';
 import { reduce } from 'lodash';
 
 class SchemasToDataTypes {
-  constructor(private schema: OAS30Interface.Schema) {}
+  constructor(private schema: OAS30Interface.Schema, private id: string) {}
 
-  static create(schema: OAS30Interface.Schema) {
-    return new SchemasToDataTypes(schema);
+  static create(schema: OAS30Interface.Schema, id: string) {
+    return new SchemasToDataTypes(schema, id);
   }
 
   convert(): MS3Interface.DataType {
@@ -19,7 +19,7 @@ class SchemasToDataTypes {
         } catch (error) {
           throw new Error(`Error parsing data type ${name}: ${error.message}`);
         }
-        dataType.__id = v4();
+        dataType.__id = this.id ? this.id : v4();
         dataType.name = name;
         return dataType;
       }
@@ -141,8 +141,8 @@ class SchemasToDataTypes {
   }
 }
 
-const convertSchemasToDataTypes =  function(schema: OAS30Interface.Schema): MS3Interface.DataType {
-  return SchemasToDataTypes.create(schema).convert();
+const convertSchemasToDataTypes =  function(schema: OAS30Interface.Schema, id: string = null): MS3Interface.DataType {
+  return SchemasToDataTypes.create(schema, id).convert();
 };
 
 export default convertSchemasToDataTypes;
