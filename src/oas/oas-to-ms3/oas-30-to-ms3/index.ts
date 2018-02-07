@@ -114,7 +114,7 @@ class MS3toOAS30toMS3 {
         const splitArr: string[] = value.schema.$ref.split('/');
         const name: string = splitArr.pop();
         convertedBody.type = this.getRefId(name, 'schemas');
-      } else if (value.schema && !value.schema.$ref) {
+      } else if (value.schema) {
         convertedBody.type = v4();
         value.schema.__id = convertedBody.type;
         this.ms3API.dataTypes.push(value.schema);
@@ -124,7 +124,7 @@ class MS3toOAS30toMS3 {
         const splitArr: string[] = value.examples.$ref.split('/');
         const name: string = splitArr.pop();
         convertedBody.selectedExamples.push(this.getRefId(name, 'examples'));
-      } else if (value.examples && !value.examples.$ref) {
+      } else if (value.examples) {
         convertedBody.selectedExamples = this.convertExamples(<OAS30Interface.Example>value.examples);
       }
 
@@ -170,7 +170,7 @@ class MS3toOAS30toMS3 {
       delete foundSchema.title;
       foundSchema.name = name;
       schema[name] = foundSchema;
-      this.ms3API.dataTypes.push(schemaToDataType(schema));
+      this.ms3API.dataTypes.push(schemaToDataType(schema, data.__id));
     } else {
       schema[name] = data;
       this.ms3API.dataTypes.push(schemaToDataType(schema));

@@ -107,7 +107,7 @@ class MS3toOAS30toMS3 {
                 const name = splitArr.pop();
                 convertedBody.type = this.getRefId(name, 'schemas');
             }
-            else if (value.schema && !value.schema.$ref) {
+            else if (value.schema) {
                 convertedBody.type = uuid_1.v4();
                 value.schema.__id = convertedBody.type;
                 this.ms3API.dataTypes.push(value.schema);
@@ -117,7 +117,7 @@ class MS3toOAS30toMS3 {
                 const name = splitArr.pop();
                 convertedBody.selectedExamples.push(this.getRefId(name, 'examples'));
             }
-            else if (value.examples && !value.examples.$ref) {
+            else if (value.examples) {
                 convertedBody.selectedExamples = this.convertExamples(value.examples);
             }
             resultArray.push(convertedBody);
@@ -161,7 +161,7 @@ class MS3toOAS30toMS3 {
             delete foundSchema.title;
             foundSchema.name = name;
             schema[name] = foundSchema;
-            this.ms3API.dataTypes.push(schemas_to_dataTypes_1.default(schema));
+            this.ms3API.dataTypes.push(schemas_to_dataTypes_1.default(schema, data.__id));
         }
         else {
             schema[name] = data;
