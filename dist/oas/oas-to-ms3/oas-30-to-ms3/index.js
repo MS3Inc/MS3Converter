@@ -273,6 +273,9 @@ class MS3toOAS30toMS3 {
                     }
                     else {
                         convertedParameter.type = schema.type;
+                        if (schema.type == 'long' || schema.type == 'float' || schema.type == 'double') {
+                            convertedParameter.type = 'number';
+                        }
                     }
                 }
             }
