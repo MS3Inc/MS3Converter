@@ -125,7 +125,7 @@ export const resultResourceWithResponses: OAS = {
             headers: {
               'header': {
                 description: 'description',
-                required: true,
+                required: false,
                 schema: {
                   default: 5,
                   type: 'long'
@@ -133,7 +133,7 @@ export const resultResourceWithResponses: OAS = {
               },
               'header2': {
                 description: 'description2',
-                required: true,
+                required: false,
                 schema: {
                   default: 5,
                   type: 'long'

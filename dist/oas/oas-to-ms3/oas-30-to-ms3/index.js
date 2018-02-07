@@ -161,7 +161,7 @@ class MS3toOAS30toMS3 {
             delete foundSchema.title;
             foundSchema.name = name;
             schema[name] = foundSchema;
-            this.ms3API.dataTypes.push(schemas_to_dataTypes_1.default(schema));
+            this.ms3API.dataTypes.push(schemas_to_dataTypes_1.default(schema, data.__id));
         }
         else {
             schema[name] = data;
@@ -273,6 +273,9 @@ class MS3toOAS30toMS3 {
                     }
                     else {
                         convertedParameter.type = schema.type;
+                        if (schema.type == 'long' || schema.type == 'float' || schema.type == 'double') {
+                            convertedParameter.type = 'number';
+                        }
                     }
                 }
             }

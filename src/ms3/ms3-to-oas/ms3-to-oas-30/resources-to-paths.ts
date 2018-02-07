@@ -56,7 +56,7 @@ class ConvertResourcesToPaths {
   getResponseHeaders(headers: MS3.Parameter[]): OAS.Headers {
     return headers.reduce( (resultObject: any, header: MS3.Parameter) => {
       resultObject[header.displayName] = {
-        required: header.required || true
+        required: header.required
       };
 
       if (header.description) resultObject[header.displayName].description = header.description;

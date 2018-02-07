@@ -123,7 +123,7 @@ exports.resultResourceWithResponses = {
                         headers: {
                             'header': {
                                 description: 'description',
-                                required: true,
+                                required: false,
                                 schema: {
                                     default: 5,
                                     type: 'long'
@@ -131,7 +131,7 @@ exports.resultResourceWithResponses = {
                             },
                             'header2': {
                                 description: 'description2',
-                                required: true,
+                                required: false,
                                 schema: {
                                     default: 5,
                                     type: 'long'

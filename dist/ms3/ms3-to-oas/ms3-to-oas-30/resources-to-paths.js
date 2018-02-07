@@ -47,7 +47,7 @@ class ConvertResourcesToPaths {
     getResponseHeaders(headers) {
         return headers.reduce((resultObject, header) => {
             resultObject[header.displayName] = {
-                required: header.required || true
+                required: header.required
             };
             if (header.description)
                 resultObject[header.displayName].description = header.description;
