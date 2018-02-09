@@ -122,7 +122,7 @@ class ConvertResourcesToPaths {
         if (method.headers)
             convertedParameters = convertedParameters.concat(this.getParametersByType(method.headers, 'header'));
         if (method.queryParameters)
-            convertedParameters = convertedParameters.concat(this.getParametersByType(method.queryParameters, 'path'));
+            convertedParameters = convertedParameters.concat(this.getParametersByType(method.queryParameters, 'query'));
         return convertedParameters;
     }
     getSecurityRequirement(securedBy) {

@@ -166,9 +166,9 @@ exports.resultResourceWithParameters = {
                     },
                     {
                         name: 'stringArray',
-                        in: 'path',
+                        in: 'query',
                         description: 'description',
-                        required: true,
+                        required: false,
                         schema: {
                             type: 'array',
                             items: {
@@ -186,7 +186,7 @@ exports.resultResourceWithParameters = {
                     },
                     {
                         name: 'number',
-                        in: 'path',
+                        in: 'query',
                         description: 'description',
                         required: true,
                         schema: {

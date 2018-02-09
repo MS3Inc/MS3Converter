@@ -168,9 +168,9 @@ export const resultResourceWithParameters: OAS = {
           },
           {
             name: 'stringArray',
-            in: 'path',
+            in: 'query',
             description: 'description',
-            required: true,
+            required: false,
             schema: {
               type: 'array',
               items: {
@@ -188,7 +188,7 @@ export const resultResourceWithParameters: OAS = {
           },
           {
             name: 'number',
-            in: 'path',
+            in: 'query',
             description: 'description',
             required: true,
             schema: {
