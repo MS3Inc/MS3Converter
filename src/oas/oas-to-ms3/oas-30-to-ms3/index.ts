@@ -278,8 +278,8 @@ class MS3toOAS30toMS3 {
         if (schema.enum) convertedParameter.enum = schema.enum;
         if (schema.type) {
           if (schema.type == 'array' && schema.items && schema.items.type) {
-          convertedParameter.type = schema.items.type;
-          convertedParameter.repeat = true;
+            convertedParameter.type = schema.items.type;
+            convertedParameter.repeat = true;
           } else {
             convertedParameter.type = schema.type;
             if (schema.type == 'long' || schema.type == 'float' || schema.type == 'double') {

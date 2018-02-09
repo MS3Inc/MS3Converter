@@ -132,7 +132,7 @@ class ConvertResourcesToPaths {
     let convertedParameters: OAS.ParameterObject[] = [];
 
     if (method.headers) convertedParameters = convertedParameters.concat(this.getParametersByType(method.headers, 'header'));
-    if (method.queryParameters) convertedParameters = convertedParameters.concat(this.getParametersByType(method.queryParameters, 'path'));
+    if (method.queryParameters) convertedParameters = convertedParameters.concat(this.getParametersByType(method.queryParameters, 'query'));
 
     return convertedParameters;
   }
