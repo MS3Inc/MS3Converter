@@ -9,10 +9,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const path = require("path");
-const YAML = require("yamljs");
 const fs_1 = require("fs");
 const util_1 = require("util");
 const mkdirp2_1 = require("mkdirp2");
+const Stringify = require('raml-object-to-raml/lib/stringify');
 const ms3_overlay_to_api_1 = require("../ms3-overlay-to-api");
 const ms3_extension_to_api_1 = require("../ms3-extension-to-api");
 const ms3_to_oas_20_1 = require("./ms3-to-oas-20");
@@ -83,7 +83,7 @@ class MS3toOAS {
     }
     stringifyContent(content, format) {
         if (this.options.fileFormat == 'yaml') {
-            return YAML.stringify(content, 8, 2);
+            return Stringify(content);
         }
         return JSON.stringify(content, undefined, 2);
     }
