@@ -4,6 +4,7 @@ import { writeFile } from 'fs';
 import { promisify } from 'util';
 import { promise as MkdirpPromise } from 'mkdirp2';
 import { cloneDeep } from 'lodash';
+const Stringify = require('raml-object-to-raml/lib/stringify');
 
 import { API as MS3Interface } from '../../ms3/ms3-v1-api-interface';
 import { API as OAS20Interface } from '../../oas/oas-20-api-interface';
@@ -87,7 +88,7 @@ export default class MS3toOAS {
 
   protected stringifyContent(content: object, format: 'yaml' | 'json') {
     if (this.options.fileFormat == 'yaml') {
-      return YAML.stringify(content, 8, 2);
+      return Stringify(content);
     }
     return JSON.stringify(content, undefined, 2);
   }
