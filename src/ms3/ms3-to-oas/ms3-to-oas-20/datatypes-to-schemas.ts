@@ -1,7 +1,7 @@
 import * as MS3 from './../../ms3-v1-api-interface';
 import { Schema, SchemaObject } from './../../../oas/oas-30-api-interface';
 import { DataType, DataTypeObject, DataTypeArray, DataTypePrimitive } from './../../ms3-v1-api-interface';
-import { find, cloneDeep } from 'lodash';
+import { find, cloneDeep, pickBy, isBoolean, isNumber, keys } from 'lodash';
 import * as path from 'path';
 
 export class ConvertDataTypesToSchemasOAS2 {
@@ -78,7 +78,16 @@ export class ConvertDataTypesToSchemasOAS2 {
         break;
     }
 
-    return convertedType;
+    return this.removeEmptyProperty(convertedType);
+  }
+
+  removeEmptyProperty(obj: any) {
+    for (const propName in obj) {
+      if (obj[propName] === null || obj[propName] === undefined || obj[propName] === '' || propName == 'mode') {
+        delete obj[propName];
+      }
+    }
+    return obj;
   }
 
   parseIntegerValues(schema: any) {

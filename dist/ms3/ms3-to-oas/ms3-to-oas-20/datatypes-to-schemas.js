@@ -72,7 +72,15 @@ class ConvertDataTypesToSchemasOAS2 {
                 convertedType.format = 'byte';
                 break;
         }
-        return convertedType;
+        return this.removeEmptyProperty(convertedType);
+    }
+    removeEmptyProperty(obj) {
+        for (const propName in obj) {
+            if (obj[propName] === null || obj[propName] === undefined || obj[propName] === '' || propName == 'mode') {
+                delete obj[propName];
+            }
+        }
+        return obj;
     }
     parseIntegerValues(schema) {
         if (schema.maxLength && schema.maxLength.length)
