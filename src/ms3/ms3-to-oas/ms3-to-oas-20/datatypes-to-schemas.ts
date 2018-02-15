@@ -54,13 +54,27 @@ export class ConvertDataTypesToSchemasOAS2 {
 
     switch (convertedType.type) {
       case 'number':
-        convertedType.type = 'integer';
+        convertedType.format = 'float';
         break;
       case 'datetime':
-        convertedType.type = 'dateTime';
+        convertedType.type = 'string';
+        convertedType.format = 'date-time';
         break;
       case 'date-only':
-        convertedType.type = 'date';
+        convertedType.type = 'string';
+        convertedType.format = 'date';
+        break;
+      case 'time-only':
+        convertedType.type = 'string';
+        convertedType.format = 'date-time';
+        break;
+      case 'datetime-only':
+        convertedType.type = 'string';
+        convertedType.format = 'date-time';
+        break;
+      case 'file':
+        convertedType.type = 'string';
+        convertedType.format = 'byte';
         break;
     }
 
