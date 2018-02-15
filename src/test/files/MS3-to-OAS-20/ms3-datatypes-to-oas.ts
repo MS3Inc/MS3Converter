@@ -217,10 +217,12 @@ export const oasDataTypes: OASInterface.API = {
           'default': true
         },
         'isNumber': {
-          'type': 'integer'
+          'type': 'number',
+          'format': 'float'
         },
         'isDateOnly': {
-          'type': 'date'
+          'type': 'string',
+          'format': 'date'
         },
         'ArraySchema': {
           '$ref': '#/definitions/ArraySchema'

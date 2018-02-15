@@ -208,10 +208,12 @@ test('MS3 schemas should be converted to OAS successfully', () => __awaiter(this
                             'default': true
                         },
                         'isNumber': {
-                            'type': 'integer'
+                            'type': 'number',
+                            'format': 'float'
                         },
                         'isDateOnly': {
-                            'type': 'date'
+                            'type': 'string',
+                            'format': 'date'
                         },
                         'ArraySchema': {
                             '$ref': '#/components/schemas/ArraySchema'
