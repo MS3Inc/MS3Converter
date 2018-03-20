@@ -3,12 +3,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const uuid_1 = require("uuid");
 const lodash_1 = require("lodash");
 class SchemasToDataTypes {
-    constructor(schema, id) {
+    constructor(schema, id, schemas) {
         this.schema = schema;
         this.id = id;
+        this.schemas = schemas;
     }
-    static create(schema, id) {
-        return new SchemasToDataTypes(schema, id);
+    static create(schema, id, schemas) {
+        return new SchemasToDataTypes(schema, id, schemas);
     }
     convert() {
         return lodash_1.reduce(this.schema, (result, schema, name) => {
@@ -87,7 +88,12 @@ class SchemasToDataTypes {
         const parsedProperties = [];
         for (const key in properties) {
             if (properties.hasOwnProperty(key)) {
-                const property = properties[key];
+                let property = properties[key];
+                if (property.$ref) {
+                    const name = property.$ref.split('/')[3];
+                    const content = lodash_1.find(this.schemas, { name }).content;
+                    property = JSON.parse(content)[key];
+                }
                 const parsedProperty = this._parseProperty(property);
                 parsedProperty.name = key;
                 parsedProperties.push(parsedProperty);
@@ -126,8 +132,8 @@ class SchemasToDataTypes {
         delete destinationObject[propertyName];
     }
 }
-const convertSchemasToDataTypes = function (schema, id = null) {
-    return SchemasToDataTypes.create(schema, id).convert();
+const convertSchemasToDataTypes = function (schema, id = null, schemas = []) {
+    return SchemasToDataTypes.create(schema, id, schemas).convert();
 };
 exports.default = convertSchemasToDataTypes;
 //# sourceMappingURL=schemas-to-dataTypes.js.map
