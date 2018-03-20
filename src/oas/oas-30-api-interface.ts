@@ -56,7 +56,7 @@ export interface SchemaObject {
 
 export interface Schema {
   required?: string[];
-  [propName: string]: SchemaObject | ReferenceObject| string[];
+  [propName: string]: SchemaObject | ReferenceObject;
 }
 
 interface EncodingObject {

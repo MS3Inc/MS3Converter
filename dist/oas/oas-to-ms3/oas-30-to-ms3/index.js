@@ -161,7 +161,7 @@ class MS3toOAS30toMS3 {
             delete foundSchema.title;
             foundSchema.name = name;
             schema[name] = foundSchema;
-            this.ms3API.dataTypes.push(schemas_to_dataTypes_1.default(schema, data.__id));
+            this.ms3API.dataTypes.push(schemas_to_dataTypes_1.default(schema, data.__id, this.loadedSchemas));
         }
         else {
             schema[name] = data;

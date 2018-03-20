@@ -1,13 +1,13 @@
 import * as OAS30Interface from '../oas/oas-30-api-interface';
 import * as MS3Interface from '../ms3/ms3-v1-api-interface';
 import { v4 } from 'uuid';
-import { reduce } from 'lodash';
+import { reduce, find } from 'lodash';
 
 class SchemasToDataTypes {
-  constructor(private schema: OAS30Interface.Schema, private id: string) {}
+  constructor(private schema: OAS30Interface.Schema, private id: string, private schemas: any[]) {}
 
-  static create(schema: OAS30Interface.Schema, id: string) {
-    return new SchemasToDataTypes(schema, id);
+  static create(schema: OAS30Interface.Schema, id: string, schemas: any[]) {
+    return new SchemasToDataTypes(schema, id, schemas);
   }
 
   convert(): MS3Interface.DataType {
@@ -96,7 +96,12 @@ class SchemasToDataTypes {
 
     for (const key in properties) {
       if (properties.hasOwnProperty(key)) {
-        const property = <OAS30Interface.Schema> properties[key];
+        let property = <OAS30Interface.Schema> properties[key];
+        if (property.$ref) {
+          const name = property.$ref.split('/')[3];
+          const content = find(this.schemas, {name}).content;
+          property = JSON.parse(content)[key];
+        }
         const parsedProperty = this._parseProperty(property);
         parsedProperty.name = key;
         parsedProperties.push(parsedProperty);
@@ -141,8 +146,8 @@ class SchemasToDataTypes {
   }
 }
 
-const convertSchemasToDataTypes =  function(schema: OAS30Interface.Schema, id: string = null): MS3Interface.DataType {
-  return SchemasToDataTypes.create(schema, id).convert();
+const convertSchemasToDataTypes =  function(schema: OAS30Interface.Schema, id: string = null, schemas: any[] = []): MS3Interface.DataType {
+  return SchemasToDataTypes.create(schema, id, schemas).convert();
 };
 
 export default convertSchemasToDataTypes;
