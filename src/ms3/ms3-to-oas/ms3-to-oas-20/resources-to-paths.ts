@@ -10,10 +10,12 @@ class ConvertResourcesToPaths {
     return find(this.API.securitySchemes, ['__id', id]);
   }
 
-  getParentResourcePath(id: string): string {
-    const path = find(this.API.resources, ['__id', id]).path;
+  getParentResourcePath(id: string, tail: string): string {
+    const path = find(this.API.resources, ['__id', id]);
     if (!path) throw new Error(`Resource with id "${id}" does not exist.`);
-    return path;
+    tail = path.path + tail;
+    if (path.parentId) return this.getParentResourcePath(path.parentId, tail);
+    return tail;
   }
 
   getDataTypeName(id: string): string {
@@ -194,7 +196,7 @@ class ConvertResourcesToPaths {
 
   convert(): OAS.Paths {
     return this.API.resources.reduce( (resultObject: any, resource: MS3.Resource) => {
-      const path = resource.parentId ? (this.getParentResourcePath(resource.parentId) + resource.path) : resource.path;
+      const path = resource.parentId ? (this.getParentResourcePath(resource.parentId, resource.path)) : resource.path;
       resultObject[path] = {};
       const activeMethods = filter(resource.methods, ['active', true]);
 
