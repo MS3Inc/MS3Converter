@@ -9,11 +9,14 @@ class ConvertResourcesToPaths {
     getSecuritySchemaById(id) {
         return lodash_1.find(this.API.securitySchemes, ['__id', id]);
     }
-    getParentResourcePath(id) {
-        const path = lodash_1.find(this.API.resources, ['__id', id]).path;
+    getParentResourcePath(id, tail) {
+        const path = lodash_1.find(this.API.resources, ['__id', id]);
         if (!path)
             throw new Error(`Resource with id "${id}" does not exist.`);
-        return path;
+        tail = path.path + tail;
+        if (path.parentId)
+            return this.getParentResourcePath(path.parentId, tail);
+        return tail;
     }
     getDataTypeName(id) {
         const name = lodash_1.find(this.API.dataTypes, (dataType) => {
@@ -179,7 +182,7 @@ class ConvertResourcesToPaths {
     }
     convert() {
         return this.API.resources.reduce((resultObject, resource) => {
-            const path = resource.parentId ? (this.getParentResourcePath(resource.parentId) + resource.path) : resource.path;
+            const path = resource.parentId ? (this.getParentResourcePath(resource.parentId, resource.path)) : resource.path;
             resultObject[path] = {};
             const activeMethods = lodash_1.filter(resource.methods, ['active', true]);
             resultObject[path] = activeMethods.reduce((result, activeMethod) => {
