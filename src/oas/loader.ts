@@ -6,12 +6,11 @@ import * as fsPath from 'path';
 import * as util from 'util';
 import * as unzip from 'unzip';
 import { oas30Interface, oas20Interface } from '../oas/index';
-import * as YAML from 'yamljs';
-const yaml2 = require('js-yaml');
 import { findLastIndex } from 'lodash';
 import Finder from 'node-find-files2';
 import * as rmdir from 'rmdir';
 
+const YAML = require('js-yaml');
 const rmdirPromise = util.promisify(rmdir);
 const readFilePromise = util.promisify(fs.readFile);
 
@@ -65,18 +64,12 @@ export default class OasLoader implements LoaderInterface {
 
   private loadYamlPromise(path: string) {
     return new Promise((resolve, reject) => {
-
       try {
-        const doc = yaml2.safeLoad(fs.readFileSync(path, 'utf8'));
+        const doc = YAML.safeLoad(fs.readFileSync(path, 'utf8'));
         return resolve(doc);
       } catch (e) {
         return reject(`Cannot parse yaml at: ${path}`);
       }
-
-      // YAML.load(path, (data: string) => {
-      //   if (!data) return reject(`Cannot parse yaml at: ${path}`);
-      //   return resolve(data);
-      // });
     });
   }
 

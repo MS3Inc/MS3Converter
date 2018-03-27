@@ -12,9 +12,9 @@ const fs = require("fs");
 const fsPath = require("path");
 const util = require("util");
 const unzip = require("unzip");
-const yaml2 = require('js-yaml');
 const node_find_files2_1 = require("node-find-files2");
 const rmdir = require("rmdir");
+const YAML = require('js-yaml');
 const rmdirPromise = util.promisify(rmdir);
 const readFilePromise = util.promisify(fs.readFile);
 class OasLoader {
@@ -67,16 +67,12 @@ class OasLoader {
     loadYamlPromise(path) {
         return new Promise((resolve, reject) => {
             try {
-                const doc = yaml2.safeLoad(fs.readFileSync(path, 'utf8'));
+                const doc = YAML.safeLoad(fs.readFileSync(path, 'utf8'));
                 return resolve(doc);
             }
             catch (e) {
                 return reject(`Cannot parse yaml at: ${path}`);
             }
-            // YAML.load(path, (data: string) => {
-            //   if (!data) return reject(`Cannot parse yaml at: ${path}`);
-            //   return resolve(data);
-            // });
         });
     }
     isSwaggerApiFile(content) {
