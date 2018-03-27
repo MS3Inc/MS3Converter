@@ -50,6 +50,7 @@
   "homepage": "https://github.com/MS3Inc/MS3Converter#readme",
   "dependencies": {
     "fs": "0.0.1-security",
+    "js-yaml": "^3.11.0",
     "lodash": "^4.17.4",
     "mkdirp2": "^1.0.3",
     "node-find-files2": "0.0.4",
