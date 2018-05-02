@@ -149,7 +149,7 @@ export class ConvertDataTypesToSchemasOAS2 {
 
   convertProperties(props: Array<object>): Schema {
     return props.reduce( (resultObject: any, prop: (DataTypeObject | DataTypePrimitive | DataTypeArray)) => {
-      if (prop.required) delete prop.required;
+      delete prop.required;
       if (prop.includes) {
         const dataTypeName = this.getSchemaName(prop.includes);
         if (!dataTypeName) {

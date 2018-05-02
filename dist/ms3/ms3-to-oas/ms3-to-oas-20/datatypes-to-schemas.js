@@ -144,8 +144,7 @@ class ConvertDataTypesToSchemasOAS2 {
     }
     convertProperties(props) {
         return props.reduce((resultObject, prop) => {
-            if (prop.required)
-                delete prop.required;
+            delete prop.required;
             if (prop.includes) {
                 const dataTypeName = this.getSchemaName(prop.includes);
                 if (!dataTypeName) {
