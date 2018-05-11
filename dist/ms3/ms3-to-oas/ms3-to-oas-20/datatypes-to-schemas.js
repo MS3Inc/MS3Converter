@@ -38,9 +38,9 @@ class ConvertDataTypesToSchemasOAS2 {
         }, {});
     }
     /**
-     * Convert datatype type field to types compatible with json schema
-     * @param dataType - data type
-     */
+    * Convert datatype type field to types compatible with json schema
+    * @param dataType - data type
+    */
     convertType(dataType) {
         if (dataType.type == 'nil')
             return null;
@@ -163,6 +163,11 @@ class ConvertDataTypesToSchemasOAS2 {
                 }
                 delete resultObject[prop.name].name;
                 if (resultObject[prop.name].items) {
+                    // this conditional ensures that properties that are nested for an Object beyond the initial level are converted
+                    //TODO: Needs a function that checks the depth of the schema object and ensures that properties at all levels are convertedType
+                    if (resultObject[prop.name].items.properties && resultObject[prop.name].items.properties.length) {
+                        resultObject[prop.name].items.properties = this.convertProperties(resultObject[prop.name].items.properties);
+                    }
                     resultObject[prop.name].items = this.convertArrayItems(resultObject[prop.name].items);
                 }
                 if (resultObject[prop.name].properties && resultObject[prop.name].properties.length) {
